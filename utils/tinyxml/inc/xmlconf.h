@@ -6,8 +6,7 @@
 #ifndef _XML_CONFIG_H_
 #define _XML_CONFIG_H_
 
-#include "common_types.h"
-
+#include <stdint.h>
 #include <string>
 #include <iostream>
 #include "tinystr.h"
@@ -17,18 +16,18 @@
 class xml_config
 {
 public:
-    enum 
+    enum
     {
         INDENTS_COUNT_PER_SPACE = 2,
     };
 
 public:
 	xml_config();
-	explicit xml_config(const char* xml_file_name) 
-		:m_xml_conf_file_(xml_file_name), m_root_elem_(0) 
+	explicit xml_config(const char* xml_file_name)
+		:m_xml_conf_file_(xml_file_name), m_root_elem_(0)
 	{
 		//加载配置文件
-		m_xml_conf_file_.LoadFile();  
+		m_xml_conf_file_.LoadFile();
 		//得到配置文件的根结点
 		m_root_elem_ = m_xml_conf_file_.RootElement();
 	}
@@ -50,9 +49,9 @@ public:
 	**	@param[in]  const std::string& node_name 节点名
 	**	@param[out] int& value  返回的结果
 	**  @param[in]  int  defaut 默认参数
-	**/	
-	void get_value(const std::string& block_name, const std::string& node_name, int32_t& value, int default = -1);
-    
+	**/
+	void get_value(const std::string& block_name, const std::string& node_name, int32_t& value, int vdefault = -1);
+
 	/***
 	**	@brief：得到字符串配置内容
 	**	@param[in]  const std::string& node_name 节点名
@@ -65,7 +64,7 @@ public:
 	**	@param[in]  const std::string& node_name 节点名
 	**	@param[out] int& value  返回的结果
 	**  @param[in]  int  defaut 默认参数
-	**/	
+	**/
 	void get_value(const std::string& node_name, int32_t& value, int defaut = -1);
 
 	//重读配置文件

@@ -1,5 +1,3 @@
-
-
 #include "blow_fish.h"
 #include <string.h>
 #include <assert.h>

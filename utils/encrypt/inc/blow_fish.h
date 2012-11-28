@@ -3,7 +3,9 @@
 #ifndef _BLOW_FISH_H_
 #define _BLOW_FISH_H_
 
-#include "common_types.h"
+#include <stddef.h>                // for size_t
+#include <stdint.h>
+
 
 namespace utils {
 //! ≥ı ºªØ∫–

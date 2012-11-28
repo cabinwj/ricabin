@@ -1,11 +1,8 @@
-
-
 #include "base64.h"
 #include <assert.h>
 
 
 namespace utils {
-
 
 static const char cb64[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 

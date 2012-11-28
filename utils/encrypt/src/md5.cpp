@@ -1,11 +1,11 @@
 #include "md5.h"
-#include "common_types.h"
+#include <stddef.h>                // for size_t
+#include <stdint.h>
 #include <string.h>
 #include <assert.h>
 
 
 namespace utils {
-
 
 static inline void Md5_Put64(uint64_t data, char buf[8])
 {

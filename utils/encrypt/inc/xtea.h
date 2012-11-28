@@ -3,6 +3,7 @@
 #ifndef _XTEA_H_
 #define _XTEA_H_
 
+
 namespace utils {
 //! XTEAÀ„∑®
 class XTEA

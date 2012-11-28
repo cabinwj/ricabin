@@ -1,12 +1,11 @@
 #include "xtea.h"
-#include "common_types.h"
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 
 
 namespace utils {
-
 
 static void encipher_block(int rounds, uint32_t *key, uint32_t *in, uint32_t *out)
 {

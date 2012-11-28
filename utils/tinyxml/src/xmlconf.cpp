@@ -1,10 +1,10 @@
 /**
 @file   xmlconf.cpp
 @brief  读取xml配置文件类的实现
-*/ 
+*/
 
-#include "xmlconf.h"   
-#include <iostream>   
+#include "xmlconf.h"
+#include <iostream>
 
 xml_config::xml_config()
 {
@@ -15,7 +15,7 @@ int xml_config::init(const char* xml_file_name)
 {
 	m_xml_conf_file_ = xml_file_name;
 	//加载配置文件
-	m_xml_conf_file_.LoadFile();  
+	m_xml_conf_file_.LoadFile();
 	//得到配置文件的根结点
 	m_root_elem_ = m_xml_conf_file_.RootElement();
 	if (m_root_elem_)
@@ -30,14 +30,14 @@ int xml_config::init(const char* xml_file_name)
 
 /***
 **	@brief：得到字符串配置内容
-**	@param[in]  const std::string& block_name 
+**	@param[in]  const std::string& block_name
 **	@param[in]  const std::string& node_name 节点名
 **	@param[in] char* value  返回的结果
 **/
 void xml_config::get_value(const std::string& block_name, const std::string& node_name, char* value)
 {
 	if (!m_root_elem_)
-	{   
+	{
 		std::cerr << "read root error!" << std::endl;
 		exit(-1);
 	}
@@ -48,13 +48,13 @@ void xml_config::get_value(const std::string& block_name, const std::string& nod
 		strcpy(value, node_elem->FirstChildElement(node_name.c_str())->GetText());
 	}
     else if (node_elem->Attribute(node_name.c_str()))                            //如果是属性
-	{	
+	{
 		strcpy(value, node_elem->Attribute(node_name.c_str()));
 	}
-    else 
+    else
 	{
 		std::cerr << "node:" << node_name << " is null!" << std::endl;
-		exit(-1); 
+		exit(-1);
 	}
 }
 
@@ -69,7 +69,7 @@ void xml_config::get_value(const std::string& block_name, const std::string& nod
 void xml_config::get_value(const std::string& block_name, const std::string& node_name, int32_t& value, int defaut)
 {
 	if (!m_root_elem_)
-	{   
+	{
 		std::cerr << "read root error!" << std::endl;
 		exit(-1);
 	}
@@ -80,10 +80,10 @@ void xml_config::get_value(const std::string& block_name, const std::string& nod
 		value = atoi(node_elem->FirstChildElement(node_name.c_str())->GetText());
 	}
     else if (node_elem->Attribute(node_name.c_str()))                            //如果是属性
-	{	
+	{
 		value = atoi(node_elem->Attribute(node_name.c_str()));
 	}
-    else 
+    else
 	{
 		if (defaut == -1)
 		{
@@ -103,7 +103,7 @@ void xml_config::get_value(const std::string& block_name, const std::string& nod
 void xml_config::get_value(const std::string& node_name, char* value)
 {
 	if (!m_root_elem_)
-	{   
+	{
 		std::cerr << "read root error!" << std::endl;
 		exit(-1);
 	}
@@ -116,7 +116,7 @@ void xml_config::get_value(const std::string& node_name, char* value)
     else
 	{
 		std::cerr << "node:"<<node_name << " is null!" << std::endl;
-		exit(-1); 
+		exit(-1);
 	}
 }
 
@@ -130,7 +130,7 @@ void xml_config::get_value(const std::string& node_name, char* value)
 void xml_config::get_value(const std::string& node_name, int32_t& value, int defaut)
 {
 	if (!m_root_elem_)
-	{   
+	{
 		std::cerr << "read root error!" << std::endl;
 		exit(-1);
 	}
@@ -161,7 +161,7 @@ void xml_config::reload_config(const char* xml_file_name)
 	m_xml_conf_file_ = xml_file_name;
 	m_root_elem_ = 0;
 	//加载配置文件
-	m_xml_conf_file_.LoadFile();  
+	m_xml_conf_file_.LoadFile();
 	//得到配置文件的根结点
 	m_root_elem_ = m_xml_conf_file_.RootElement();
 	return;
@@ -224,7 +224,7 @@ void xml_config::dump_to_stdout( TiXmlNode* parent, uint32_t indent)
 	}
 
 	printf( "\n" );
-	for ( child = parent->FirstChild(); child != 0; child = child->NextSibling()) 
+	for ( child = parent->FirstChild(); child != 0; child = child->NextSibling())
 	{
 		dump_to_stdout( child, indent+1 );
 	}
@@ -274,5 +274,5 @@ int xml_config::dump_attribs_to_stdout(TiXmlElement* elem, unsigned int indent)
 		i++;
 		attrib = attrib->Next();
 	}
-	return i; 
+	return i;
 }

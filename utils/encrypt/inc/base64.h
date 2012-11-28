@@ -1,13 +1,10 @@
 //! @file base64.h
 //! @brief base64±àÂë
-
-
 #ifndef _BASE64_H_
 #define _BASE64_H_
 
 
 namespace utils {
-
 
 //! base64±àÂë
 class Base64
