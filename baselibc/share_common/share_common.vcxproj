@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\common_allocator.cpp" />
+    <ClCompile Include="src\common_base.cpp" />
+    <ClCompile Include="src\common_binpacket.cpp" />
+    <ClCompile Include="src\common_block_buffer.cpp" />
+    <ClCompile Include="src\common_condition.cpp" />
+    <ClCompile Include="src\common_data_block.cpp" />
+    <ClCompile Include="src\common_destroyable.cpp" />
+    <ClCompile Include="src\common_bitmap.cpp" />
+    <ClCompile Include="src\common_list.cpp" />
+    <ClCompile Include="src\common_log.cpp" />
+    <ClCompile Include="src\common_md5.cpp" />
+    <ClCompile Include="src\common_min_heap.cpp" />
+    <ClCompile Include="src\common_mysql_pool.cpp" />
+    <ClCompile Include="src\common_non_copyable.cpp" />
+    <ClCompile Include="src\common_object_allocator.cpp" />
+    <ClCompile Include="src\common_object_guard.cpp" />
+    <ClCompile Include="src\common_os.cpp" />
+    <ClCompile Include="src\common_singleton.cpp" />
+    <ClCompile Include="src\common_sync_queue.cpp" />
+    <ClCompile Include="src\common_thread.cpp" />
+    <ClCompile Include="src\common_thread_mutex.cpp" />
+    <ClCompile Include="src\common_thread_pool.cpp" />
+    <ClCompile Include="src\common_thread_storage.cpp" />
+    <ClCompile Include="src\common_types.cpp" />
+    <ClCompile Include="src\common_type_trait.cpp" />
+    <ClCompile Include="src\common_unique_sequence.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="inc\common_allocator.h" />
+    <ClInclude Include="inc\common_base.h" />
+    <ClInclude Include="inc\common_binpacket.h" />
+    <ClInclude Include="inc\common_block_buffer.h" />
+    <ClInclude Include="inc\common_condition.h" />
+    <ClInclude Include="inc\common_data_block.h" />
+    <ClInclude Include="inc\common_destroyable.h" />
+    <ClInclude Include="inc\common_bitmap.h" />
+    <ClInclude Include="inc\common_list.h" />
+    <ClInclude Include="inc\common_log.h" />
+    <ClInclude Include="inc\common_md5.h" />
+    <ClInclude Include="inc\common_min_heap.h" />
+    <ClInclude Include="inc\common_mysql_pool.h" />
+    <ClInclude Include="inc\common_non_copyable.h" />
+    <ClInclude Include="inc\common_object_allocator.h" />
+    <ClInclude Include="inc\common_object_guard.h" />
+    <ClInclude Include="inc\common_os.h" />
+    <ClInclude Include="inc\common_singleton.h" />
+    <ClInclude Include="inc\common_sync_queue.h" />
+    <ClInclude Include="inc\common_thread.h" />
+    <ClInclude Include="inc\common_thread_mutex.h" />
+    <ClInclude Include="inc\common_thread_pool.h" />
+    <ClInclude Include="inc\common_thread_storage.h" />
+    <ClInclude Include="inc\common_types.h" />
+    <ClInclude Include="inc\common_type_trait.h" />
+    <ClInclude Include="inc\common_unique_sequence.h" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D85E5552-5FE2-4F4C-812D-C2C41B3B2234}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>public</RootNamespace>
+    <ProjectName>share_common</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>.\inc;C:\Install Files\MySQL\MySQL Server 5.5\include;$(IncludePath)</IncludePath>
+    <OutDir>..\..\staticlibc</OutDir>
+    <IntDir>.\objs</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <Lib>
+      <AdditionalLibraryDirectories>C:\Install Files\MySQL\MySQL Server 5.5\lib</AdditionalLibraryDirectories>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
