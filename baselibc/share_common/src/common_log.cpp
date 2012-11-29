@@ -5,7 +5,6 @@
 #include <string.h>
 #include <ctype.h>
 #include <sys/stat.h>
-#include <sys/time.h>
 
 #ifdef WIN32
 #include <WinSock2.h>
@@ -15,6 +14,7 @@
 #endif
 
 #else
+#include <sys/time.h>
 #include <unistd.h>
 #endif
 

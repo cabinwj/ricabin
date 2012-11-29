@@ -77,7 +77,7 @@ int data_block::resize(size_t sz)
         return -1;
     }
 
-    if ( odb.append( begin(), std::min(size(), sz) ) != 0 )
+    if ( odb.append( begin(), ::std::min(size(), sz) ) != 0 )
     {
         return -1;
     }
