@@ -1,4 +1,4 @@
-﻿#ifndef __COMMON_OBJECT_POOL_H__
+#ifndef __COMMON_OBJECT_POOL_H__
 #define __COMMON_OBJECT_POOL_H__
 
 #include "common_memory.h"

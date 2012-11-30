@@ -10,6 +10,7 @@
 
 
 #ifdef WIN32    // for windows
+#define NOMINMAX
 #include <winsock2.h>
 #include <direct.h>
 #include <io.h>

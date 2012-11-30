@@ -1,7 +1,6 @@
 #include "common_thread_pool.h"
-#include <algorithm>
 
-using namespace std;
+#include <algorithm>
 
 /**
 * implement job_threadc
@@ -94,7 +93,7 @@ void threadc_pool::stop(size_t count)
     {
         return;
     }
-    size_t stop_count = min(count, m_live_threads_.size());
+    size_t stop_count = ::std::min(count, m_live_threads_.size());
     stop_threads(stop_count);
     // wait for exiting of all stop_count thread
     while ( true )

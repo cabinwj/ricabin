@@ -1,4 +1,4 @@
-﻿#include "common_object_pool.h"
+#include "common_object_pool.h"
 
 int32_t base_object::create_mode_ = object_createmode_init;
 

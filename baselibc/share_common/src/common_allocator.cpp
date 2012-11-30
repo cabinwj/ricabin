@@ -1,5 +1,8 @@
 #include "common_allocator.h"
 
+#include <stdlib.h>
+#include <new>
+
 
 void* malloc_allocator::Allocate(size_t size, size_t* real_size)
 {

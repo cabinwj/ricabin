@@ -1,10 +1,9 @@
 #ifndef _THREAD_STORAGE_H_
 #define _THREAD_STORAGE_H_
 
-#include "common_os.h"
-#include <assert.h>
-
 #ifdef WIN32
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 #include <process.h>
 #else

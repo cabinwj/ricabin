@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <string.h>
 
+
 data_block::data_block(size_t block_size, allocatorc* alloc)
     : m_allocatorc_(alloc), m_begin_(0), m_end_(0), m_end_of_block_(0)
 {

@@ -1,7 +1,7 @@
 #ifndef _COMMON_ALLOCATOR_H_
 #define _COMMON_ALLOCATOR_H_
 
-#include "common_os.h"
+#include "common_types.h"
 
 
 class allocatorc
