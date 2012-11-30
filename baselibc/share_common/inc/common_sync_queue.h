@@ -1,7 +1,6 @@
 #ifndef _COMMON_SYNC_QUEUE_H_
 #define _COMMON_SYNC_QUEUE_H_
 
-#include "common_types.h"
 #include "common_condition.h"
 
 #include <list>
