@@ -5,14 +5,28 @@
 #define _WIN32_WINNT 0x0500
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
+#include <process.h>
 #else
 #include <pthread.h>
 #endif
 
 #include <assert.h>
 
-#ifdef _MULTI_THREAD
+#ifndef _MULTI_THREAD
+class condition_impl
+{
+    friend class conditionc;
+    condition_impl(int& status) { }
+    ~condition_impl() { }
 
+    int lock() { return 0; }
+    int unlock() { return 0; }
+    int wait() { return 0; }
+    int timed_wait(int msec) { return 0; }
+    int signal() { return 0; }
+    int broadcast() { return 0; }
+};
+#else
 #ifdef WIN32
 class condition_impl
 {
@@ -242,6 +256,7 @@ class condition_impl
     int m_init_status_;
 };
 #endif
+#endif
 
 conditionc::conditionc()
     : m_condition_impl_(NULL)
@@ -291,5 +306,3 @@ int conditionc::broadcast()
 {
     return m_condition_impl_->broadcast();
 }
-
-#endif

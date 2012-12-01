@@ -6,9 +6,10 @@
 #ifdef WIN32
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
-  #include <windows.h>
+#include <windows.h>
+#include <process.h>
 #else
-  #include <pthread.h>
+#include <pthread.h>
 #endif
 
 //! @class threadc_mutex
