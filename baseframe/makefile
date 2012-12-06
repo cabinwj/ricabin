@@ -1,29 +1,30 @@
 CXX= g++
 AR= ar
-CC= gcc
 
-ARFLAGS= cr
-CPPFLAGS= -g -D__MULTI_THREAD__ -Wall -fPIC -Wpointer-arith -Wno-invalid-offsetof -DCORO_ASM
+ARFLAGS= rcs
+CPPFLAGS= -g -Wall -fPIC -Wpointer-arith -Wno-invalid-offsetof -D__MULTI_THREAD__ -DCORO_ASM
 
 TARGET= $(DEBUG_TARGET)
 
-DEBUG_TARGET= $(DEBUG_TARGET_DIR)/libcoro_frame_mt.a
-RELEASE_TARGET= $(RELEASE_TARGET_DIR)/libcoro_frame_mt.a
+DEBUG_TARGET= $(DEBUG_TARGET_DIR)/libbaseframe.a
+RELEASE_TARGET= $(RELEASE_TARGET_DIR)/libbaseframe.a
 
 BASE_DIR= ${HOME}
-SERVER_DIR= $(BASE_DIR)/frame_research-trunk
-PUBLIC_DIR= $(SERVER_DIR)/cpp_actor/lib_coro_frame
-LIB_PUBLIC_DIR= $(SERVER_DIR)/cpp_actor/lib_public/inc
-LIB_SOCKET_DIR= $(SERVER_DIR)/cpp_actor/lib_socket/inc
-LIB_COROUTINE_DIR= $(SERVER_DIR)/cpp_actor/lib_coroutine/inc
-INCLUDE_DIR= $(PUBLIC_DIR)/inc
-SOURCE_DIR= $(PUBLIC_DIR)/src
-OBJ_DIR= $(PUBLIC_DIR)/.objs
+SERVER_DIR= $(BASE_DIR)/ricabin
+COMMON_DIR= $(SERVER_DIR)/baseframe
+LIB_ENCRYPT_DIR= $(SERVER_DIR)/utils/encrypt/inc
+LIB_TINYXML_DIR= $(SERVER_DIR)/utils/tinyxml/inc
+LIB_COMMON_DIR= $(SERVER_DIR)/baselibc/share_common/inc
+LIB_SOCKET_DIR= $(SERVER_DIR)/baselibc/share_socket/inc
+LIB_COROUTINE_DIR= $(SERVER_DIR)/baselibc/share_coroutine/inc
+INCLUDE_DIR= $(COMMON_DIR)/inc
+SOURCE_DIR= $(COMMON_DIR)/src
+OBJ_DIR= $(COMMON_DIR)/.objs
 
-DEBUG_TARGET_DIR= $(SERVER_DIR)/lib/debug
-RELEASE_TARGET_DIR= $(SERVER_DIR)/lib/release
+DEBUG_TARGET_DIR= $(SERVER_DIR)/staticlibc#/lib/debug
+RELEASE_TARGET_DIR= $(SERVER_DIR)/staticlibc#/lib/release
 
-INC= -I$(INCLUDE_DIR) -I$(LIB_PUBLIC_DIR) -I$(LIB_SOCKET_DIR) -I$(LIB_COROUTINE_DIR)
+INC= -I$(INCLUDE_DIR) -I$(LIB_COMMON_DIR) -I$(LIB_SOCKET_DIR) -I$(LIB_COROUTINE_DIR) -I$(LIB_ENCRYPT_DIR) -I$(LIB_TINYXML_DIR)
 VPATH= .:$(SERVER_DIR)
 
 SRC= $(wildcard $(SOURCE_DIR)/*.cpp)
@@ -46,7 +47,7 @@ $(OBJ_DIR)/%.o : $(SOURCE_DIR)/%.cpp
 	@if [ ! -e $(OBJ_DIR) ]; then \
 		mkdir $(OBJ_DIR); \
 	fi
-	$(CXX) $(INC) $(CPPFLAGS) -c $< -o $@
+	$(CXX) $(CPPFLAGS) $(INC) -c $< -o $@
 
 clean:
 	rm -f $(OBJS) $(TARGET)

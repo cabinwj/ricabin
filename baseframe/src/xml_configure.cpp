@@ -6,13 +6,13 @@
 
 
 xml_configure::xml_configure()
-    : m_root_elem_(NULL), m_use_index_(master)
+    : m_use_index_(master), m_root_elem_(NULL)
 {
     memset(m_net_xml_, 0, sizeof(m_net_xml_));
 }
 
 xml_configure::xml_configure(const char* xml_file_name)
-    : m_root_elem_(NULL), m_use_index_(master) 
+    : m_use_index_(master), m_root_elem_(NULL)
 {
     //加载配置文件
     TiXmlDocument xml_doc(xml_file_name);
@@ -21,7 +21,7 @@ xml_configure::xml_configure(const char* xml_file_name)
         std::cerr << "load file error!" << std::endl;
         exit(-1);
     }
-  
+
     //得到配置文件的根结点
     m_root_elem_ = xml_doc.RootElement();
 
@@ -340,7 +340,7 @@ uint32_t xml_configure::get_entity_id_by_addr(const Address& laddr)
 
             if (raddr.get_net_ip() == laddr.get_net_ip())
             {
-                return m_net_xml_[m_use_index_].m_ent_set_.m_ent_array_[x].m_ent_type_ + ((y+1) & pf_entity_id_mark); 
+                return m_net_xml_[m_use_index_].m_ent_set_.m_ent_array_[x].m_ent_type_ + ((y+1) & pf_entity_id_mark);
             }
         }
     }

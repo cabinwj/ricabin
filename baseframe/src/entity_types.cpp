@@ -12,9 +12,9 @@ int decrypt_signature(char* in, int16_t in_length, signature_t& signature)
     {
         return -1;
     }
-    
+
     char uncrypt_signature[max_signature_length] = {'\0',};
-    int out_length = 0; 
+    int out_length = 0;
     utils::XTEA::decipher((char*)server_key, (char*)in, (size_t)in_length,
                            uncrypt_signature, sizeof(uncrypt_signature), out_length);
 
@@ -58,7 +58,7 @@ int encrypt_signature(const signature_t& signature, char* out, int16_t& out_leng
 
     char uncrypt_signature[max_signature_length] = {'\0',};
     // encode signature
-    int16_t encoded_len = 0;
+    uint16_t encoded_len = 0;
     // 得到与client通讯时加密密钥 m_key_
     memcpy(uncrypt_signature + encoded_len, signature.m_session_key_, crypt_key_length);
     encoded_len += crypt_key_length;
@@ -80,7 +80,7 @@ int encrypt_signature(const signature_t& signature, char* out, int16_t& out_leng
         return -1;
     }
 
-    int out_len = 0; 
+    int out_len = 0;
     utils::XTEA::encipher((char*)server_key, uncrypt_signature, sizeof(uncrypt_signature),
                           (char*)out, (size_t)out_length, out_len);
 
@@ -109,7 +109,7 @@ int encrypt_buffer(const char* key, const char* in, const int32_t in_length,
     }
 
     // 用session key来加密
-    int out_len = 0; 
+    int out_len = 0;
     utils::XTEA::encipher((char*)(key), (char*)(in), (size_t)(in_length),
                            out, (size_t)(out_length), out_len);
     if (0 == out_len)
@@ -132,7 +132,7 @@ int decrypt_buffer(const char* key, const char* in, const int32_t in_length,
     }
 
     // 用session key来解密
-    int out_len = 0; 
+    int out_len = 0;
     utils::XTEA::decipher((char*)(key), (char*)(in), (size_t)(in_length),
                            out, (size_t)(out_length), out_len);
     if (0 == out_len)
