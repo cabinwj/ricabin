@@ -16,8 +16,8 @@ INCLUDE_DIR= $(LZMA_DIR)/inc
 SOURCE_DIR= $(LZMA_DIR)/src
 OBJ_DIR= $(LZMA_DIR)/.objs
 
-DEBUG_TARGET_DIR= $(SERVER_DIR)/lib/debug
-RELEASE_TARGET_DIR= $(SERVER_DIR)/lib/release
+DEBUG_TARGET_DIR= $(SERVER_DIR)/staticlibc#/lib/debug
+RELEASE_TARGET_DIR= $(SERVER_DIR)/staticlibc#/lib/release
 
 INC= -I$(INCLUDE_DIR)
 

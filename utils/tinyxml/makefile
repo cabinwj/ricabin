@@ -16,8 +16,8 @@ INCLUDE_DIR= $(TINYXML_DIR)/inc
 SOURCE_DIR= $(TINYXML_DIR)/src
 OBJ_DIR= $(TINYXML_DIR)/.objs
 
-DEBUG_TARGET_DIR= $(SERVER_DIR)/lib/debug
-RELEASE_TARGET_DIR= $(SERVER_DIR)/lib/release
+DEBUG_TARGET_DIR= $(SERVER_DIR)/staticlibc#/lib/debug
+RELEASE_TARGET_DIR= $(SERVER_DIR)/staticlibc#/lib/release
 
 INC= -I$(INCLUDE_DIR)
 
