@@ -9,8 +9,8 @@ enum
 
     success = 0,
     fail    = 1,
-    queue_buffer_is_not_enough = 2,   /**< é˜Ÿåˆ—ç©ºé—´ä¸å¤Ÿ*/
-    queue_is_empty             = 3,   /**< é˜Ÿåˆ—ä¸ºç©º*/
+    queue_buffer_is_not_enough = 2,   /**< ¶ÓÁÐ¿Õ¼ä²»¹»*/
+    queue_is_empty             = 3,   /**< ¶ÓÁÐÎª¿Õ*/
 };
 
 enum
@@ -23,14 +23,14 @@ enum
 
 enum
 {
-    //httpå¤´: POST /51.game HTTP/1.1\r\nContent-Length:65535\r\n\r\n
-    http_head_length           = 49,       //httpå¤´çš„å›ºå®šé•¿åº¦
+    //httpÍ·: POST /51.game HTTP/1.1\r\nContent-Length:65535\r\n\r\n
+    http_head_length           = 49,       //httpÍ·µÄ¹Ì¶¨³¤¶È
 
     max_ip_address_length      = 30,       //
 
-    max_datetime_string_length = 32,       /**<æ—¥æœŸæ—¶é—´å­—ç¬¦ä¸²çš„æœ€å¤§é•¿åº¦ <*/
-    max_file_name_length       = 255,      /**<æ–‡ä»¶åæœ€å¤§é•¿åº¦<*/
-    max_file_path_length       = 255,      /**<è·¯å¾„çš„æœ€å¤§é•¿åº¦*/
+    max_datetime_string_length = 32,     /**<ÈÕÆÚÊ±¼ä×Ö·û´®µÄ×î´ó³¤¶È <*/
+    max_file_name_length       = 255,       /**<ÎÄ¼þÃû×î´ó³¤¶È<*/
+    max_file_path_length       = 255,       /**<Â·¾¶µÄ×î´ó³¤¶È*/
 };
 
 typedef struct ip_port_type
@@ -41,15 +41,15 @@ typedef struct ip_port_type
 
 enum
 {
-    max_player_name_length    = 32,         /**< æœ€å¤§ç”¨æˆ·åå­—é•¿åº¦*/
-    max_player_id_length      = 32,         /**< ç”¨æˆ·å­—ç¬¦ä¸²åž‹å¸å·çš„é•¿åº¦*/
+    max_player_name_length    = 32,         /**< ×î´óÓÃ»§Ãû×Ö³¤¶È*/
+    max_player_id_length      = 32,         /**< ÓÃ»§×Ö·û´®ÐÍÕÊºÅµÄ³¤¶È*/
 
-    max_face_version_length   = 32,         /* ç”¨æˆ·å¤´åƒç‰ˆæœ¬å·é•¿åº¦*/
-    max_face_url_length       = 96,         /* ç”¨æˆ·å¤´åƒçš„URLé•¿åº¦*/
-    max_user_zone_info_length = 40,         /* ç”¨æˆ·åœ°åŒºä¿¡æ¯é•¿åº¦*/
-    max_user_nick_name_length = 32,         /* ç”¨æˆ·æ˜µç§°çš„é•¿åº¦*/
+    max_face_version_length   = 32,         /* ÓÃ»§Í·Ïñ°æ±¾ºÅ³¤¶È*/
+    max_face_url_length       = 96,         /* ÓÃ»§Í·ÏñµÄURL³¤¶È*/
+    max_user_zone_info_length = 40,         /* ÓÃ»§µØÇøÐÅÏ¢³¤¶È*/
+    max_user_nick_name_length = 32,         /* ÓÃ»§êÇ³ÆµÄ³¤¶È*/
 
-    max_url_length            = 64,         /*URLåœ°å€çš„é•¿åº¦*/
+    max_url_length            = 64,         /*URLµØÖ·µÄ³¤¶È*/
 };
 
 void init_daemon(int8_t nochdir, int8_t noclose);
