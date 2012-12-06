@@ -1,4 +1,4 @@
-﻿#ifndef _COMMON_BASE_H_
+#ifndef _COMMON_BASE_H_
 #define _COMMON_BASE_H_
 
 #include "common_types.h"
