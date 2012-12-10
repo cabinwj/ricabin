@@ -1,6 +1,8 @@
 #include "scheduler.h"
 #include "coroutine.h"
 
+#include "common_log.h"
+
 list_head coro_scheduler::m_tasks_list_;
 int32_t coro_scheduler::m_coro_count_ = 0;
 int32_t coro_scheduler::m_active_coro_count_ = 0;

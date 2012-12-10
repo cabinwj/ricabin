@@ -1,50 +1,35 @@
-CC= gcc
-AR= ar
+include ../../makefile_inc
 
-ARFLAGS= rcs
-CCFLAGS= -g -Wall -fPIC -Wpointer-arith
+#CCFLAGS= $(CCFLAGS) -D__MULTI_THREAD__
 
-TARGET= $(DEBUG_TARGET)
+TARGET= $(TARGET_DIR)/liblzma.a
 
-DEBUG_TARGET= $(DEBUG_TARGET_DIR)/liblzma.a
-RELEASE_TARGET= $(RELEASE_TARGET_DIR)/liblzma.a
+INC_DIR= $(INC_LZMA_DIR)
+SRC_DIR= $(SRC_LZMA_DIR)
+OBJS_DIR= $(OBJS_LZMA_DIR)
 
-BASE_DIR= ${HOME}
-SERVER_DIR= $(BASE_DIR)/ricabin
-LZMA_DIR= $(SERVER_DIR)/utils/lzma
-INCLUDE_DIR= $(LZMA_DIR)/inc
-SOURCE_DIR= $(LZMA_DIR)/src
-OBJ_DIR= $(LZMA_DIR)/.objs
+INC= -I$(INC_LZMA_DIR)
 
-DEBUG_TARGET_DIR= $(SERVER_DIR)/staticlibc#/lib/debug
-RELEASE_TARGET_DIR= $(SERVER_DIR)/staticlibc#/lib/release
-
-INC= -I$(INCLUDE_DIR)
-
-VPATH= .:$(SERVER_DIR)
-CCSRC= $(wildcard $(SOURCE_DIR)/*.c)
-CCOBJS= $(patsubst %.c,$(OBJ_DIR)/%.o,$(notdir $(CCSRC)))
-
+CCSRC= $(wildcard $(SRC_DIR)/*.c)
+CCOBJS= $(patsubst %.c, $(OBJS_DIR)/%.o, $(notdir $(CCSRC)))
 
 all:
 	make clean && \
 	make $(TARGET)
 
 $(TARGET) : $(CCOBJS)
-	@if [ ! -e $(DEBUG_TARGET_DIR) ]; then \
-		mkdir -p $(DEBUG_TARGET_DIR); \
-	fi
-	@if [ ! -e $(RELEASE_TARGET_DIR) ]; then \
-		mkdir -p $(RELEASE_TARGET_DIR); \
+	@if [ ! -e $(TARGET_DIR) ]; then \
+		mkdir -p $(TARGET_DIR); \
 	fi
 	$(AR) $(ARFLAGS) $@ $?
 
-$(OBJ_DIR)/%.o : $(SOURCE_DIR)/%.c
-	@if [ ! -e $(OBJ_DIR) ]; then \
-		mkdir $(OBJ_DIR); \
+$(OBJS_DIR)/%.o : $(SRC_DIR)/%.c
+	@if [ ! -e $(OBJS_DIR) ]; then \
+		mkdir $(OBJS_DIR); \
 	fi
 	$(CC) $(CCFLAGS) $(INC) -c $< -o $@
 
 clean:
 	rm -f $(CCOBJS) $(TARGET)
+
 

@@ -1,51 +1,34 @@
-CXX= g++
-AR= ar
+include ../../makefile_inc
 
-ARFLAGS= rcs
-CPPFLAGS= -g -Wall -fPIC -Wpointer-arith -Wno-invalid-offsetof
+CXX_FLAGS= $(CXXFLAGS) -D__MULTI_THREAD__
 
-TARGET= $(DEBUG_TARGET)
+TARGET= $(TARGET_DIR)/libshare_common.a
 
-DEBUG_TARGET= $(DEBUG_TARGET_DIR)/libshare_common.a
-RELEASE_TARGET= $(RELEASE_TARGET_DIR)/libshare_common.a
+INC_DIR= $(INC_COMMON_DIR)
+SRC_DIR= $(SRC_COMMON_DIR)
+OBJS_DIR= $(OBJS_COMMON_DIR)
 
-BASE_DIR= ${HOME}
-SERVER_DIR= $(BASE_DIR)/ricabin
-COMMON_DIR= $(SERVER_DIR)/baselibc/share_common
-INCLUDE_DIR= $(COMMON_DIR)/inc
-SOURCE_DIR= $(COMMON_DIR)/src
-OBJ_DIR= $(COMMON_DIR)/.objs
+INC= -I$(INC_COMMON_DIR) -I$(INC_MYSQL_DIR)
 
-DEBUG_TARGET_DIR= $(SERVER_DIR)/staticlibc#/lib/debug
-RELEASE_TARGET_DIR= $(SERVER_DIR)/staticlibc#/lib/release
-
-INC= -I$(INCLUDE_DIR) \
-	-I/usr/local/mysql/include
-
-VPATH= .:$(SERVER_DIR)
-SRC= $(wildcard $(SOURCE_DIR)/*.cpp)
-OBJS= $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(notdir $(SRC)))
-
+CXXSRC= $(wildcard $(SRC_DIR)/*.cpp)
+CXXOBJS= $(patsubst %.cpp, $(OBJS_DIR)/%.o, $(notdir $(CXXSRC)))
 
 all:
 	make clean && \
 	make $(TARGET)
 
-$(TARGET) : $(OBJS)
-	@if [ ! -e $(DEBUG_TARGET_DIR) ]; then \
-		mkdir -p $(DEBUG_TARGET_DIR); \
-	fi
-	@if [ ! -e $(RELEASE_TARGET_DIR) ]; then \
-		mkdir -p $(RELEASE_TARGET_DIR); \
+$(TARGET) : $(CXXOBJS)
+	@if [ ! -e $(TARGET_DIR) ]; then \
+		mkdir -p $(TARGET_DIR); \
 	fi
 	$(AR) $(ARFLAGS) $@ $?
 
-$(OBJ_DIR)/%.o : $(SOURCE_DIR)/%.cpp
-	@if [ ! -e $(OBJ_DIR) ]; then \
-		mkdir $(OBJ_DIR); \
+$(OBJS_DIR)/%.o : $(SRC_DIR)/%.cpp
+	@if [ ! -e $(OBJS_DIR) ]; then \
+		mkdir $(OBJS_DIR); \
 	fi
-	$(CXX) $(CPPFLAGS) $(INC) -c $< -o $@
+	$(CXX) $(CXX_FLAGS) $(INC) -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(CXXOBJS) $(TARGET)
 

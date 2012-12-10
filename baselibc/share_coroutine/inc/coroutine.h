@@ -12,7 +12,6 @@ extern "C" {
 }
 
 #include "common_os.h"
-#include "common_log.h"
 #include "common_list.h"
 
 #include <list>

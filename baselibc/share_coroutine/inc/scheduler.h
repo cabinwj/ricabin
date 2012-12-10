@@ -12,7 +12,6 @@ extern "C" {
 #include "coro.h"
 }
 
-#include "common_log.h"
 #include "common_list.h"
 #include "coroutine.h"
 

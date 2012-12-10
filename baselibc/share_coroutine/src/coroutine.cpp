@@ -1,6 +1,8 @@
 #include "coroutine.h"
 #include "scheduler.h"
 
+#include "common_log.h"
+
 coro_context* coro_pool::allocate(size_t size)
 {
     std::map<size_t, std::list<coro_context*> >::iterator it = m_coro_pool_.find(size);

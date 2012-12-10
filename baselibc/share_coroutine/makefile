@@ -1,60 +1,44 @@
-CXX= g++
-CC= gcc
-AR= ar
+include ../../makefile_inc
 
-ARFLAGS= rcs
-CPPFLAGS= -g -Wall -fPIC -Wpointer-arith -Wno-invalid-offsetof -D__MULTI_THREAD__ -DCORO_ASM
-CCFLAGS= -g -Wall -fPIC -Wpointer-arith -D__MULTI_THREAD__ -DCORO_ASM
+CXX_FLAGS= $(CXXFLAGS) -D__MULTI_THREAD__ -DCORO_ASM
+CC_FLAGS= $(CCFLAGS) -D__MULTI_THREAD__ -DCORO_ASM
 
-TARGET= $(DEBUG_TARGET)
+TARGET= $(TARGET_DIR)/libshare_coroutine.a
 
-DEBUG_TARGET= $(DEBUG_TARGET_DIR)/libshare_coroutine.a
-RELEASE_TARGET= $(RELEASE_TARGET_DIR)/libshare_coroutine.a
+INC_DIR= $(INC_COROUTINE_DIR)
+SRC_DIR= $(SRC_COROUTINE_DIR)
+OBJS_DIR= $(OBJS_COROUTINE_DIR)
 
-BASE_DIR= ${HOME}
-SERVER_DIR= $(BASE_DIR)/ricabin
-COMMON_DIR= $(SERVER_DIR)/baselibc/share_coroutine
-INCLUDE_COMMON_DIR= $(SERVER_DIR)/baselibc/share_common/inc
-INCLUDE_DIR= $(COMMON_DIR)/inc
-SOURCE_DIR= $(COMMON_DIR)/src
-OBJ_DIR= $(COMMON_DIR)/.objs
+INC= -I$(INC_COROUTINE_DIR) -I$(INC_COMMON_DIR)
 
-DEBUG_TARGET_DIR= $(SERVER_DIR)/staticlibc#/lib/debug
-RELEASE_TARGET_DIR= $(SERVER_DIR)/staticlibc#/lib/release
 
-INC= -I$(INCLUDE_DIR) -I$(INCLUDE_COMMON_DIR)
-VPATH= .:$(SERVER_DIR)
+CXXSRC= $(wildcard $(SRC_DIR)/*.cpp)
+CXXOBJS= $(patsubst %.cpp, $(OBJS_DIR)/%.o, $(notdir $(CXXSRC)))
 
-CXXSRC= $(wildcard $(SOURCE_DIR)/*.cpp)
-CXXOBJS= $(patsubst %.cpp,$(OBJ_DIR)/%.o,$(notdir $(CXXSRC)))
-
-CCSRC= $(wildcard $(SOURCE_DIR)/*.c)
-CCOBJS= $(patsubst %.c,$(OBJ_DIR)/%.o,$(notdir $(CCSRC)))
+CCSRC= $(wildcard $(SRC_DIR)/*.c)
+CCOBJS= $(patsubst %.c, $(OBJS_DIR)/%.o, $(notdir $(CCSRC)))
 
 all:
 	make clean && \
 	make $(TARGET)
 
 $(TARGET) : $(CCOBJS) $(CXXOBJS)
-	@if [ ! -e $(DEBUG_TARGET_DIR) ]; then \
-		mkdir -p $(DEBUG_TARGET_DIR); \
-	fi
-	@if [ ! -e $(RELEASE_TARGET_DIR) ]; then \
-		mkdir -p $(RELEASE_TARGET_DIR); \
+	@if [ ! -e $(TARGET_DIR) ]; then \
+		mkdir -p $(TARGET_DIR); \
 	fi
 	$(AR) $(ARFLAGS) $@ $?
 
-$(OBJ_DIR)/%.o : $(SOURCE_DIR)/%.cpp
-	@if [ ! -e $(OBJ_DIR) ]; then \
-		mkdir $(OBJ_DIR); \
+$(OBJS_DIR)/%.o : $(SRC_DIR)/%.cpp
+	@if [ ! -e $(OBJS_DIR) ]; then \
+		mkdir $(OBJS_DIR); \
 	fi
-	$(CXX) $(INC) $(CPPFLAGS) -c $< -o $@
+	$(CXX) $(INC) $(CXX_FLAGS) -c $< -o $@
 
-$(OBJ_DIR)/%.o : $(SOURCE_DIR)/%.c
-	@if [ ! -e $(OBJ_DIR) ]; then \
-		mkdir $(OBJ_DIR); \
+$(OBJS_DIR)/%.o : $(SRC_DIR)/%.c
+	@if [ ! -e $(OBJS_DIR) ]; then \
+		mkdir $(OBJS_DIR); \
 	fi
-	$(CC) $(INC) $(CCFLAGS) -c $< -o $@
+	$(CC) $(CC_FLAGS) $(INC) -c $< -o $@
 
 clean:
 	rm -f $(CCOBJS) $(CXXOBJS) $(TARGET)
