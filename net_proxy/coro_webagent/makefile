@@ -22,7 +22,7 @@ CXXOBJS= $(patsubst %.cpp, $(OBJS_DIR)/%.o, $(notdir $(CXXSRC)))
 BIN_CPP= $(wildcard *.cpp)
 BIN_FILE= $(BIN_CPP:%.cpp=%)
 
-ALL_LIB= -L$(TARGET) \
+ALL_LIB= -L$(TARGET_DIR) -lcoro_webagent \
          -L$(TARGET_DIR) -lcoro_actor \
          -L$(TARGET_DIR) -lshare_coroutine \
          -L$(TARGET_DIR) -lshare_socket \
