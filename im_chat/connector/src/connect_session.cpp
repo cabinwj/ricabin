@@ -57,7 +57,6 @@ void connect_session::on_ne_data(net_event& ne)
     inpkg.offset_head(sizeof(net_hdr_t));
     inpkg.get_head(net_hdr);
 
-    xml_configure& condxml = GET_XML_CONFIG_INSTANCE();
     // 要判断前端是否断了连接。
     client_session* client = (client_session*)session_list::get_net_node_by_net_id(net_hdr.m_client_net_id_);
     if (NULL == client)
@@ -71,43 +70,8 @@ void connect_session::on_ne_data(net_event& ne)
             return;
         }
 
-        // 对于普通的中转包，需要通知service 来清理数据，形成内部消息
-        net_hdr_t xnet_hdr;
-        xnet_hdr.m_packet_len_ = sizeof(net_hdr_t);
-        xnet_hdr.m_message_id_ = S_NOTIFY_EACH_OTHER;
-        xnet_hdr.m_message_type_ = message_common;
-        xnet_hdr.m_request_sequence_ = 0;
-        xnet_hdr.m_control_type_ = message_disconnect_notify;
-        xnet_hdr.m_client_net_id_ = 0;
-        xnet_hdr.m_client_uin_ = net_hdr.m_client_uin_;
-        xnet_hdr.m_from_uin_ = net_hdr.m_to_uin_;
-        xnet_hdr.m_to_uin_ = net_hdr.m_from_uin_;  // 此处要给定目的类型或是唯一标识
-
-        // 分配新的 请求包
-        net_package* np = event_handler::m_net_pkg_pool_->Create();
-        if ( NULL == np )
-        {
-            LOG(ERROR)("assert: connect_session::on_ne_data() error. new np is NULL");
-            return;
-        }
-
-        np->allocator_data_block(new_allocator::Instance(), xnet_hdr.m_packet_len_);
-
-        // 组包 新的请求包
-        binary_output_packet<true> outpkg(np->get_data(), np->capacity());
-        outpkg.offset_head(sizeof(net_hdr_t));
-        outpkg.set_head(xnet_hdr);
-
-        np->offset_cursor(xnet_hdr.m_packet_len_);
-
-        // 原通道返回
-        LOG(INFO)("connect_session::on_net_data() send_package error, client_uin=%d,　net_id=%d", net_hdr.m_client_uin_, m_net_id_);
-        int rc = net_manager::Instance()->send_package(m_net_id_, np);
-        if (0 != rc)
-        {
-            np->Destroy();
-        }
-
+        client_session::inner_message_notify(net_hdr.m_client_net_id_, net_hdr.m_client_uin_,
+                                             net_hdr.m_to_uin_, net_hdr.m_from_uin_, m_net_id_);
         return;
     }
 
@@ -121,43 +85,11 @@ void connect_session::on_ne_data(net_event& ne)
         if (client->m_remote_uin_ != net_hdr.m_client_uin_)
         {
             LOG(WARN)("connect_session::on_net_data() net_hdr.m_client_uin_(%u) has be reuse. now clients uin(%u)", net_hdr.m_client_uin_, client->m_remote_uin_);
-
-            // 形成内部消息
-            net_hdr_t xnet_hdr;
-            xnet_hdr.m_packet_len_ = sizeof(net_hdr_t);
-            xnet_hdr.m_message_id_ = S_NOTIFY_EACH_OTHER;
-            xnet_hdr.m_message_type_ = message_common;
-            xnet_hdr.m_request_sequence_ = 0;
-            xnet_hdr.m_control_type_ = message_disconnect_notify;
-            xnet_hdr.m_client_net_id_ = net_hdr.m_client_net_id_;
-            xnet_hdr.m_client_uin_ = net_hdr.m_client_uin_;
-            xnet_hdr.m_from_uin_ = condxml.m_net_xml_[condxml.m_use_index_].m_common_.m_entity_id_;
-            xnet_hdr.m_to_uin_ = condxml.get_server_entity_id(net_hdr.m_client_uin_, pf_entity_logic);  // 此处要给定目的类型或是唯一标识
-
-            // 分配新的 请求包
-            net_package* np = event_handler::m_net_pkg_pool_->Create();
-            if ( NULL == np )
-            {
-                LOG(ERROR)("assert: connect_session::on_ne_data() error. new np is NULL");
-                return;
-            }
-
-            np->allocator_data_block(new_allocator::Instance(), xnet_hdr.m_packet_len_);
-
-            // 组包 新的请求包
-            binary_output_packet<true> outpkg(np->get_data(), np->capacity());
-            outpkg.offset_head(sizeof(net_hdr_t));
-            outpkg.set_head(xnet_hdr);
-
-            np->offset_cursor(xnet_hdr.m_packet_len_);
-
-            LOG(INFO)("connect_session::on_net_data() send_package, client_uin=%d,net_id=%d", net_hdr.m_client_uin_, m_net_id_);
-            int rc = net_manager::Instance()->send_package(m_net_id_, np);
-            if (0 != rc)
-            {
-                np->Destroy();
-            }
-
+            xml_configure& condxml = GET_XML_CONFIG_INSTANCE();
+            client_session::inner_message_notify(net_hdr.m_client_net_id_, net_hdr.m_client_uin_,
+                                                 condxml.m_net_xml_[condxml.m_use_index_].m_common_.m_entity_id_,
+                                                 condxml.get_server_entity_id(net_hdr.m_client_uin_, pf_entity_logic),
+                                                 m_net_id_);
             return;
         }
 
@@ -221,7 +153,6 @@ void connect_session::on_ne_data(net_event& ne)
     case message_force_close_connect: {
 
         LOG(INFO)("connect_session::on_ne_data() service request 2 close client...");
-
         client->clear_current_net(close_reason_service);
 
     } break;

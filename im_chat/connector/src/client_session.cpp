@@ -212,21 +212,46 @@ void client_session::on_ne_data(net_event& ne)
     binary_output_packet<true> outpkg(np->get_data(), np->capacity());
     outpkg.offset_head(sizeof(net_hdr_t));
     outpkg.set_head(net_hdr);
+    outpkg.write(inpkg.get_data() + crypt_code_offset + 4, out_length - 4);
 
     np->offset_cursor(decrypt_packet_len);
+
+    LOG(INFO)("client_session::on_ne_data(), client_uin=%d,message_id=%d", m_conn_hdr_.m_client_uin_, m_conn_hdr_.m_message_id_);
 
     // 判断message_id的消息范围合法性？
     switch (net_hdr.m_message_id_)
     {
-    case C_KEEPALIVE:
+    case C_LOGOUT: {
+        rc = net_manager::Instance()->send_package(conn->m_net_id_, np);
+        if (0 != rc)
+        {
+            np->Destroy();
+        }
+
+        // 标识在conn当前连接上，服务进程已经发送了数据
+        conn->m_is_trans_.set(is_trans_sended_data);
+
+        // 整理当前通道上未经client确认的数据。
+
+        // 释放当前通道
+        release_tunnel(m_net_id_);
+    } break;
+    case C_CHAT_MSG_ACK:
+    case C_RECV_ADD_FRIEND_INVITE_ACK: {
+        // 整理当前通道上未经client确认的数据。
+    } break;
     case C_LOGIN:
+    case C_KEEPALIVE: {
+
+    } break;
+
+        // just head
     case C_LOGIN_OVER:
-    case C_LOGOUT:
-    case C_FORCE_LOGOUT:
-    case C_MODIFY_USER_INFO:
-    case C_GET_FRIEND_STATUS:
     case C_GET_FRIEND_GROUP:
     case C_GET_FRIEND_LIST:
+        // head + body
+    case C_MODIFY_USER_INFO:
+    case C_GET_FRIEND_STATUS:
     case C_ADD_FRIEND_GROUP:
     case C_REMOVE_FRIEND_GROUP:
     case C_ADD_FRIEND:
@@ -239,13 +264,10 @@ void client_session::on_ne_data(net_event& ne)
     case C_GET_OFFLINE_MSG:
     case C_REMOVE_OFFLINE_MSG:
     case C_CHAT_MSG:
-    case C_CHAT_MSG_ACK:
-    case C_FRIEND_STATUS_CHANGE_NOTICE:
-    case C_FRIEND_RELATION_CHANGE_NOTICE:
     case C_P2P_TRANSPARENT:
-    case C_PICTURE_CHANGE_NOTICE:
-    case C_PROFILE_CHANGE_NOTICE:
-        LOG(INFO)("client_session::on_ne_data() send_package, m_signature_.m_client_uin_=%d,client_uin=%d,", m_signature_.m_client_uin_, m_conn_hdr_.m_client_uin_);
+    case C_CHANGE_STATUS:
+    case C_CHANGE_PICTURE:
+    case C_CHANGE_PROFILE: {
         rc = net_manager::Instance()->send_package(conn->m_net_id_, np);
         if (0 != rc)
         {
@@ -255,7 +277,7 @@ void client_session::on_ne_data(net_event& ne)
         // 标识在conn当前连接上，服务进程已经发送了数据
         conn->m_is_trans_.set(is_trans_sended_data);
         
-        break;
+    } break;
     default:
         break;
     }
@@ -268,62 +290,62 @@ void client_session::on_ne_data(net_event& ne)
     return;
 }
 
+void client_session::inner_message_notify(uint32_t client_net_id, uint32_t client_uin,
+                                          uint32_t from_uin, uint32_t to_uin, uint32_t net_id)
+{
+    // 形成内部消息
+    net_hdr_t net_hdr;
+    net_hdr.m_packet_len_ = sizeof(net_hdr_t);
+    net_hdr.m_message_id_ = 0;
+    net_hdr.m_message_type_ = 0;
+    net_hdr.m_request_sequence_ = 0;
+    net_hdr.m_control_type_ = message_disconnect_notify;
+    net_hdr.m_client_net_id_ = client_net_id;
+    net_hdr.m_client_uin_ = client_uin;
+    net_hdr.m_from_uin_ = from_uin;
+    net_hdr.m_to_uin_ = to_uin;  // 此处要给定目的类型或是唯一标识
+
+    // 分配新的 请求包
+    net_package* np = event_handler::m_net_pkg_pool_->Create();
+    if ( NULL == np )
+    {
+        LOG(ERROR)("assert: client_session::inner_message_notify() error. new np is NULL");
+        return;
+    }
+
+    np->allocator_data_block(new_allocator::Instance(), net_hdr.m_packet_len_);
+
+    // 组包 新的请求包
+    binary_output_packet<true> outpkg(np->get_data(), np->capacity());
+    outpkg.offset_head(sizeof(net_hdr_t));
+    outpkg.set_head(net_hdr);
+
+    LOG(INFO)("client_session::inner_message_notify() send_package, client_uin=%d, remote_uin=%d,", client_uin, to_uin);
+    int rc = net_manager::Instance()->send_package(net_id, np);
+    if (0 != rc)
+    {
+        np->Destroy();
+    }
+}
 
 void client_session::clear_current_net(uint16_t close_reason)
 {
     LOG(INFO)("client_session::clear_current_net() client uin:%u net<%u:%u>, remote_addr<0x%08X:%d>", m_remote_uin_, m_listen_net_id_, m_net_id_, m_remote_addr_.get_net_ip(), m_remote_addr_.get_net_port());
-
-    xml_configure& condxml = GET_XML_CONFIG_INSTANCE();
 
     // 非正常的断开连接，则通知业务进程连接中断
     if ( ( close_reason_service != close_reason) 
         && (close_reason_invalid_connect != close_reason)
         && (close_reason_invalid_signature != close_reason) )
     {
-        // 形成内部消息
-        net_hdr_t net_hdr;
-        net_hdr.m_packet_len_ = sizeof(net_hdr_t);
-        net_hdr.m_message_id_ = S_NOTIFY_EACH_OTHER;
-        net_hdr.m_message_type_ = message_common;
-        net_hdr.m_request_sequence_ = 0;
-        net_hdr.m_control_type_ = message_disconnect_notify;
-        net_hdr.m_client_net_id_ = m_net_id_;
-        net_hdr.m_client_uin_ = m_remote_uin_;
-        net_hdr.m_from_uin_ = keep_alive::m_local_uin_; // condxml.m_net_xml_[condxml.m_use_index_].m_common_.m_entity_id_;
-        net_hdr.m_to_uin_ = condxml.get_server_entity_id(m_remote_uin_, pf_entity_logic);  // 此处要给定目的类型或是唯一标识
-
+        xml_configure& condxml = GET_XML_CONFIG_INSTANCE();
         uint32_t entity_id = condxml.get_server_entity_id(m_remote_uin_, pf_entity_router); 
         connect_session* conn = (connect_session*)session_list::get_net_node_by_uin(entity_id, is_trans_connect_out); 
-        if (NULL == conn)
+        if (NULL != conn)
         {
-            LOG(ERROR)("client_session::clear_current_net() get_net_node_by_uin error, m_signature_.m_client_uin_=%d,client_uin=%d,", m_signature_.m_client_uin_, m_remote_uin_);
-            release_tunnel(m_net_id_);
-            return;
-        }
-
-        // 分配新的 请求包
-        net_package* np = event_handler::m_net_pkg_pool_->Create();
-        if ( NULL == np )
-        {
-            LOG(ERROR)("assert: client_session::on_ne_data() error. new np is NULL");
-            release_tunnel(m_net_id_);
-            return;
-        }
-
-        np->allocator_data_block(new_allocator::Instance(), net_hdr.m_packet_len_);
-
-        // 组包 新的请求包
-        binary_output_packet<true> outpkg(np->get_data(), np->capacity());
-        outpkg.offset_head(sizeof(net_hdr_t));
-        outpkg.set_head(net_hdr);
-
-        LOG(INFO)("client_session::clear_current_net() send_package, m_signature_.m_client_uin_=%d,client_uin=%d,", m_signature_.m_client_uin_, m_remote_uin_);
-        int rc = net_manager::Instance()->send_package(conn->m_net_id_, np);
-        if (0 != rc)
-        {
-            np->Destroy();
-            release_tunnel(m_net_id_);
-            return;
+            LOG(INFO)("client_session::clear_current_net() inner_message_notify, m_signature_.m_client_uin_=%d,client_uin=%d", m_signature_.m_client_uin_, m_remote_uin_);
+            client_session::inner_message_notify(m_net_id_, m_remote_uin_, keep_alive::m_local_uin_,
+                                                 condxml.get_server_entity_id(m_remote_uin_, pf_entity_logic),
+                                                 conn->m_net_id_);
         }
     }
 
