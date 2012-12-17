@@ -14,11 +14,15 @@
     <ClInclude Include="inc\accept_session.h" />
     <ClInclude Include="inc\hash_list.h" />
     <ClInclude Include="inc\net_event_handler.h" />
+    <ClInclude Include="inc\process_data.h" />
     <ClInclude Include="inc\status_frame.h" />
     <ClInclude Include="inc\user_list.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\get_user_status.cpp" />
     <ClCompile Include="src\hash_list.cpp" />
+    <ClCompile Include="src\process_data.cpp" />
+    <ClCompile Include="src\report_user_status.cpp" />
     <ClCompile Include="src\user_list.cpp" />
     <ClCompile Include="status.cpp" />
     <ClCompile Include="src\accept_session.cpp" />

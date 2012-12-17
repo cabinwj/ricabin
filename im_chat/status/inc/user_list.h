@@ -12,9 +12,12 @@ public:
 public:
     uint16_t m_online_status_;
     uint32_t m_client_net_id_;
+    uint32_t m_client_ip_;
+    uint32_t m_connector_id_;
+    uint32_t m_logic_id_;
     time_t m_login_time_;
-    time_t m_logout_time_;
-    time_t m_last_recv_alive_time_;
+    time_t m_last_logout_time_;
+    time_t m_last_recv_status_time_;
 
 public:
     static list_head m_user_list_head_;

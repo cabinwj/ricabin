@@ -11,6 +11,8 @@
 #include "session_list.h"
 #include "xml_configure.h"
 
+#include "process_data.h"
+
 #ifdef WIN32
 #include <windows.h>
 #pragma comment(lib, "Ws2_32.lib")
@@ -59,44 +61,21 @@ void accept_session::on_ne_data(net_event& ne)
         return;
     }
 
+    int rc = 0;
     // 判断协议，处理逻辑，此处目前只有获得用户状态和用户提交状态。
     // 判断message_id的消息范围合法性？
     switch (net_hdr.m_message_id_)
     {
-    case IMD_STATUSD_GET_USER_STATUS:
     case IMD_STATUSD_REPORT_USER_STATUS: {
-        uint32_t dest_id = net_hdr.m_to_uin_;
-        net_hdr.m_to_uin_ = net_hdr.m_from_uin_;
-        net_hdr.m_from_uin_ = dest_id;
-
-        uint16_t count = 0;
-        inpkg >> count;
-        for (uint16_t i = 0; i < count; i++)
-        {
-
-        }
-
-        binary_output_packet<true> outpkg(ne.m_net_package_->get_data(), ne.m_net_package_->capacity());
-        outpkg.offset_head(sizeof(net_hdr_t));
-        outpkg.set_head(net_hdr);
-
-        ne.m_net_package_->offset_cursor(net_hdr.m_packet_len_);
-
-        // 原路返回。
-        LOG(INFO)("accept_session::on_ne_data() send_package, client_uin=%d,from_uin=%d,to_uin=%d", net_hdr.m_client_uin_, net_hdr.m_from_uin_, net_hdr.m_to_uin_);
-        int rc = net_manager::Instance()->send_package(m_net_id_, ne.m_net_package_);
-        if (0 == rc)
-        {
-            // 避免上层net_event析构时把package也析构（此时的包可能还有队列中，没有发送出去。）
-            ne.m_net_package_ = NULL;
-        }
-
-        // 标识在conn当前连接上，服务进程已经发送了数据
-        m_is_trans_.set(is_trans_sended_data);
-
+        report_user_status obj(m_net_id_, ne.m_net_package_, net_hdr);
+        rc = obj.execute();
+    } break;
+    case IMD_STATUSD_GET_USER_STATUS: {
+        get_user_status obj(m_net_id_, ne.m_net_package_, net_hdr);
+        rc = obj.execute();
     } break;
     default:
-        LOG(ERROR)("accept_session::on_ne_data() error, unknown");
+        LOG(WARN)("accept_session::on_net_data() Unknown message id. client_uin=%d,from_uin=%d,to_uin=%d", net_hdr.m_client_uin_, net_hdr.m_from_uin_, net_hdr.m_to_uin_);
         break;
     }
 
