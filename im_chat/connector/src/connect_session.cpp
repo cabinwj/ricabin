@@ -57,16 +57,18 @@ void connect_session::on_ne_data(net_event& ne)
     inpkg.offset_head(sizeof(net_hdr_t));
     inpkg.get_head(net_hdr);
 
+    LOG(INFO)("connect_session::on_ne_data() client_uin=%d, message_id=%d, control_type=%d", net_hdr.m_client_uin_, net_hdr.m_message_id_, net_hdr.m_control_type_);
+
     // 要判断前端是否断了连接。
     client_session* client = (client_session*)session_list::get_net_node_by_net_id(net_hdr.m_client_net_id_);
     if (NULL == client)
     {
-        LOG(WARN)("connect_session::on_net_data() get_net_node_by_net_id() error. client_uin=%u, net=%u", net_hdr.m_client_uin_, net_hdr.m_client_net_id_);
+        LOG(WARN)("connect_session::on_net_data() warn. get client by net_id is NULL.");
 
         //若不需要通知后台关闭client的连接，则直接返回
         if (net_hdr.m_control_type_ == message_force_close_connect)
         {
-            LOG(WARN)("connect_session::on_net_data() froce close connect. client_uin=%u, net=%u", net_hdr.m_client_uin_, net_hdr.m_client_net_id_);
+            LOG(WARN)("connect_session::on_net_data() froce close connect.");
             return;
         }
 
@@ -84,7 +86,7 @@ void connect_session::on_ne_data(net_event& ne)
         // 防止net_id失效或已被复用
         if (client->m_remote_uin_ != net_hdr.m_client_uin_)
         {
-            LOG(WARN)("connect_session::on_net_data() net_hdr.m_client_uin_(%u) has be reuse. now clients uin(%u)", net_hdr.m_client_uin_, client->m_remote_uin_);
+            LOG(WARN)("connect_session::on_net_data() warn. net has be reuse. now clients uin(%u).", client->m_remote_uin_);
             xml_configure& condxml = GET_XML_CONFIG_INSTANCE();
             client_session::inner_message_notify(net_hdr.m_client_net_id_, net_hdr.m_client_uin_,
                                                  condxml.m_net_xml_[condxml.m_use_index_].m_common_.m_entity_id_,
@@ -106,7 +108,7 @@ void connect_session::on_ne_data(net_event& ne)
                                 (net_hdr.m_packet_len_ - sizeof(net_hdr_t) + 4), (code_buffer), out_length);
         if (0 == rc)
         {
-            LOG(ERROR)("connect_session::on_ne_data() encrypt_buffer error, client_uin=%d,from_uin=%d,to_uin=%d", net_hdr.m_client_uin_, net_hdr.m_from_uin_, net_hdr.m_to_uin_);
+            LOG(ERROR)("connect_session::on_ne_data() error. can not encrypt buffer.");
             return;
         }
 
@@ -137,7 +139,7 @@ void connect_session::on_ne_data(net_event& ne)
 
         np->offset_cursor(client->m_conn_hdr_.m_packet_len_);
 
-        LOG(INFO)("connect_session::on_ne_data() send_package, client_uin=%d,from_uin=%d,to_uin=%d", net_hdr.m_client_uin_, net_hdr.m_from_uin_, net_hdr.m_to_uin_);
+        LOG(INFO)("connect_session::on_ne_data() send_package.");
         rc = net_manager::Instance()->send_package(client->m_net_id_, np);
         if (0 != rc)
         {
@@ -152,13 +154,13 @@ void connect_session::on_ne_data(net_event& ne)
     	// 若service进程主动要求connector server关闭连接，则不用通知service 进行
     case message_force_close_connect: {
 
-        LOG(INFO)("connect_session::on_ne_data() service request 2 close client...");
+        LOG(INFO)("connect_session::on_ne_data() service request to close client.");
         client->clear_current_net(close_reason_service);
 
     } break;
 
     default:
-        LOG(WARN)("connect_session::on_ne_data() send invalid package 2.. so ignore(discard) it!");
+        LOG(WARN)("connect_session::on_ne_data() warn. unknow message_id and ignore(discard) it.");
         break;
     }
 

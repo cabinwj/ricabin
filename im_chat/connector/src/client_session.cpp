@@ -58,21 +58,18 @@ void client_session::on_ne_data(net_event& ne)
 
     binary_input_packet<true> inpkg(ne.m_net_package_->get_data(), ne.m_net_package_->size());
 
-    //inpkg.offset_head(sizeof(proto_hdr_t));
-    //inpkg.get_head(m_conn_hdr_);
-
     // 第一个字段(packet_len字段) 第二个字段(client_uin字段) 第三个字段(option_len: option长度的字段)
     inpkg >> m_conn_hdr_.m_packet_len_ >> m_conn_hdr_.m_client_uin_ >> m_conn_hdr_.m_option_len_;
     // 验证数据包长
     if (inpkg.size() != m_conn_hdr_.m_packet_len_)
     {
-        LOG(ERROR)("client_session::on_net_data() packet_len is invalue");
+        LOG(ERROR)("client_session::on_net_data() error. packet_len is invalue.");
         return;
     }
 
     if ((m_conn_hdr_.m_option_len_ < 0) || (m_conn_hdr_.m_option_len_ > max_option_length))
     {
-        LOG(ERROR)("client_session::on_ne_data() option length is invalue");
+        LOG(ERROR)("client_session::on_ne_data() error. option_len is invalue.");
         if (is_recved_data) { clear_current_net(close_reason_data_error); } //需要上报Service
         else { clear_current_net(close_reason_invalid_signature); }            
         return;
@@ -91,7 +88,7 @@ void client_session::on_ne_data(net_event& ne)
     // 注：须对非加密部分的偏移进行检查
     if (crypt_code_offset <= 0 || crypt_code_offset >= inpkg.size()) //疑似攻击 断线？
     {
-        LOG(ERROR)("client_session::on_ne_data() crypt_code_offset is invalue.");
+        LOG(ERROR)("client_session::on_ne_data() error. crypt_code_offset is invalue.");
         if (is_recved_data) { clear_current_net(close_reason_data_error); } //需要上报Service
         else { clear_current_net(close_reason_invalid_signature); } 
         return;
@@ -105,7 +102,7 @@ void client_session::on_ne_data(net_event& ne)
 
         if (0 == m_conn_hdr_.m_option_len_)
         {
-            LOG(ERROR)("client_session::on_ne_data() recv first package but option length is 0");
+            LOG(ERROR)("client_session::on_ne_data() error. the first package option_len is 0.");
             clear_current_net(close_reason_invalid_signature);                        
             return;
         }
@@ -113,7 +110,7 @@ void client_session::on_ne_data(net_event& ne)
         // 解密出玩家的signature
         if (0 != decrypt_signature(m_conn_hdr_.m_option_, m_conn_hdr_.m_option_len_, m_signature_))
         {
-            LOG(ERROR)("client_session::on_ne_data() decrypt signature is invalue.");
+            LOG(ERROR)("client_session::on_ne_data() error. can not decrypt signature.");
             clear_current_net(close_reason_invalid_signature); 
             return;
         }
@@ -121,7 +118,7 @@ void client_session::on_ne_data(net_event& ne)
         // 验证玩家的UIN是否与签名中的UIN一致性
         if (m_signature_.m_client_uin_ != m_conn_hdr_.m_client_uin_)
         {
-            LOG(ERROR)("client_session::on_ne_data() client uin error, m_signature_.m_client_uin_=%d,client_uin=%d", m_signature_.m_client_uin_, m_conn_hdr_.m_client_uin_);
+            LOG(ERROR)("client_session::on_ne_data() error. m_signature_.m_client_uin_(%d) != client_uin(%d)", m_signature_.m_client_uin_, m_conn_hdr_.m_client_uin_);
             clear_current_net(close_reason_invalid_signature); 
             return;
         }
@@ -133,8 +130,8 @@ void client_session::on_ne_data(net_event& ne)
         time_t now = time(NULL);
         if (now - (time_t)m_signature_.m_timestamp_ >= max_signature_valid_period)
         {
-            LOG(ERROR)("client_session::on_ne_data() the signature of client uin[%d] was expired! so discarded package!", m_conn_hdr_.m_client_uin_);
-            clear_current_net(close_reason_invalid_signature); 
+            LOG(ERROR)("client_session::on_ne_data() error. the signature of client_uin(%d) was expired.", m_conn_hdr_.m_client_uin_);
+            clear_current_net(close_reason_invalid_signature);
             return;
         }
 
@@ -146,13 +143,15 @@ void client_session::on_ne_data(net_event& ne)
         // 验证玩家的UIN是否与签名中的UIN一致性
         if (m_signature_.m_client_uin_ != m_conn_hdr_.m_client_uin_)
         {
-            LOG(ERROR)("client_session::on_ne_data() client uin error, m_signature_.m_client_uin_=%d,client_uin=%d. so discarded package!", m_signature_.m_client_uin_, m_conn_hdr_.m_client_uin_);
+            LOG(ERROR)("client_session::on_ne_data() error. m_signature_.m_client_uin_(%d) != client_uin(%d)", m_signature_.m_client_uin_, m_conn_hdr_.m_client_uin_);
             return;
         }
     }
 
     // 设置已经从peer收到数据的时间了
-    m_last_recv_timestamp_ = (uint32_t)time(NULL); 
+    m_last_recv_timestamp_ = (uint32_t)time(NULL);
+
+    LOG(INFO)("client_session::on_ne_data() m_signature_.m_client_uin_=%d", m_signature_.m_client_uin_);
 
     // 接下来处理CS协议部分。
     // 用session key来解密
@@ -164,7 +163,7 @@ void client_session::on_ne_data(net_event& ne)
                             out_length);
     if (0 == rc)
     {
-        LOG(ERROR)("client_session::on_ne_data() decry_buffer error, m_signature_.m_client_uin_=%d,client_uin=%d,", m_signature_.m_client_uin_, m_conn_hdr_.m_client_uin_);
+        LOG(ERROR)("client_session::on_ne_data() error. can not decrypt buffer.");
         if (is_recved_data) { clear_current_net(close_reason_data_error); } //需要上报Service
         else { clear_current_net(close_reason_invalid_signature); } 
         return;
@@ -179,7 +178,7 @@ void client_session::on_ne_data(net_event& ne)
     connect_session* conn = (connect_session*)session_list::get_net_node_by_uin(ent_id, is_trans_connect_out); 
     if (NULL == conn)
     {
-        LOG(ERROR)("client_session::on_ne_data() get_net_node_by_uin error, m_signature_.m_client_uin_=%d,client_uin=%d,", m_signature_.m_client_uin_, m_conn_hdr_.m_client_uin_);
+        LOG(ERROR)("assert: client_session::on_ne_data() error. get conn by uin is NULL.");
         return;
     }
 
@@ -216,7 +215,7 @@ void client_session::on_ne_data(net_event& ne)
 
     np->offset_cursor(decrypt_packet_len);
 
-    LOG(INFO)("client_session::on_ne_data(), client_uin=%d,message_id=%d", m_conn_hdr_.m_client_uin_, m_conn_hdr_.m_message_id_);
+    LOG(INFO)("client_session::on_ne_data() client_uin=%d, message_id=%d, request_sequence=%d", m_conn_hdr_.m_client_uin_, m_conn_hdr_.m_message_id_, m_conn_hdr_.m_request_sequence_);
 
     // 判断message_id的消息范围合法性？
     switch (net_hdr.m_message_id_)
@@ -320,7 +319,7 @@ void client_session::inner_message_notify(uint32_t client_net_id, uint32_t clien
     outpkg.offset_head(sizeof(net_hdr_t));
     outpkg.set_head(net_hdr);
 
-    LOG(INFO)("client_session::inner_message_notify() send_package, client_uin=%d, remote_uin=%d,", client_uin, to_uin);
+    LOG(INFO)("client_session::inner_message_notify() send_package, client_uin=%d, from_uin=%d, to_uin=%d", client_uin, from_uin, to_uin);
     int rc = net_manager::Instance()->send_package(net_id, np);
     if (0 != rc)
     {
@@ -342,7 +341,7 @@ void client_session::clear_current_net(uint16_t close_reason)
         connect_session* conn = (connect_session*)session_list::get_net_node_by_uin(entity_id, is_trans_connect_out); 
         if (NULL != conn)
         {
-            LOG(INFO)("client_session::clear_current_net() inner_message_notify, m_signature_.m_client_uin_=%d,client_uin=%d", m_signature_.m_client_uin_, m_remote_uin_);
+            LOG(INFO)("client_session::clear_current_net() inner_message_notify.");
             client_session::inner_message_notify(m_net_id_, m_remote_uin_, keep_alive::m_local_uin_,
                                                  condxml.get_server_entity_id(m_remote_uin_, pf_entity_logic),
                                                  conn->m_net_id_);
