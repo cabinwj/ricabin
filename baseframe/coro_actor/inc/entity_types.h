@@ -186,7 +186,9 @@ typedef enum client_protocol_type
     C_GET_OFFLINE_MSG             = (uint16_t)1110,
     C_REMOVE_OFFLINE_MSG          = (uint16_t)1111,
 
-    C_CHANGE_STATUS                 = (uint16_t)1201,
+    C_CHANGE_STATUS               = (uint16_t)1201,
+    C_CHANGE_PICTURE              = (uint16_t)1202,
+    C_CHANGE_PROFILE              = (uint16_t)1203,
 
     C_CHAT_MSG                      = (uint16_t)1301,
     C_CHAT_MSG_ACK                  = (uint16_t)1302,
@@ -197,6 +199,7 @@ typedef enum client_protocol_type
     C_ADD_FRIEND                    = (uint16_t)1501,
     C_REFUSE_ADD_FRIEND             = (uint16_t)1502,
     C_AGREE_ADD_FRIEND              = (uint16_t)1503,
+    C_RECV_ADD_FRIEND_INVITE_ACK    = (uint16_t)1504,
 
     C_FRIEND_STATUS_CHANGE_NOTICE   = (uint16_t)1601,
     C_FRIEND_RELATION_CHANGE_NOTICE = (uint16_t)1602,
@@ -243,9 +246,6 @@ typedef enum server_protocol_type
     S_FRIEND_RELATION_CHANGE_NOTICE = (uint16_t)6602,
     S_PICTURE_CHANGE_NOTICE         = (uint16_t)6603,
     S_PROFILE_CHANGE_NOTICE         = (uint16_t)6604,
-
-    S_NOTIFY_EACH_OTHER             = (uint16_t)6701,
-
 
     // ss
     COND_IMD_ADD_OFFLINE_CHAT_MSG   = (uint16_t)10001,

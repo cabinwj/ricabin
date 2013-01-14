@@ -11,7 +11,7 @@ enum message_t
 {
     message_invalid                      = (uint16_t)0,
 
-    // 0x04-0x10为底层保留 
+    // 0x01-0x10为底层保留 
     message_alive                        = (uint16_t)0x01,
     message_async_syn                    = (uint16_t)0x02,
     message_async_ack                    = (uint16_t)0x03,
