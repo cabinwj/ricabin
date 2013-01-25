@@ -13,6 +13,7 @@
 #include <assert.h>
 
 #ifndef _MULTI_THREAD
+//! @一个空条件锁
 class condition_impl
 {
     friend class conditionc;

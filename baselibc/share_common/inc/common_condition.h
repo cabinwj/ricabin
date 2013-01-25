@@ -28,7 +28,7 @@
         cond.unlock(); // Win32平台，锁必须在后面释放
     </CODE>
  */
-//! @一个空条件锁
+
 class condition_impl;
 class conditionc
 {
