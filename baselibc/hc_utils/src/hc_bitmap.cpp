@@ -1,0 +1,1 @@
+#include "hc_bitmap.h"
