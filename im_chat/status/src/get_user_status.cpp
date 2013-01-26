@@ -5,7 +5,7 @@
 #include "event_handler.h"
 #include "net_manager.h"
 
-#include "common_log.h"
+#include "hc_log.h"
 #include <vector>
 
 

@@ -1,6 +1,6 @@
 #include "user_list.h"
 
-#include "common_log.h"
+#include "hc_log.h"
 
 
 uint32_t user_node::m_user_count_ = 0;

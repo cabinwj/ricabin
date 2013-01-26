@@ -2,8 +2,8 @@
 #define _CORO_HASH_H_
 
 #include "coroutine.h"
-#include "common_list.h"
-#include "common_types.h"
+#include "hc_list.h"
+#include "hc_types.h"
 
 typedef struct coro_list_type
 {

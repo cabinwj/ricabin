@@ -1,8 +1,8 @@
 #ifndef _PROTOCOL_H_
 #define _PROTOCOL_H_
 
-#include "common_types.h"
-#include "common_base.h"
+#include "hc_types.h"
+#include "hc_base.h"
 
 #include "net_event.h"
 

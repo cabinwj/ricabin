@@ -73,7 +73,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>share_common.lib;share_socket.lib;share_coroutine.lib;coro_actor.lib;tinyxml.lib;encrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>hc_utils.lib;hc_socket.lib;hc_coroutine.lib;coro_actor.lib;tinyxml.lib;encrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>encrypt.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>

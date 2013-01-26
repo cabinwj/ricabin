@@ -1,8 +1,8 @@
 #ifndef _CORO_KEEP_ALIVE_H_
 #define _CORO_KEEP_ALIVE_H_
 
-#include "common_types.h"
-#include "common_list.h"
+#include "hc_types.h"
+#include "hc_list.h"
 
 #include "protocol.h"
 

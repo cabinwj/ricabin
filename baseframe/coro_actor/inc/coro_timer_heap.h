@@ -1,7 +1,7 @@
 #ifndef _CORO_TIMER_HEAP_
 #define _CORO_TIMER_HEAP_
 
-#include "common_min_heap.h"
+#include "hc_min_heap.h"
 
 #include "coroutine.h"
 #include "scheduler.h"

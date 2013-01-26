@@ -1,9 +1,9 @@
 #ifndef _ENTITY_TYPES_H_
 #define _ENTITY_TYPES_H_
 
-#include "common_types.h"
-#include "common_bitmap.h"
-#include "common_binpacket.h"
+#include "hc_types.h"
+#include "hc_bitmap.h"
+#include "hc_binpacket.h"
 
 #include "protocol.h"
 

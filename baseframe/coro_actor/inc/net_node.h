@@ -1,8 +1,8 @@
 #ifndef _NET_NODE_H_
 #define _NET_NODE_H_
 
-#include "common_list.h"
-#include "common_bitmap.h"
+#include "hc_list.h"
+#include "hc_bitmap.h"
 
 #include "net_event.h"
 #include "address.h"

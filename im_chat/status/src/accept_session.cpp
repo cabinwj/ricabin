@@ -1,7 +1,7 @@
 #include "accept_session.h"
 
-#include "common_allocator.h"
-#include "common_binpacket.h"
+#include "hc_allocator.h"
+#include "hc_binpacket.h"
 
 #include "net_manager.h"
 #include "net_package.h"

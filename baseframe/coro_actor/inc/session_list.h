@@ -1,7 +1,7 @@
 #ifndef _SESSION_LIST_H_
 #define _SESSION_LIST_H_
 
-#include "common_list.h"
+#include "hc_list.h"
 
 #include "protocol.h"
 #include "net_node.h"

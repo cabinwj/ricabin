@@ -1,8 +1,8 @@
 #ifndef _STATUS_HASH_LIST_H_
 #define _STATUS_HASH_LIST_H_
 
-#include "common_base.h"
-#include "common_list.h"
+#include "hc_base.h"
+#include "hc_list.h"
 
 class hash_node
 {

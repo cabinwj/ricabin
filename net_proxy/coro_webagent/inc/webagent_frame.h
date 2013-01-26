@@ -1,7 +1,7 @@
 #ifndef _WEBAGENT_FRAME_H_
 #define _WEBAGENT_FRAME_H_
 
-#include "common_bitmap.h"
+#include "hc_bitmap.h"
 
 // ÅäÖÃÎÄ¼ş
 #ifdef WIN32

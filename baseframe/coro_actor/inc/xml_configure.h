@@ -1,9 +1,9 @@
 #ifndef _XML_CONFIGURE_H_
 #define _XML_CONFIGURE_H_
 
-#include "common_singleton.h"
-#include "common_types.h"
-#include "common_base.h"
+#include "hc_singleton.h"
+#include "hc_types.h"
+#include "hc_base.h"
 
 #include "address.h"
 #include "tinyxml.h"

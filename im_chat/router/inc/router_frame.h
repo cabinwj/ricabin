@@ -1,7 +1,7 @@
 #ifndef _ROUTER_FRAME_H_
 #define _ROUTER_FRAME_H_
 
-#include "common_bitmap.h"
+#include "hc_bitmap.h"
 
 
 // ÅäÖÃÎÄ¼ş

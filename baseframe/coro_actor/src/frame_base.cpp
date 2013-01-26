@@ -1,9 +1,9 @@
 #include "frame_base.h"
 
-#include "common_list.h"
-#include "common_log.h"
-#include "common_bitmap.h"
-#include "common_unique_sequence.h"
+#include "hc_list.h"
+#include "hc_log.h"
+#include "hc_bitmap.h"
+#include "hc_unique_sequence.h"
 
 #include "net_manager.h"
 #include "packet_splitter.h"

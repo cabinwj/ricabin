@@ -1,6 +1,6 @@
 #include "router_frame.h"
 
-#include "common_log.h"
+#include "hc_log.h"
 
 #include "protocol.h"
 #include "frame_base.h"

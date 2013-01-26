@@ -61,7 +61,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>..\..\baselibc\share_common\inc;..\..\baselibc\share_coroutine\inc;..\..\baselibc\share_socket\inc;..\..\utils\encrypt\inc;..\..\utils\tinyxml\inc;.\inc;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\baselibc\hc_utils\inc;..\..\baselibc\hc_coroutine\inc;..\..\baselibc\hc_socket\inc;..\..\utils\encrypt\inc;..\..\utils\tinyxml\inc;.\inc;$(IncludePath)</IncludePath>
     <OutDir>..\..\staticlibc</OutDir>
     <IntDir>.\objs</IntDir>
   </PropertyGroup>

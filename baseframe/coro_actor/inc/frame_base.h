@@ -1,7 +1,7 @@
 #ifndef _CORO_FRAME_BASE_H_
 #define _CORO_FRAME_BASE_H_
 
-#include "common_types.h"
+#include "hc_types.h"
 
 #include "coroutine.h"
 #include "scheduler.h"
