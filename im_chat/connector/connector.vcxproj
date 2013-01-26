@@ -53,7 +53,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <ExecutablePath>..\..\bin;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>.\inc;..\..\baselibc\share_common\inc;..\..\baselibc\share_coroutine\inc;..\..\baselibc\share_socket\inc;..\..\baseframe\coro_actor\inc;..\..\utils\encrypt\inc;..\..\utils\tinyxml\inc;$(IncludePath)</IncludePath>
+    <IncludePath>.\inc;..\..\baselibc\hc_utils\inc;..\..\baselibc\hc_coroutine\inc;..\..\baselibc\hc_socket\inc;..\..\baseframe\coro_actor\inc;..\..\utils\encrypt\inc;..\..\utils\tinyxml\inc;$(IncludePath)</IncludePath>
     <LibraryPath>..\..\staticlibc;$(LibraryPath)</LibraryPath>
     <OutDir>..\..\bin</OutDir>
     <IntDir>.\objs</IntDir>

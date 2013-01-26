@@ -59,7 +59,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <ExecutablePath>..\..\bin;$(ExecutablePath)</ExecutablePath>
-    <IncludePath>.\inc;..\..\baselibc\share_common\inc;..\..\baselibc\share_coroutine\inc;..\..\baselibc\share_socket\inc;..\..\baseframe\coro_actor\inc;..\..\utils\encrypt\inc;..\..\utils\tinyxml\inc;$(IncludePath)</IncludePath>
+    <IncludePath>.\inc;..\..\baselibc\hc_utils\inc;..\..\baselibc\hc_coroutine\inc;..\..\baselibc\hc_socket\inc;..\..\baseframe\coro_actor\inc;..\..\utils\encrypt\inc;..\..\utils\tinyxml\inc;$(IncludePath)</IncludePath>
     <LibraryPath>..\..\staticlibc;$(LibraryPath)</LibraryPath>
     <OutDir>..\..\bin</OutDir>
     <IntDir>.\objs</IntDir>
@@ -79,7 +79,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>share_common.lib;share_socket.lib;share_coroutine.lib;coro_actor.lib;tinyxml.lib;encrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>hc_utils.lib;hc_socket.lib;hc_coroutine.lib;coro_actor.lib;tinyxml.lib;encrypt.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>encrypt.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
