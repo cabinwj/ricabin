@@ -2,13 +2,13 @@ include ../../makefile_inc
 
 CXX_FLAGS= $(CXXFLAGS) -D__MULTI_THREAD__
 
-TARGET= $(TARGET_DIR)/libshare_common.a
+TARGET= $(TARGET_DIR)/libhc_utils.a
 
-INC_DIR= $(INC_COMMON_DIR)
-SRC_DIR= $(SRC_COMMON_DIR)
-OBJS_DIR= $(OBJS_COMMON_DIR)
+INC_DIR= $(INC_UTILS_DIR)
+SRC_DIR= $(SRC_UTILS_DIR)
+OBJS_DIR= $(OBJS_UTILS_DIR)
 
-INC= -I$(INC_COMMON_DIR) -I$(INC_MYSQL_DIR)
+INC= -I$(INC_UTILS_DIR) -I$(INC_MYSQL_DIR)
 
 CXXSRC= $(wildcard $(SRC_DIR)/*.cpp)
 CXXOBJS= $(patsubst %.cpp, $(OBJS_DIR)/%.o, $(notdir $(CXXSRC)))

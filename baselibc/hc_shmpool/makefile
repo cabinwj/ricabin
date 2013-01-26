@@ -1,12 +1,12 @@
 include ../../makefile_inc
 
-TARGET= $(TARGET_DIR)/libshare_shmpool.a
+TARGET= $(TARGET_DIR)/libhc_shmpool.a
 
 INC_DIR= $(INC_SHMPOOL_DIR)
 SRC_DIR= $(SRC_SHMPOOL_DIR)
 OBJS_DIR= $(OBJS_SHMPOOL_DIR)
 
-INC= -I$(INC_SHMPOOL_DIR) -I$(INC_COMMON_DIR)
+INC= -I$(INC_SHMPOOL_DIR) -I$(INC_UTILS_DIR)
 
 CXXSRC= $(wildcard $(SRC_DIR)/*.cpp)
 CXXOBJS= $(patsubst %.cpp, $(OBJS_DIR)/%.o, $(notdir $(CXXSRC)))

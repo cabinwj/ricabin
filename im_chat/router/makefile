@@ -10,7 +10,7 @@ OBJS_DIR= $(OBJS_ROUTER_DIR)
 
 INC= -I$(INC_ROUTER_DIR) \
      -I$(INC_COROACTOR_DIR) \
-     -I$(INC_COMMON_DIR) \
+     -I$(INC_UTILS_DIR) \
      -I$(INC_SOCKET_DIR) \
      -I$(INC_COROUTINE_DIR) \
      -I$(INC_TINYXML_DIR) \
@@ -24,9 +24,9 @@ BIN_FILE= $(BIN_CPP:%.cpp=%)
 
 ALL_LIB= -L$(TARGET_DIR) -lrouter \
          -L$(TARGET_DIR) -lcoro_actor \
-         -L$(TARGET_DIR) -lshare_coroutine \
-         -L$(TARGET_DIR) -lshare_socket \
-         -L$(TARGET_DIR) -lshare_common -lpthread \
+         -L$(TARGET_DIR) -lhc_coroutine \
+         -L$(TARGET_DIR) -lhc_socket \
+         -L$(TARGET_DIR) -lhc_utils -lpthread \
          -L$(TARGET_DIR) -ltinyxml \
          -L$(TARGET_DIR) -lencrypt
 

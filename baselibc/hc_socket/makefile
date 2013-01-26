@@ -2,13 +2,13 @@ include ../../makefile_inc
 
 CXX_FLAGS= $(CXXFLAGS) -D__MULTI_THREAD__
 
-TARGET= $(TARGET_DIR)/libshare_socket.a
+TARGET= $(TARGET_DIR)/libhc_socket.a
 
 INC_DIR= $(INC_SOCKET_DIR)
 SRC_DIR= $(SRC_SOCKET_DIR)
 OBJS_DIR= $(OBJS_SOCKET_DIR)
 
-INC= -I$(INC_SOCKET_DIR) -I$(INC_COMMON_DIR)
+INC= -I$(INC_SOCKET_DIR) -I$(INC_UTILS_DIR)
 
 CXXSRC= $(wildcard $(SRC_DIR)/*.cpp)
 CXXOBJS= $(patsubst %.cpp, $(OBJS_DIR)/%.o, $(notdir $(CXXSRC)))
