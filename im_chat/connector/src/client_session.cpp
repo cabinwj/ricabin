@@ -39,7 +39,7 @@ client_session::client_session()
     m_is_trans_.set(is_trans_null);
     m_last_recv_timestamp_ = (uint32_t)time(NULL);
 
-    memset(&m_signature_, 0, sizeof(signature_t));
+    bzero(&m_signature_, sizeof(signature_t));
 }
 
 client_session::~client_session()
@@ -76,7 +76,7 @@ void client_session::on_ne_data(net_event& ne)
     }
 
     // 第四个字段(m_option_字段) 读出第四个字段（可选）option 现为玩家的 signature
-    memset(m_conn_hdr_.m_option_, 0, sizeof(m_conn_hdr_.m_option_));
+    bzero(m_conn_hdr_.m_option_, sizeof(m_conn_hdr_.m_option_));
     inpkg.read(m_conn_hdr_.m_option_, m_conn_hdr_.m_option_len_);
 
     // 第五个字段(message_id字段) 第六个字段(message_type字段) 第七个字段(player_id字段)

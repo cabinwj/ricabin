@@ -73,7 +73,7 @@ int webagent_frame::start(bool is_daemon)
     signal(SIGUSR1, sigusr1_handle);
     signal(SIGUSR2, sigusr2_handle);
 
-    memset(work_path, 0, sizeof(work_path));
+    bzero(work_path, sizeof(work_path));
     if (!getcwd(work_path, max_file_path_length - strlen(xml_relative_path[0]) - 1))
     {
         cout << "webagent_frame::start() get current work path (getcwd) error!" << endl;

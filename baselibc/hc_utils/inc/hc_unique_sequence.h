@@ -23,17 +23,17 @@ private:
 };
 
 
-class unique_sequence
+class unique_sequence32
 {
 public:
-    static unique_sequence* Instance()
+    static unique_sequence32* Instance()
     {
-        static unique_sequence __uin32s;
+        static unique_sequence32 __uin32s;
         return &__uin32s;
     }
 
 public:
-    unique_sequence() : m_sequence_(0) { }
+    unique_sequence32() : m_sequence_(0) { }
 
     inline uint32_t sequence() { return ++m_sequence_; }
 

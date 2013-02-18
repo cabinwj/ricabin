@@ -8,7 +8,7 @@
 xml_configure::xml_configure()
     : m_use_index_(master), m_root_elem_(NULL)
 {
-    memset(m_net_xml_, 0, sizeof(m_net_xml_));
+    bzero(m_net_xml_, sizeof(m_net_xml_));
 }
 
 xml_configure::xml_configure(const char* xml_file_name)
@@ -25,7 +25,7 @@ xml_configure::xml_configure(const char* xml_file_name)
     //得到配置文件的根结点
     m_root_elem_ = xml_doc.RootElement();
 
-    memset(m_net_xml_, 0, sizeof(m_net_xml_));
+    bzero(m_net_xml_, sizeof(m_net_xml_));
 }
 
 

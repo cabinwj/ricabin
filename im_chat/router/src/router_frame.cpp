@@ -68,8 +68,8 @@ int router_frame::start(bool is_daemon)
         cout << "router_frame::start() daemon start!" << endl;
     }
 
-    memset(work_path, 0, sizeof(work_path));
-    memset(xml_full_path, 0, sizeof(xml_full_path));
+    bzero(work_path, sizeof(work_path));
+    bzero(xml_full_path, sizeof(xml_full_path));
 
     // 安装信号处理函数
 #ifndef WIN32
