@@ -1,6 +1,6 @@
 //! @file cycle_buffer.h
-#ifndef _COMMON_CYCLE_BUFFER_H_
-#define _COMMON_CYCLE_BUFFER_H_
+#ifndef _HC_CYCLE_BUFFER_H_
+#define _HC_CYCLE_BUFFER_H_
 
 
 #include "hc_thread_mutex.h"
@@ -130,4 +130,4 @@ int cycle_buffer<T, MAX_COUNT>::size()
 }
 
 
-#endif // _COMMON_CYCLE_BUFFER_H_
+#endif // _HC_CYCLE_BUFFER_H_

@@ -1,5 +1,5 @@
-#ifndef _COMMON_DESTROYABLE_H_
-#define _COMMON_DESTROYABLE_H_
+#ifndef _HC_DESTROYABLE_H_
+#define _HC_DESTROYABLE_H_
 
 #include "hc_types.h"
 
@@ -26,4 +26,4 @@ private:
     destroy_callback* m_destroy_callback_;
 };
 
-#endif // _COMMON_DESTROYABLE_H_
+#endif // _HC_DESTROYABLE_H_

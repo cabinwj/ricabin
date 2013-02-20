@@ -1,5 +1,5 @@
-#ifndef _COMMON_DATA_BLOCK_H_
-#define _COMMON_DATA_BLOCK_H_
+#ifndef _HC_DATA_BLOCK_H_
+#define _HC_DATA_BLOCK_H_
 
 #include "hc_allocator.h"
 
@@ -53,4 +53,4 @@ public:
     iterator m_end_;
     iterator m_end_of_block_;
 };
-#endif // _COMMON_DATA_BLOCK_H_
+#endif // _HC_DATA_BLOCK_H_

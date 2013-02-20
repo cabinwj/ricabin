@@ -18,7 +18,6 @@
     <ClInclude Include="inc\hc_atomic_gcc.h" />
     <ClInclude Include="inc\hc_atomic_gcc8.h" />
     <ClInclude Include="inc\hc_atomic_win.h" />
-    <ClInclude Include="inc\hc_base.h" />
     <ClInclude Include="inc\hc_binpacket.h" />
     <ClInclude Include="inc\hc_bitmap.h" />
     <ClInclude Include="inc\hc_block_buffer.h" />
@@ -58,7 +57,6 @@
     <ClCompile Include="src\hc_atomic_gcc.cpp" />
     <ClCompile Include="src\hc_atomic_gcc8.cpp" />
     <ClCompile Include="src\hc_atomic_win.cpp" />
-    <ClCompile Include="src\hc_base.cpp" />
     <ClCompile Include="src\hc_binpacket.cpp" />
     <ClCompile Include="src\hc_bitmap.cpp" />
     <ClCompile Include="src\hc_block_buffer.cpp" />

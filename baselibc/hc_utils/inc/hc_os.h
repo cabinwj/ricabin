@@ -1,5 +1,5 @@
-#ifndef _COMMON_OS_H_
-#define _COMMON_OS_H_
+#ifndef _HC_OS_H_
+#define _HC_OS_H_
 
 #include "hc_types.h"
 
@@ -254,5 +254,5 @@ typedef enum shutdown_t
     READ_WRITE = SHUT_RDWR      ///< No data transport in both directions.
 }shutdown_t;
 
-#endif // _COMMON_OS_H_
+#endif // _HC_OS_H_
 

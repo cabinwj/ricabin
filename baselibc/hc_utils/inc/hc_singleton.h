@@ -16,8 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef _COMMON_SINGLETON_H_
-#define _COMMON_SINGLETON_H_
+#ifndef _HC_SINGLETON_H_
+#define _HC_SINGLETON_H_
 
 #include "hc_types.h"
 
@@ -50,4 +50,4 @@ private:
 template<typename T>
 T* object_singleton<T>::m_instance_ = NULL;
 
-#endif  // _COMMON_SINGLETON_H_
+#endif  // _HC_SINGLETON_H_

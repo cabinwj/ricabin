@@ -1,5 +1,5 @@
-#ifndef __COMMON_ARRAY_H__
-#define __COMMON_ARRAY_H__
+#ifndef _HC_ARRAY_H_
+#define _HC_ARRAY_H_
 
 /*
 ** 简单封装并实现了一个定长数组
@@ -227,4 +227,4 @@ private:
     size_t size_;
 };
 
-#endif  //#ifndef __COMMON_ARRAY_H__
+#endif  // _HC_ARRAY_H_

@@ -1,5 +1,5 @@
-#ifndef _COMMON_LIST_H_
-#define _COMMON_LIST_H_
+#ifndef _HC_LIST_H_
+#define _HC_LIST_H_
 
 /**  linux内核链表实现  */
 
@@ -261,4 +261,4 @@ inline static void list_splice(struct list_head* list, struct list_head* head)
         for (pos = (head)->prev, p = pos->prev; pos != (head); \
                 pos = p, p = pos->prev)    
 
-#endif // _COMMON_LIST_H_
+#endif // _HC_LIST_H_

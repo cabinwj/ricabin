@@ -1,5 +1,5 @@
-#ifndef _COMMON_OBJECT_GUARD_H_
-#define _COMMON_OBJECT_GUARD_H_
+#ifndef _HC_OBJECT_GUARD_H_
+#define _HC_OBJECT_GUARD_H_
 
 #include "hc_object_allocator.h"
 #include "hc_destroyable.h"
@@ -39,4 +39,4 @@ private:
     object_allocator<T>* m_object_allocator_;
 };
 
-#endif // _COMMON_OBJECT_GUARD_H_
+#endif // _HC_OBJECT_GUARD_H_

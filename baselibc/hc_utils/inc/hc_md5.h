@@ -1,5 +1,5 @@
-#ifndef _COMMON_MD5_H_
-#define _COMMON_MD5_H_
+#ifndef _HC_MD5_H_
+#define _HC_MD5_H_
 #ifdef __cplusplus
 extern "C"
 {
@@ -29,5 +29,5 @@ char *md5(const unsigned char *in, char *out, uint32 in_len);
 #ifdef __cplusplus
 }
 #endif
-#endif // _COMMON_MD5_H_
+#endif // _HC_MD5_H_
 

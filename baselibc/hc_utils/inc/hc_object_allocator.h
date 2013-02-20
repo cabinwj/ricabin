@@ -1,5 +1,5 @@
-#ifndef _COMMON_OBJECT_ALLOCATOR_H_
-#define _COMMON_OBJECT_ALLOCATOR_H_
+#ifndef _HC_OBJECT_ALLOCATOR_H_
+#define _HC_OBJECT_ALLOCATOR_H_
 
 #include "hc_allocator.h"
 #include "hc_thread_mutex.h"
@@ -185,4 +185,4 @@ private:
     std::vector<T*> m_chunk_list_;
 };
 
-#endif // _COMMON_OBJECT_ALLOCATOR_H_
+#endif // _HC_OBJECT_ALLOCATOR_H_

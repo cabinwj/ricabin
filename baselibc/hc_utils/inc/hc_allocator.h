@@ -1,5 +1,5 @@
-#ifndef _COMMON_ALLOCATOR_H_
-#define _COMMON_ALLOCATOR_H_
+#ifndef _HC_ALLOCATOR_H_
+#define _HC_ALLOCATOR_H_
 
 #include "hc_types.h"
 
@@ -35,4 +35,4 @@ public:
     static new_allocator* Instance();
 };
 
-#endif // _COMMON_ALLOCATOR_H_
+#endif // _HC_ALLOCATOR_H_

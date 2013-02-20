@@ -1,7 +1,7 @@
 //! @file hex_string.h
 //! @brief 十六进制字符串
-#ifndef _COMMON_HEX_STRING_H_
-#define _COMMON_HEX_STRING_H_
+#ifndef _HC_HEX_STRING_H_
+#define _HC_HEX_STRING_H_
 
 //! 十六进制字符串工具类
 class hex_string
@@ -32,4 +32,4 @@ private:
     static unsigned char bin_map[256];
 };
 
-#endif // _COMMON_HEX_STRING_H_
+#endif // _HC_HEX_STRING_H_

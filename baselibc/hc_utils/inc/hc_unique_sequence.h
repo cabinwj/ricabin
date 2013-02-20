@@ -1,5 +1,5 @@
-#ifndef _COMMON_UNIQUE_SEQUENCE_H_
-#define _COMMON_UNIQUE_SEQUENCE_H_
+#ifndef _HC_UNIQUE_SEQUENCE_H_
+#define _HC_UNIQUE_SEQUENCE_H_
 
 #include "hc_types.h"
 
@@ -42,4 +42,4 @@ private:
 };
 
 
-#endif // _COMMON_UNIQUE_SEQUENCE_H_
+#endif // _HC_UNIQUE_SEQUENCE_H_

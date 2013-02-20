@@ -1,5 +1,5 @@
-#ifndef _COMMON_THREAD_POOL_H_
-#define _COMMON_THREAD_POOL_H_
+#ifndef _HC_THREAD_POOL_H_
+#define _HC_THREAD_POOL_H_
 
 #include "hc_os.h"
 #include "hc_types.h"
@@ -48,4 +48,4 @@ protected:
     threadc_mutex m_mutex_;
 };
 
-#endif // _COMMON_THREAD_POOL_H_
+#endif // _HC_THREAD_POOL_H_

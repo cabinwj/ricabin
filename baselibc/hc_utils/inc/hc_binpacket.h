@@ -1,5 +1,5 @@
-#ifndef _COMMON_BIN_PACKET_H_
-#define _COMMON_BIN_PACKET_H_
+#ifndef _HC_BIN_PACKET_H_
+#define _HC_BIN_PACKET_H_
 
 #include "hc_types.h"
 #include "hc_type_trait.h"

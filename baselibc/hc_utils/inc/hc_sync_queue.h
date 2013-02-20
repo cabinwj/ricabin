@@ -1,5 +1,5 @@
-#ifndef _COMMON_SYNC_QUEUE_H_
-#define _COMMON_SYNC_QUEUE_H_
+#ifndef _HC_SYNC_QUEUE_H_
+#define _HC_SYNC_QUEUE_H_
 
 #include "hc_condition.h"
 
@@ -48,32 +48,32 @@ public:
         return 0;
     }
 
-	int push_wait_ms(const T& value, int wait_ms = 0)
-	{
-		m_connditionc_.lock();
-		if (m_queue_list_.size() >= m_queue_limit_)
-		{
-			if (0 == wait_ms)
-			{
-				m_connditionc_.unlock();
-				return -1;
-			}
+    int push_wait_ms(const T& value, int wait_ms = 0)
+    {
+        m_connditionc_.lock();
+        if (m_queue_list_.size() >= m_queue_limit_)
+        {
+            if (0 == wait_ms)
+            {
+                m_connditionc_.unlock();
+                return -1;
+            }
 
-			m_connditionc_.timed_wait(wait_ms);
-		}
+            m_connditionc_.timed_wait(wait_ms);
+        }
 
-		if (m_queue_list_.size() >= m_queue_limit_)
-		{
-			m_connditionc_.unlock();
-			return -1;
-		}
+        if (m_queue_list_.size() >= m_queue_limit_)
+        {
+            m_connditionc_.unlock();
+            return -1;
+        }
 
-		m_queue_list_.push_back(value);
+        m_queue_list_.push_back(value);
 
-		m_connditionc_.broadcast();
-		m_connditionc_.unlock();
-		return 0;
-	}
+        m_connditionc_.broadcast();
+        m_connditionc_.unlock();
+        return 0;
+    }
 
     int pop(T& value, bool block)
     {
@@ -98,30 +98,30 @@ public:
         }
     }
 
-	int pop_wait_ms(T& value, int wait_ms = 0)
-	{
-		m_connditionc_.lock();
-		if (m_queue_list_.empty())
-		{
-			if (0 == wait_ms)
-			{
-				m_connditionc_.unlock();
-				return -1;
-			}
-			m_connditionc_.timed_wait(wait_ms);
-		}
+    int pop_wait_ms(T& value, int wait_ms = 0)
+    {
+        m_connditionc_.lock();
+        if (m_queue_list_.empty())
+        {
+            if (0 == wait_ms)
+            {
+                m_connditionc_.unlock();
+                return -1;
+            }
+            m_connditionc_.timed_wait(wait_ms);
+        }
 
-		if (m_queue_list_.empty())
-		{
-			m_connditionc_.unlock();
-			return -1;
-		}
+        if (m_queue_list_.empty())
+        {
+            m_connditionc_.unlock();
+            return -1;
+        }
 
-		value = m_queue_list_.front();
-		m_queue_list_.pop_front();
-		m_connditionc_.unlock();
-		return 0;
-	}
+        value = m_queue_list_.front();
+        m_queue_list_.pop_front();
+        m_connditionc_.unlock();
+        return 0;
+    }
 
 private:
     conditionc m_connditionc_;

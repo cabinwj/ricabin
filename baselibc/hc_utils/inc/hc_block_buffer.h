@@ -1,5 +1,5 @@
-#ifndef _COMMON_BLOCK_BUFFER_H_
-#define _COMMON_BLOCK_BUFFER_H_
+#ifndef _HC_BLOCK_BUFFER_H_
+#define _HC_BLOCK_BUFFER_H_
 
 #include <string.h>
 #include <assert.h>
@@ -155,4 +155,4 @@ void block_buffer<BUFFER_LENGTH>::extend(int new_length)
     m_length_ = new_length+data_len;
 }
 
-#endif // _COMMON_BLOCK_BUFFER_H_
+#endif // _HC_BLOCK_BUFFER_H_

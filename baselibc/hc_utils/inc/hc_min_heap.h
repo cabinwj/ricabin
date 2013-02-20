@@ -1,5 +1,5 @@
-#ifndef _COMMON_MINI_HEAP_
-#define _COMMON_MINI_HEAP_
+#ifndef _HC_MINI_HEAP_
+#define _HC_MINI_HEAP_
 
 #include "hc_types.h"
 #include "hc_allocator.h"

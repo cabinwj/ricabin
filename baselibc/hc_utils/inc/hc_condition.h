@@ -1,6 +1,6 @@
 /// @file condition.h
-#ifndef _COMMON_CONDITION_H_
-#define _COMMON_CONDITION_H_
+#ifndef _HC_CONDITION_H_
+#define _HC_CONDITION_H_
 
 /**
     条件变量的跨平台实现
@@ -56,4 +56,4 @@ private:
     condition_impl* m_condition_impl_;
 };
 
-#endif // _COMMON_CONDITION_H_
+#endif // _HC_CONDITION_H_

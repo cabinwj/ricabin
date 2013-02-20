@@ -1,5 +1,5 @@
-#ifndef _COMMON_RWLOCK_H_
-#define _COMMON_RWLOCK_H_
+#ifndef _HC_RWLOCK_H_
+#define _HC_RWLOCK_H_
 
 /**
   * 读写锁的跨平台实现
@@ -124,4 +124,4 @@ private:
 };
 
 
-#endif // _COMMON_RWLOCK_H_
+#endif // _HC_RWLOCK_H_

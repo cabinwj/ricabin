@@ -1,7 +1,7 @@
 /// @file common_log.h
 /// @brief ÈÕÖ¾Ä£¿é
-#ifndef _COMMON_LOG_H_
-#define _COMMON_LOG_H_
+#ifndef _HC_LOG_H_
+#define _HC_LOG_H_
 
 #include <stdio.h>
 #include <time.h>
@@ -255,4 +255,4 @@ private:
 #define LOG_SET_USEC(m_enable_usec_) logc::global_log.set_usec(m_enable_usec_)
 
 
-#endif // _COMMON_LOG_H_
+#endif // _HC_LOG_H_

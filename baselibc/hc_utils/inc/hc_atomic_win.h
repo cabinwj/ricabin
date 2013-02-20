@@ -13,7 +13,7 @@
  */
 typedef volatile long atomic_t;
 
-#define ATOMIC_INIT(i)	{ (i) }
+#define ATOMIC_INIT(i)    { (i) }
 
 /**
  * atomic_read - read atomic variable
@@ -21,7 +21,7 @@ typedef volatile long atomic_t;
  * 
  * Atomically reads the value of @v.
  */ 
-#define atomic_read(v)		(*(v))
+#define atomic_read(v)        (*(v))
 
 /**
  * atomic_set - set atomic variable
@@ -30,7 +30,7 @@ typedef volatile long atomic_t;
  * 
  * Atomically sets the value of @v to @i.
  */ 
-#define atomic_set(v,i)		(*(v) = (i))
+#define atomic_set(v,i)        (*(v) = (i))
 
 /**
  * atomic_add - add integer to atomic variable
@@ -41,7 +41,7 @@ typedef volatile long atomic_t;
  */
 static __inline void atomic_add(long i, atomic_t *v)
 {
-	(void)InterlockedExchangeAdd((long*)v, i);
+    (void)InterlockedExchangeAdd((long*)v, i);
 }
 
 /**
@@ -53,7 +53,7 @@ static __inline void atomic_add(long i, atomic_t *v)
  */
 static __inline void atomic_sub(long i, atomic_t *v)
 {
-	(void)atomic_add(-i, v);
+    (void)atomic_add(-i, v);
 }
 
 /**
@@ -67,7 +67,7 @@ static __inline void atomic_sub(long i, atomic_t *v)
  */
 static __inline int atomic_sub_and_test(long i, atomic_t *v)
 {
-	return InterlockedExchangeAdd((long*)v, -i) == 0;
+    return InterlockedExchangeAdd((long*)v, -i) == 0;
 }
 
 /**
@@ -78,7 +78,7 @@ static __inline int atomic_sub_and_test(long i, atomic_t *v)
  */ 
 static __inline void atomic_inc(atomic_t *v)
 {
-	(void)InterlockedExchangeAdd((long*)v, 1);
+    (void)InterlockedExchangeAdd((long*)v, 1);
 }
 
 /**
@@ -89,7 +89,7 @@ static __inline void atomic_inc(atomic_t *v)
  */ 
 static __inline void atomic_dec(atomic_t *v)
 {
-	(void)InterlockedExchangeAdd((long*)v, -1);
+    (void)InterlockedExchangeAdd((long*)v, -1);
 }
 
 /**
@@ -102,7 +102,7 @@ static __inline void atomic_dec(atomic_t *v)
  */ 
 static __inline int atomic_dec_and_test(atomic_t *v)
 {
-	return InterlockedExchangeAdd((long*)v, -1) == 0;
+    return InterlockedExchangeAdd((long*)v, -1) == 0;
 }
 
 /**
@@ -115,7 +115,7 @@ static __inline int atomic_dec_and_test(atomic_t *v)
  */ 
 static __inline int atomic_inc_and_test(atomic_t *v)
 {
-	return InterlockedExchangeAdd((long*)v, 1) == 0;
+    return InterlockedExchangeAdd((long*)v, 1) == 0;
 }
 
 /**
@@ -129,7 +129,7 @@ static __inline int atomic_inc_and_test(atomic_t *v)
  */ 
 static __inline int atomic_add_negative(long i, atomic_t *v)
 {
-	return InterlockedExchangeAdd((long*)v, i) < 0;
+    return InterlockedExchangeAdd((long*)v, i) < 0;
 }
 
 /**

@@ -247,28 +247,28 @@ void md5_finish( md5_context *ctx, uint8 digest[16] )
 
 char *md5_string(const unsigned char *in, char *out, uint32 in_len)
 {
-	int i;
-	md5_context ctx;
-	unsigned char md5sum[16];
+    int i;
+    md5_context ctx;
+    unsigned char md5sum[16];
 
-	md5_starts(&ctx);
-	md5_update(&ctx, (uint8 *)in, in_len);
-	md5_finish(&ctx, md5sum);
+    md5_starts(&ctx);
+    md5_update(&ctx, (uint8 *)in, in_len);
+    md5_finish(&ctx, md5sum);
 
-	for (i = 0; i < 16; i++)
-	{
-		sprintf(out + i * 2, "%02x", md5sum[i]);
-	}
+    for (i = 0; i < 16; i++)
+    {
+        sprintf(out + i * 2, "%02x", md5sum[i]);
+    }
 
-	return(out);
+    return(out);
 }
 
 char *md5(const unsigned char *in,  char *out, uint32 in_len)
 {
-	md5_context ctx;
-	md5_starts(&ctx);
-	md5_update(&ctx, (uint8 *)in, in_len);
-	md5_finish(&ctx, reinterpret_cast<unsigned char *>(out) );
+    md5_context ctx;
+    md5_starts(&ctx);
+    md5_update(&ctx, (uint8 *)in, in_len);
+    md5_finish(&ctx, reinterpret_cast<unsigned char *>(out) );
 
-	return(out);
+    return(out);
 }

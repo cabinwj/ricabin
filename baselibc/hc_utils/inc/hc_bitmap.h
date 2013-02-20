@@ -1,5 +1,5 @@
-#ifndef __COMMON_BITMAP_H__
-#define __COMMON_BITMAP_H__
+#ifndef _HC_BITMAP_H_
+#define _HC_BITMAP_H_
 
 #include "hc_types.h"
 
@@ -19,15 +19,15 @@ public:
     ~bitmap32() { }
 
 public:
-	//clear all bits
+    //clear all bits
     void clear() { m_bit32_ = 0; }
-	//is the bit setted ?
+    //is the bit setted ?
     bool is_setted(uint32_t bit) { if (m_bit32_ & bit) return true; else return false; }
-	//set the bit
+    //set the bit
     void set(uint32_t bit) { m_bit32_ |= bit; }
-	//clear the bit
+    //clear the bit
     void unset(uint32_t bit) { m_bit32_ &= (bit ^ all_bits); }
-	//just set all bits
+    //just set all bits
     void allbits() { m_bit32_ = all_bits; }
 
 protected:
@@ -149,4 +149,4 @@ int32_t ebitmap<bitmap_size>::allbits()
     return 0;
 }
 
-#endif //__COMMON_BITMAP_H__
+#endif // _HC_BITMAP_H_

@@ -1,5 +1,5 @@
-#ifndef _COMMON_TMYSQLCONN_POOL_H_
-#define _COMMON_TMYSQLCONN_POOL_H_
+#ifndef _HC_TMYSQL_POOL_H_
+#define _HC_TMYSQL_POOL_H_
 
 #include "hc_os.h"
 #include "hc_thread_mutex.h"
@@ -132,4 +132,4 @@ public:
     unsigned long m_last_insert_id_;
 };
 
-#endif // MYSQL_POOL_H_
+#endif // _HC_TMYSQL_POOL_H_
