@@ -2,7 +2,7 @@ ricabin
 =======
 
 ricabin: tcp network
-ricabin: 简单的tcp网络低层库，在io操作方面可以少一层copy哦，个人经验总结。。
+ricabin: 简单的tcp网络低层库，在io操作方面可以少一层copy哦，个人经验总结。。 
          具体的应用例子可以看看应用代码的实现。希望可以帮助更多的人搭建网络框架，快速开发。。
 
          当然很多人会有疑问：为什么不用libevent, boost, stl　等等问题。。
@@ -25,8 +25,8 @@ ricabin/baselibc/hc_coroutine: 是一个开源的协程库，这里只是为本�
                                so.不建议在windows上运行，服务器必须稳定啊。。
                                这里用windows只是为了要让整个工程在windows上运行时，
                                确保逻辑和功能没有问题。。
-                              
+
 　　有关协程库可参考：https://github.com/cloudwu/coroutine
-                      https://github.com/maxburke/coroutine
-                      https://github.com/lijie/libcoro
+　　                  https://github.com/maxburke/coroutine
+　　                  https://github.com/lijie/libcoro
                                     
