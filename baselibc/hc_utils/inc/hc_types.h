@@ -1,33 +1,33 @@
-//! @file types.h
-//! @brief 模块用到的各项基本数据类型定义
-#ifndef _BASE_TYPES_H_
-#define _BASE_TYPES_H_
+//! 模块用到的各项基本数据类型定义
+#ifndef _HC_TYPES_H_
+#define _HC_TYPES_H_
 
 #include <stddef.h>                // for size_t
 #include <stdint.h>
 
 #ifdef WIN32    // for windows
 #define CHECK_FORMAT(i, j)
+#define bzero(a,b) (memset((a),0,(b)))
 #else            // for linux(gcc)
 #define CHECK_FORMAT(i, j) __attribute__((format(printf, i, j)))
 #endif
 
 #ifdef WIN32    // for windows
 
-//typedef __int8                    int8_t;
-//typedef __int16                    int16_t;
-//typedef __int32                    int32_t;
-//typedef __int64                    int64_t;
+//typedef __int8                  int8_t;
+//typedef __int16                 int16_t;
+//typedef __int32                 int32_t;
+//typedef __int64                 int64_t;
 //
-//typedef unsigned __int8            uint8_t;
+//typedef unsigned __int8         uint8_t;
 //typedef unsigned __int16        uint16_t;
 //typedef unsigned __int32        uint32_t;
 //typedef unsigned __int64        uint64_t;
 
 typedef int                        ssize_t;
 typedef int                        socklen_t;
-typedef uint32_t                in_addr_t;
-typedef uint16_t                in_port_t;
+typedef uint32_t                   in_addr_t;
+typedef uint16_t                   in_port_t;
 
 #else            // for linux
 
@@ -85,5 +85,9 @@ enum
 };
 
 void init_daemon(int8_t nochdir, int8_t noclose);
+
+//! 睡眠，改为毫秒
+void sleep_ms(unsigned long _ms);
+
 
 #endif // _HC_TYPES_H_

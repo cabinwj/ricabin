@@ -13,8 +13,6 @@
 #include <memory>
 #include <map>
 
-using namespace std;
-
 
 class mysql_pool
 {
@@ -28,7 +26,7 @@ public:
     ~mysql_pool();
 
 public:
-    int init(int size, string host, int port, string user, string pass, string dbname);
+    int init(int size, std::string host, int port, std::string user, std::string pass, std::string dbname);
     void uninit();
 
     MYSQL* acquire_connection(int& isfull);
@@ -41,7 +39,7 @@ public:
     int reconnect(MYSQL* conn);
 
 public:
-    deque<MYSQL*> m_mysql_deque_;
+    std::deque<MYSQL*> m_mysql_deque_;
     threadc_mutex m_mutex_;
 
     char m_host_[MAX_MYSQL_INIT_STRING_LEN + 1];
@@ -93,13 +91,13 @@ public:
 
     ~mysql_read_res_guard() { mysql_free_result(m_mysql_res_); }
 
-    string field_string(const string& sFieldName);
-    string field_string(unsigned long ulFieldIndex);
+    std::string field_string(const std::string& sFieldName);
+    std::string field_string(unsigned long ulFieldIndex);
 
-    char* field_buffer(const string& sFieldName);
+    char* field_buffer(const std::string& sFieldName);
     char* field_buffer(unsigned long ulFieldIndex);
 
-    unsigned long field_length(const string& sFieldName);
+    unsigned long field_length(const std::string& sFieldName);
     unsigned long field_length(unsigned long ulFieldIndex);
 
     unsigned long row_count() { return m_row_count_;}
@@ -115,7 +113,7 @@ public:
     unsigned long m_field_count_;
 
     bool m_is_field_index_;
-    map<string, unsigned long> m_mysql_field_index_map_;
+    std::map<std::string, unsigned long> m_mysql_field_index_map_;
 };
 
 class mysql_write_res_guard

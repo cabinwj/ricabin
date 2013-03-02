@@ -331,7 +331,7 @@ void release_tunnel(uint32_t net_id)
 
 int send_async_package(uint32_t net_id, net_package*& np, int timeout, net_event*& ne)
 {
-    uint32_t async_sequence = unique_sequence::Instance()->sequence();
+    uint32_t async_sequence = unique_sequence32::Instance()->sequence();
     LOG(TRACE)("send_async_package() net id:%u, sequence id:%u", net_id, async_sequence);
 
     // 组异步请求包，跳转到包头中的type位置开始写

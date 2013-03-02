@@ -1,7 +1,6 @@
-//! @file thread_mutex.h
-//! @brief 线程锁
-#ifndef _THREAD_MUTEX_H_
-#define _THREAD_MUTEX_H_
+//! 线程锁
+#ifndef _HC_THREAD_MUTEX_H_
+#define _HC_THREAD_MUTEX_H_
 
 
 #ifdef WIN32
@@ -119,4 +118,4 @@ private:
     threadc_mutex& m_mutex_;
 };
 
-#endif // _THREAD_MUTEX_H_
+#endif // _HC_THREAD_MUTEX_H_

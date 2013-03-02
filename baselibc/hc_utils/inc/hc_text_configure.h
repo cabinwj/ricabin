@@ -1,7 +1,6 @@
-//! @file text_configure.h
 //! @brief ≈‰÷√∆˜
-#ifndef _TEXT_CONFIGURE_H_
-#define _TEXT_CONFIGURE_H_
+#ifndef _HC_TEXT_CONFIGURE_H_
+#define _HC_TEXT_CONFIGURE_H_
 
 
 #include <string>
@@ -248,4 +247,4 @@ private:
     std::vector<Section> m_configure;
 };
 
-#endif // _TEXT_CONFIGURE_H_
+#endif // _HC_TEXT_CONFIGURE_H_

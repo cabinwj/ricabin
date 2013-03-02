@@ -1,5 +1,6 @@
 #include "hc_mysql_pool.h"
 #include "hc_log.h"
+#include "hc_types.h"
 
 #include <string.h>
 
@@ -17,7 +18,7 @@ mysql_pool::~mysql_pool()
 {
 }
 
-int mysql_pool::init(int size, string host, int port, string user, string pass, string dbname)
+int mysql_pool::init(int size, std::string host, int port, std::string user, std::string pass, std::string dbname)
 {
     strncpy(m_host_, host.c_str(), MAX_MYSQL_INIT_STRING_LEN);
     m_port_ = port;
@@ -44,7 +45,7 @@ int mysql_pool::init(int size, string host, int port, string user, string pass, 
 void mysql_pool::uninit()
 {
     threadc_mutex_guard lock(m_mutex_);
-    deque<MYSQL*>::const_iterator it;
+    std::deque<MYSQL*>::const_iterator it;
     for (it = m_mysql_deque_.begin(); it != m_mysql_deque_.end(); it++)
     {
         mysql_close(*it);
@@ -149,7 +150,7 @@ int mysql_pool::reconnect(MYSQL* conn)
     return 0;
 }
 
-string mysql_read_res_guard::field_string(const string& field_name)
+std::string mysql_read_res_guard::field_string(const std::string& field_name)
 {
     if (m_mysql_field_index_map_.find(field_name) == m_mysql_field_index_map_.end())
     {
@@ -162,10 +163,10 @@ string mysql_read_res_guard::field_string(const string& field_name)
         return "";
     }
 
-    return string(p, field_length(field_name));
+    return std::string(p, field_length(field_name));
 }
 
-string mysql_read_res_guard::field_string(unsigned long field_index)
+std::string mysql_read_res_guard::field_string(unsigned long field_index)
 {
     if (field_index > m_field_count_)
     {
@@ -178,10 +179,10 @@ string mysql_read_res_guard::field_string(unsigned long field_index)
         return "";
     }
 
-    return string(p, field_length(field_index));
+    return std::string(p, field_length(field_index));
 }
 
-char* mysql_read_res_guard::field_buffer(const string& field_name)
+char* mysql_read_res_guard::field_buffer(const std::string& field_name)
 {
     if (m_mysql_field_index_map_.find(field_name) == m_mysql_field_index_map_.end())
     {
@@ -201,7 +202,7 @@ char* mysql_read_res_guard::field_buffer(unsigned long field_index)
     return m_mysql_row_[field_index];
 }
 
-unsigned long mysql_read_res_guard::field_length(const string& field_name)
+unsigned long mysql_read_res_guard::field_length(const std::string& field_name)
 {
     if (m_mysql_field_index_map_.find(field_name) == m_mysql_field_index_map_.end())
     {

@@ -1,7 +1,6 @@
 #ifndef _HC_THREAD_POOL_H_
 #define _HC_THREAD_POOL_H_
 
-#include "hc_os.h"
 #include "hc_types.h"
 #include "hc_non_copyable.h"
 #include "hc_thread.h"

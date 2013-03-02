@@ -2,7 +2,6 @@
 #define _PROTOCOL_H_
 
 #include "hc_types.h"
-#include "hc_base.h"
 
 #include "net_event.h"
 

@@ -18,7 +18,6 @@
 #include <sys/timeb.h>
 
 typedef SOCKET Descriptor;  // unsigned int
-#define bzero(a,b) (memset((a),0,(b)))
 
 #define F_OK 0
 #define W_OK 2
@@ -218,19 +217,6 @@ typedef int Descriptor;
 
 
 #endif
-
-//! Ë¯Ãß£¬¸ÄÎªºÁÃë
-inline void sleep_ms(unsigned long _ms)
-{
-#ifndef WIN32
-    struct timespec req;
-    req.tv_sec = (int)_ms/1000;
-    req.tv_nsec = (_ms - req.tv_sec*1000)*1000000L;
-    nanosleep(&req, NULL);
-#else
-    Sleep(_ms);
-#endif
-}
 
 //! ´íÎóÂë
 inline int error_no()

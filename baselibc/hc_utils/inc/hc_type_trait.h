@@ -1,5 +1,5 @@
-#ifndef _UTILS_TYPE_TRAIT_H_
-#define _UTILS_TYPE_TRAIT_H_
+#ifndef _HC_TYPE_TRAIT_H_
+#define _HC_TYPE_TRAIT_H_
 
 
 template <typename T>

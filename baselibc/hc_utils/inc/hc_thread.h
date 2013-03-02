@@ -1,7 +1,6 @@
-//! @file thread.h
-//! @brief 线程
-#ifndef _THREAD_H_
-#define _THREAD_H_
+//! 线程
+#ifndef _HC_THREAD_H_
+#define _HC_THREAD_H_
 
 #ifdef WIN32
 #define NOMINMAX
@@ -13,7 +12,7 @@
 #endif
 
 //! @class threadc
-//! @brief 线程类
+//! 线程类
 class threadc
 {
 public:
@@ -48,4 +47,4 @@ private:
 };
 
 
-#endif // _THREAD_H_
+#endif // _HC_THREAD_H_

@@ -3,7 +3,6 @@
 
 #include "hc_singleton.h"
 #include "hc_types.h"
-#include "hc_base.h"
 
 #include "address.h"
 #include "tinyxml.h"

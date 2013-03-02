@@ -1,5 +1,5 @@
-#ifndef _THREAD_STORAGE_H_
-#define _THREAD_STORAGE_H_
+#ifndef _HC_THREAD_STORAGE_H_
+#define _HC_THREAD_STORAGE_H_
 
 #ifdef WIN32
 #define NOMINMAX
@@ -133,4 +133,4 @@ private:
 };
 
 
-#endif // _THREAD_STORAGE_H_
+#endif // _HC_THREAD_STORAGE_H_
