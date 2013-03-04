@@ -24,7 +24,7 @@ public:
         T* object = m_object_allocator_->Create();
         if ( NULL != object)
         {
-            object->set_destroy_callback(this);
+            object->destroy_callback_o(this);
         }
 
         return object;

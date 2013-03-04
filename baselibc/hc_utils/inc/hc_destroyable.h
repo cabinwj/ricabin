@@ -20,7 +20,7 @@ public:
     void Destroy() { if ( NULL != m_destroy_callback_ ) m_destroy_callback_->Call(this); }
 
 public:
-    inline void set_destroy_callback(destroy_callback* cb) { m_destroy_callback_ = cb; }
+    inline void destroy_callback_o(destroy_callback* cb) { m_destroy_callback_ = cb; }
 
 private:
     destroy_callback* m_destroy_callback_;

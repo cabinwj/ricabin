@@ -1,4 +1,3 @@
-//! @file event_handler.h
 #ifndef _EVENT_HANDLER_H_
 #define _EVENT_HANDLER_H_
 
@@ -12,20 +11,18 @@
 #include "net_package.h"
 
 
-//! @class event_handler
-//! @brief 事件处理器
+//! 事件处理器
 class event_handler
 {
 public:
-    //! @enum event_mask_t
-    //! @brief 事件类型
-    typedef enum event_mask_type {
+    //! 事件类型
+    enum ev_mask_t {
         EM_NULL    = 0,
         EM_READ    = 1 << 0,    //!< 可读事件
         EM_WRITE   = 1 << 1,    //!< 可写事件
 
         EM_ALL     = EM_READ | EM_WRITE,
-    } ev_mask_t;
+    };
 
     enum {
         HANDLER_TABLE_SIZE = 100003
@@ -36,8 +33,6 @@ public:
     list_head m_hash_item_;
     //! list timeout node
     list_head m_timeout_item_;
-    //! list notify close node
-    list_head m_notify_close_item_;
 
     //! event mask 事件关注信息
     uint32_t m_ev_mask_;
@@ -48,7 +43,6 @@ public:
     uint32_t m_net_id_;
     //! 超时的时间, 0表示没有设置超时
     time_t m_timeout_;
-
 
     //! 反应器
     reactor* m_reactor_;
@@ -78,13 +72,10 @@ public:
     virtual int post_package(net_package* netpkg) = 0;
 
 public:
-    //! 设置超时
-    //! @param timeout 超时时间(秒)
-    static void set_timeout(event_handler* eh, time_t timeout);
+    //! 设置超时 timeout 超时时间(秒)
+    static void sync_timeout(event_handler* eh, time_t timeout);
     //! 定时器，检测超时处理
     static void on_timer(time_t now);
-    //! 通知关闭连接处理
-    static void on_notify_close();
 
 public:
     //! 当前的事件数
@@ -93,11 +84,6 @@ public:
     static list_head m_hash_bucket_[HANDLER_TABLE_SIZE];
     //! timeout list head
     static list_head m_timeout_list_head_;
-    //! notify close list head
-    static list_head m_notify_close_list_head_;
-
-    //! 线程锁, 保护处理器 handler_list
-    static threadc_mutex m_mutex_;
 
 public:
     static void init_hash_table();
@@ -106,22 +92,6 @@ public:
     static void push_handler(event_handler* eh, uint32_t tunnel_id);
     static void remove_handler(event_handler* eh);
     static void remove_handler(uint32_t tunnel_id);
-
-public:
-    static void init_timeout_list();
-    static void clear_timeout_list();
-    static event_handler* get_handler_from_timeout_list(uint32_t tunnel_id);
-    static void push_handler_to_timeout_list(event_handler* eh);
-    static void remove_handler_from_timeout_list(event_handler* eh);
-    static void remove_handler_from_timeout_list(uint32_t tunnel_id);
-
-public:
-    static void init_notify_close_list();
-    static void clear_notify_close_list();
-    static event_handler* get_handler_from_notify_close_list(uint32_t tunnel_id);
-    static void push_handler_to_notify_close_list(event_handler* eh);
-    static void remove_handler_from_notify_close_list(event_handler* eh);
-    static void remove_handler_from_notify_close_list(uint32_t tunnel_id);
 
 public:
     //! net_event 此类在网络层被分配并初始化, 在应用层被使用并销毁, 为提高效率使用预分配对象池

@@ -236,7 +236,11 @@ uint32_t net_manager::create_tcp_server(const char* local_ip, int local_port, pa
 int net_manager::notify_close(uint32_t net_id)
 {
     event_handler* eh = event_handler::get_handler(net_id);
-    event_handler::push_handler_to_notify_close_list(eh);
+    if ( NULL != eh )
+    {
+        // delete timeout from list, delete hash from list and close, and delete handler
+        eh->handle_close(net_event::NE_NOTIFY_CLOSE);
+    }
 
     return 0;
 }

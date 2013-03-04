@@ -130,8 +130,6 @@ int epoll_reactor::run_reactor_event_loop()
         epoll_reactor::m_last_scan_time_ = current_time;
         // 定时器处理 检测超时
         event_handler::on_timer(current_time);
-        // 通知关闭连接
-        event_handler::on_notify_close();
     }
 
     return count;

@@ -12,7 +12,7 @@ data_block::data_block(size_t block_size, allocatorc* alloc)
         m_allocatorc_ = allocatorc::Instance();
     }
 
-    size_t real_size=0;
+    size_t real_size = 0;
     m_begin_ = (iterator)m_allocatorc_->Allocate(block_size, &real_size);
     if ( NULL == m_begin_ )
     {

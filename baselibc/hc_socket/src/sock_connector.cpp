@@ -62,7 +62,7 @@ int sock_connector::create_tcp_client(const Address& remote_addr, int timeout, i
 
     m_remote_addr_ = remote_addr;
 
-    event_handler::set_timeout(this, timeout);
+    event_handler::sync_timeout(this, timeout);
 
     return 0;
 }
@@ -105,7 +105,7 @@ int sock_connector::handle_output()
     }
 
     // cancel timeout
-    event_handler::set_timeout(this, 0);
+    event_handler::sync_timeout(this, 0);
 
     // get socket local addr
     Address local_addr;
