@@ -57,6 +57,7 @@ int sock_connector::create_tcp_client(const Address& remote_addr, int timeout, i
     if ((0 != rc) && (error_no() != SYS_EINPROGRESS) && (error_no() != SYS_EALREADY) && (error_no() != SYS_EWOULDBLOCK))
     {
         LOG(ERROR)("sock_connector::create_tcp_client error, connect error, remote_addr<0x%08X:%d>, errno:%d", remote_addr.get_net_ip(), remote_addr.get_net_port(), error_no());
+        m_socket_.close();
         return -1;
     }
 
