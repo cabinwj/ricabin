@@ -232,7 +232,7 @@ void stop_environment()
     g_run_status.set(run_status_exit);
 }
 
-uint32_t create_network(const net_conf_t& nconf, net_event_handler_callback_t handler)
+uint32_t create_network(const net_conf_t& nconf, net_event_callback_t handler)
 {
     conn_param_t* connprm = new conn_param_t;
     connprm->m_app_proto_ = nconf.m_app_proto_;

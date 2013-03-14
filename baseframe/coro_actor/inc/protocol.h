@@ -97,7 +97,7 @@ struct conn_param_t
 
     uint32_t m_remote_uin_;         // 仅对连出去的socket有效: 连出去的服务标识，对端的服务器id
 
-    net_event_handler_callback_t m_net_event_handler_cb_;
+    net_event_callback_t m_net_event_handler_cb_;
 
     int16_t m_keep_alive_timeout_;  // 多久没收到心跳包（或任何包），做断开处理
     int16_t m_reconnect_interval_;  // 仅对连出去的socket有效: 自动重连的间隔时间，设置为0则不自动重连

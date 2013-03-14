@@ -19,7 +19,7 @@
 
 void init_daemon( int nochdir, int noclose );
 
-uint32_t create_network(const net_conf_t& conf, net_event_handler_callback_t handler);
+uint32_t create_network(const net_conf_t& conf, net_event_callback_t handler);
 void release_tunnel(uint32_t net_id);
 
 int init_environment(uint32_t uin);

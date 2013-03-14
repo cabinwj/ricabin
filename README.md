@@ -29,4 +29,8 @@ ricabin/baselibc/hc_coroutine: 是一个开源的协程库，这里只是为本�
 　　有关协程库可参考：https://github.com/cloudwu/coroutine
 　　                  https://github.com/maxburke/coroutine
 　　                  https://github.com/lijie/libcoro
-                                    
+                          
+                          
+ricabin/baseframe:  基本框架。可作为底层库(或协程)的应用例子。
+ricabin/net_proxy/coro_webagent:  web反向代理，可作为基本框架的应用例子。
+
