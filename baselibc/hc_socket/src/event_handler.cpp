@@ -81,7 +81,7 @@ void event_handler::clear_hash_table()
     m_current_count_ = 0;
 }
 
-event_handler* event_handler::get_handler(uint32_t tunnel_id)
+event_handler* event_handler::hunt_handler(uint32_t tunnel_id)
 {
     int npos = hash_func(tunnel_id);
     if (npos >= HANDLER_TABLE_SIZE || npos < 0)
@@ -190,7 +190,7 @@ void event_handler::sync_timeout(event_handler* eh, time_t timeout)
     }
 }
 
-void event_handler::on_timer(time_t now)
+void event_handler::scan_timer(time_t now)
 {
     list_head* head = &m_timeout_list_head_;
     if ( list_empty(head) )

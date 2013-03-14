@@ -235,7 +235,7 @@ uint32_t net_manager::create_tcp_server(const char* local_ip, int local_port, pa
 
 int net_manager::notify_close(uint32_t net_id)
 {
-    event_handler* eh = event_handler::get_handler(net_id);
+    event_handler* eh = event_handler::hunt_handler(net_id);
     if ( NULL != eh )
     {
         // delete timeout from list, delete hash from list and close, and delete handler
@@ -259,7 +259,7 @@ int net_manager::send_package(uint32_t net_id, net_package* netpkg)
         return -1;
     }
 
-    event_handler* eh = event_handler::get_handler(net_id);
+    event_handler* eh = event_handler::hunt_handler(net_id);
     // 通道不存在
     if (NULL == eh)
     {

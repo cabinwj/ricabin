@@ -127,7 +127,7 @@ private:
     conditionc m_connditionc_;
 
     std::list<T> m_queue_list_;
-    size_t  m_queue_limit_;
+    size_t m_queue_limit_;
 };
 
 #endif

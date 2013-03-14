@@ -12,7 +12,7 @@
 
 
 //! 事件处理器
-class event_handler
+class event_handler : public non_copyable, public destroyable
 {
 public:
     //! 事件类型
@@ -75,7 +75,7 @@ public:
     //! 设置超时 timeout 超时时间(秒)
     static void sync_timeout(event_handler* eh, time_t timeout);
     //! 定时器，检测超时处理
-    static void on_timer(time_t now);
+    static void scan_timer(time_t now);
 
 public:
     //! 当前的事件数
@@ -88,7 +88,7 @@ public:
 public:
     static void init_hash_table();
     static void clear_hash_table();
-    static event_handler* get_handler(uint32_t tunnel_id);
+    static event_handler* hunt_handler(uint32_t tunnel_id);
     static void push_handler(event_handler* eh, uint32_t tunnel_id);
     static void remove_handler(event_handler* eh);
     static void remove_handler(uint32_t tunnel_id);

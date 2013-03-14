@@ -13,7 +13,7 @@
 
 //! @class sock_stream
 //! @brief tcp通道处理类
-class sock_stream : public event_handler, public non_copyable, public destroyable
+class sock_stream : public event_handler
 {
 public:
     //! 构造函数

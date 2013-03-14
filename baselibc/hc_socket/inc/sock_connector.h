@@ -9,7 +9,7 @@
 
 //! @class sock_connector
 //! @brief tcp连接处理类
-class sock_connector : public event_handler, public non_copyable, public destroyable
+class sock_connector : public event_handler
 {
 public:
     //! 构造函数

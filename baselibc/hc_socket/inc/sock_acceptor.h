@@ -8,7 +8,7 @@
 
 //! @class sock_acceptor
 //! @brief tcp监听处理类
-class sock_acceptor : public event_handler, public non_copyable, public destroyable
+class sock_acceptor : public event_handler
 {
 public:
     //! 构造函数

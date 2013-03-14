@@ -56,7 +56,7 @@ int net_thread::svc()
                 break;
             }
 
-            event_handler* eh = event_handler::get_handler(netpkg->handler_id());
+            event_handler* eh = event_handler::hunt_handler(netpkg->handler_id());
             if (NULL == eh)
             {
                 netpkg->Destroy();

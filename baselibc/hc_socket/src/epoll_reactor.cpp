@@ -129,7 +129,7 @@ int epoll_reactor::run_reactor_event_loop()
     {
         epoll_reactor::m_last_scan_time_ = current_time;
         // 定时器处理 检测超时
-        event_handler::on_timer(current_time);
+        event_handler::scan_timer(current_time);
     }
 
     return count;
@@ -169,7 +169,7 @@ int epoll_reactor::enable_handler(event_handler* eh, uint32_t masks)
 
     int rc = 0;
     uint32_t tunnel_id = eh->m_net_id_;
-    event_handler* ehdr = event_handler::get_handler(tunnel_id);
+    event_handler* ehdr = event_handler::hunt_handler(tunnel_id);
     // event_handler is not in. add?
     if (NULL == ehdr)
     {
@@ -231,7 +231,7 @@ int epoll_reactor::disable_handler(event_handler* eh, uint32_t masks)
 
     int rc = 0;
     uint32_t tunnel_id = eh->m_net_id_;
-    event_handler* ehdr = event_handler::get_handler(tunnel_id);
+    event_handler* ehdr = event_handler::hunt_handler(tunnel_id);
     // event_handler is not in. do nothing
     if (NULL == ehdr)
     {

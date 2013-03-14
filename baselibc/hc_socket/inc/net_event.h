@@ -42,9 +42,9 @@ public:
     {
     }
 
-    ~net_event()
+    virtual ~net_event()
     {
-        if (NULL != m_net_package_)
+        if ( NULL != m_net_package_ )
         {
             m_net_package_->Destroy();
             m_net_package_ = NULL;
@@ -69,7 +69,7 @@ public:
 
 
 //! 网络事件处理器
-typedef void (*net_event_handler_callback_t)(net_event& ne);
+typedef void (*net_event_callback_t)(net_event& ne);
 
 typedef object_guard<net_event> net_event_pool;
 
