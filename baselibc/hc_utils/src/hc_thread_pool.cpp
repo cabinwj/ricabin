@@ -52,7 +52,7 @@ threadc* threadc_pool::create_thread()
 
 void threadc_pool::destroy_thread(threadc* thread)
 {
-    threadc_mutex_guard lock(m_mutex_);
+    threadc_mutex_guard lock(&m_mutex_);
 
     thread_pointer_list::iterator iter = find(m_live_threads_.begin(),
                                              m_live_threads_.end(), thread);
@@ -100,7 +100,7 @@ void threadc_pool::stop(size_t count)
     {
         sleep_ms(20);
 
-        threadc_mutex_guard lock(m_mutex_);
+        threadc_mutex_guard lock(&m_mutex_);
 
         if ( stop_count <= m_dead_threads_.size() )
         {
@@ -136,7 +136,7 @@ bool threadc_pool::run_once()
         sleep_ms(1);
         if ( m_stop_count_ > 0 )
         {
-            threadc_mutex_guard lock(m_mutex_);
+            threadc_mutex_guard lock(&m_mutex_);
 
             if ( this->m_stop_count_ > 0 )
             {

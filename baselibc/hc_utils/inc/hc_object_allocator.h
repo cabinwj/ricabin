@@ -115,7 +115,7 @@ public:
 
     virtual T* Create()
     {
-        threadc_mutex_guard lock(m_mutex_);
+        threadc_mutex_guard lock(&m_mutex_);
 
         if ( m_object_list_.empty() )
         {
@@ -133,7 +133,7 @@ public:
 
     virtual void Destroy(T* object)
     {
-        threadc_mutex_guard lock(m_mutex_);
+        threadc_mutex_guard lock(&m_mutex_);
 
         if ( NULL == object )
         {

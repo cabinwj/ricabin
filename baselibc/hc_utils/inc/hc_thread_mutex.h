@@ -103,19 +103,19 @@ class threadc_mutex_guard
 public:
     //! 构造函数
     //! @param mutex 用到的线程锁
-    threadc_mutex_guard(threadc_mutex& mutex) : m_mutex_(mutex)
+    threadc_mutex_guard(threadc_mutex* mutex) : m_mutex_(mutex)
     {
-        m_mutex_.acquire();
+        m_mutex_->acquire();
     }
 
     //! 析构函数
     ~threadc_mutex_guard()
     {
-        m_mutex_.release();
+        m_mutex_->release();
     }
 
 private:
-    threadc_mutex& m_mutex_;
+    threadc_mutex* m_mutex_;
 };
 
 #endif // _HC_THREAD_MUTEX_H_

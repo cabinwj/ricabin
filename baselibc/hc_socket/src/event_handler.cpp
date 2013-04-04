@@ -172,7 +172,7 @@ void event_handler::remove_handler(uint32_t tunnel_id)
 // set / cancel time out and notify close
 void event_handler::sync_timeout(event_handler* eh, time_t timeout)
 {
-    if (NULL == eh)
+    if ( NULL == eh )
     {
         return;
     }

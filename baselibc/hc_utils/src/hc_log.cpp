@@ -253,7 +253,7 @@ int logc::vlog(log_level_t level, const char* fmt, va_list ap)
         return -1;
     }
 
-    threadc_mutex_guard lock(m_mutex_);
+    threadc_mutex_guard lock(&m_mutex_);
     struct tm tm_now;
     struct timeval tv;
 #ifdef WIN32
@@ -329,7 +329,7 @@ int logc::log_hex(unsigned char* data, size_t len, log_level_t level)
         return -1;
     }
 
-    threadc_mutex_guard lock(m_mutex_);
+    threadc_mutex_guard lock(&m_mutex_);
 
     char msg_str[128] = {0};
 
