@@ -111,7 +111,7 @@ int webagent_frame::start(bool is_daemon)
     net_conf_t nconf;
     nconf.m_proto_type_ = SOCKET_PROTO_TCP;
     nconf.m_is_listen_ = 1;
-    nconf.m_app_proto_ = PROTOCOL_ASYNC;
+    nconf.m_app_proto_ = PROTOCOL_EX;
 
     memcpy(nconf.m_ipport_.m_ip_,
         webagentdxml.m_net_xml_[webagentdxml.m_use_index_].m_listen_.m_ip_port_.m_ip_,
@@ -143,7 +143,7 @@ int webagent_frame::start(bool is_daemon)
             net_conf_t nconf;
             nconf.m_proto_type_ = SOCKET_PROTO_TCP;
             nconf.m_is_listen_ = 0;
-            nconf.m_app_proto_ = PROTOCOL_ASYNC;
+            nconf.m_app_proto_ = PROTOCOL_IN;
 
             memcpy(nconf.m_ipport_.m_ip_,
                 webagentdxml.m_net_xml_[webagentdxml.m_use_index_].m_ent_set_.m_ent_array_[x].m_array_[y].m_ip_,

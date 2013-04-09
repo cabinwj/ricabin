@@ -8,11 +8,8 @@
 
 #ifdef WIN32
 #include <winsock2.h>
-#if _MSC_VER <= 1400
 #define vsnprintf _vsnprintf
 #define snprintf _snprintf
-#endif
-
 #else
 #include <sys/time.h>
 #include <unistd.h>

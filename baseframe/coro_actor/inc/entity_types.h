@@ -1,4 +1,4 @@
-#ifndef _ENTITY_TYPES_H_
+ï»¿#ifndef _ENTITY_TYPES_H_
 #define _ENTITY_TYPES_H_
 
 #include "hc_types.h"
@@ -8,7 +8,7 @@
 #include "protocol.h"
 
 
-// Æ½Ì¨ÏµÍ³ÖĞµÄÊµÌåÀàĞÍ (¸ß16Î»±íÊ¾ÀàĞÍ£¬µÍ16Î»±íÊ¾id£¬Ò»Àà·şÎñ¿ÉÒÔÓĞ256Ì¨)
+// å¹³å°ç³»ç»Ÿä¸­çš„å®ä½“ç±»å‹ (é«˜16ä½è¡¨ç¤ºç±»å‹ï¼Œä½16ä½è¡¨ç¤ºidï¼Œä¸€ç±»æœåŠ¡å¯ä»¥æœ‰256å°)
 enum platform_entity_type
 {
     pf_entity_null            = (uint32_t)0x0,
@@ -43,28 +43,28 @@ enum
 
 enum
 {
-    max_open_port_count             = 8,        //·şÎñÆ÷´ò¿ªµÄ¶Ë¿Ú×î´óÊıÄ¿
-    max_socket_count                = 0xfff0,   //Ö§³ÖµÄ×î´óÁ¬½ÓÊı
+    max_open_port_count             = 8,        //æœåŠ¡å™¨æ‰“å¼€çš„ç«¯å£æœ€å¤§æ•°ç›®
+    max_socket_count                = 0xfff0,   //æ”¯æŒçš„æœ€å¤§è¿æ¥æ•°
 
-    server_bitmap_length            = 16,       // ·şÎñÆ÷±êÊ¶µÄ³¤¶È
+    server_bitmap_length            = 16,       // æœåŠ¡å™¨æ ‡è¯†çš„é•¿åº¦
 
     max_client_pkg_size             = 10*1024,
     max_package_count_per_sending   = 512,      //
-    max_connect_entity_type_count   = 16,       //·şÎñÆ÷ÀàĞÍµÄ¸öÊı£¬¼´µ¥¸ö·şÎñÆ÷½öÄÜÎª16ÖÖ²»Í¬ÀàĞÍµÄ·şÎñÆ÷×÷Êı¾İ½»»¥¡£
-    max_connect_entity_id_count     = 16,       //Ã¿Àà·şÎñÆ÷£¬×î¶àÖ»Åä16¸ö·şÎñ½ø³Ì£¨¶ÔÓ¦²»Í¬µÄip£©¡£
+    max_connect_entity_type_count   = 16,       //æœåŠ¡å™¨ç±»å‹çš„ä¸ªæ•°ï¼Œå³å•ä¸ªæœåŠ¡å™¨ä»…èƒ½ä¸º16ç§ä¸åŒç±»å‹çš„æœåŠ¡å™¨ä½œæ•°æ®äº¤äº’ã€‚
+    max_connect_entity_id_count     = 16,       //æ¯ç±»æœåŠ¡å™¨ï¼Œæœ€å¤šåªé…16ä¸ªæœåŠ¡è¿›ç¨‹ï¼ˆå¯¹åº”ä¸åŒçš„ipï¼‰ã€‚
 
-    //ÓëÇ©ÃûÈÏÖ¤Ïà¹ØĞÅÏ¢
+    //ä¸ç­¾åè®¤è¯ç›¸å…³ä¿¡æ¯
     max_signature_length            = 256,
 
-    auth_service_key_length         = 16,        //ÓëÈÏÖ¤·şÎñÆ÷Ô¼¶¨µÄÃÜÔ¿³¤¶È
-    crypt_key_length                = 16,        //Óë¿Í»§¶ËµÄÍ¨Ñ¶Ê¹ÓÃµÄ¼ÓÃÜÃÜÔ¿³¤
+    auth_service_key_length         = 16,        //ä¸è®¤è¯æœåŠ¡å™¨çº¦å®šçš„å¯†é’¥é•¿åº¦
+    crypt_key_length                = 16,        //ä¸å®¢æˆ·ç«¯çš„é€šè®¯ä½¿ç”¨çš„åŠ å¯†å¯†é’¥é•¿
 
-    max_signature_valid_period      = 43200,     //(12*60*60) 12Ğ¡Ê±
-    min_signature_valid_period      = 3600,      //60*60 1Ğ¡Ê±
+    max_signature_valid_period      = 43200,     //(12*60*60) 12å°æ—¶
+    min_signature_valid_period      = 3600,      //60*60 1å°æ—¶
 
-    max_encrypt_key_length          = 16,        //¼ÓÃÜÃÜÔ¿µÄ³¤¶È
+    max_encrypt_key_length          = 16,        //åŠ å¯†å¯†é’¥çš„é•¿åº¦
 
-    min_cs_header_length            = 18,        //cs head(²»°üÀ¨optionËùÕ¼ÓÃµÄbuff³¤¶È£¬Ò²²»°üÀ¨sequence)
+    min_cs_header_length            = 18,        //cs head(ä¸åŒ…æ‹¬optionæ‰€å ç”¨çš„buffé•¿åº¦ï¼Œä¹Ÿä¸åŒ…æ‹¬sequence)
 
     min_option_length               = 0,
     max_option_length               = 256,
@@ -82,40 +82,40 @@ enum
 };
 
 
-// message_type 0x01-0x10Îªµ×²ã±£Áô
+// message_type 0x01-0x10ä¸ºåº•å±‚ä¿ç•™
 enum
 {
-    //·½Ïò: client  --> server, clientÊ×´Î·¢ËÍÏûÏ¢¸øserver£¬clientµÚÒ»´Î·¢ËÍÏûÏ¢
+    //æ–¹å‘: client  --> server, clienté¦–æ¬¡å‘é€æ¶ˆæ¯ç»™serverï¼Œclientç¬¬ä¸€æ¬¡å‘é€æ¶ˆæ¯
     message_start_request                = (uint16_t)0x11,
 
-    //·½Ïò: client <--  server, serverÖ÷¶¯¹Ø±ÕclientµÄÁ´½Ó
+    //æ–¹å‘: client <--  server, serverä¸»åŠ¨å…³é—­clientçš„é“¾æ¥
     message_force_close_connect          = (uint16_t)0x12,
 
-    //·½Ïò: client  --> server, clientÖ÷¶¯¶ÏÏß
+    //æ–¹å‘: client  --> server, clientä¸»åŠ¨æ–­çº¿
     message_disconnect_notify            = (uint16_t)0x13,
 
-    //·½Ïò: client  --> server, clientÖ÷¶¯¶ÏÏß£¬·şÎñÆ÷¸ù¾İMACµØÖ·hash
+    //æ–¹å‘: client  --> server, clientä¸»åŠ¨æ–­çº¿ï¼ŒæœåŠ¡å™¨æ ¹æ®MACåœ°å€hash
     message_disconnect_by_mac            = (uint16_t)0x14,
 };
 
 // close_reason_type
 enum
 {
-    close_reason_service               = (uint16_t)0x21,    //serviceÖ÷¶¯¹Ø±Õ
-    close_reason_client                = (uint16_t)0x22,    //clientÖ÷¶¯¹Ø±Õ
-    close_reason_io_error              = (uint16_t)0x23,    //IO¶ÁĞ´´íÎó
-    close_reason_data_error            = (uint16_t)0x24,    //ÎŞ·¨Ê¶±ğÊÕµ½¿Í»§¶ËµÄÏûÏ¢´íÎó
-    close_reason_queue_error           = (uint16_t)0x25,    //ÎŞ·¨Ê¶±ğÊÕµ½¿Í»§¶ËµÄÏûÏ¢´íÎó
-    close_reason_recv_buff_error       = (uint16_t)0x26,    //½ÓÊÕ»º³å´íÎó(Âú)
-    close_reason_send_buff_error       = (uint16_t)0x27,    //·¢ËÍ»º³å´íÎó(Âú)
+    close_reason_service               = (uint16_t)0x21,    //serviceä¸»åŠ¨å…³é—­
+    close_reason_client                = (uint16_t)0x22,    //clientä¸»åŠ¨å…³é—­
+    close_reason_io_error              = (uint16_t)0x23,    //IOè¯»å†™é”™è¯¯
+    close_reason_data_error            = (uint16_t)0x24,    //æ— æ³•è¯†åˆ«æ”¶åˆ°å®¢æˆ·ç«¯çš„æ¶ˆæ¯é”™è¯¯
+    close_reason_queue_error           = (uint16_t)0x25,    //æ— æ³•è¯†åˆ«æ”¶åˆ°å®¢æˆ·ç«¯çš„æ¶ˆæ¯é”™è¯¯
+    close_reason_recv_buff_error       = (uint16_t)0x26,    //æ¥æ”¶ç¼“å†²é”™è¯¯(æ»¡)
+    close_reason_send_buff_error       = (uint16_t)0x27,    //å‘é€ç¼“å†²é”™è¯¯(æ»¡)
 
-    close_reason_client_timeout        = (uint16_t)0x28,    //¿Í»§¶Ë³¬Ê±(ÒÑ¾­Óëservice½ø³Ì½»»»¹ıÊı¾İ)
-    close_reason_channel_error         = (uint16_t)0x29,    //Ğ´ÄÚ´æ¹ÜµÀ´íÎó
-    close_reason_app_error             = (uint16_t)0x2a,    //½ø³Ì´íÎó
-    close_reason_system_error          = (uint16_t)0x2b,    //ÏµÍ³´íÎó
-    close_reason_invalid_connect       = (uint16_t)0x2c,    //Á¬½ÓÎŞĞ§£¨Ã»ÓĞÓëºó¶ËserverÓĞ¹ıÊı¾İ½»»»£¬²»ĞèÒªÍ¨Öªservice½ø³Ì½øĞĞÇåÀí¶¯×÷£©
+    close_reason_client_timeout        = (uint16_t)0x28,    //å®¢æˆ·ç«¯è¶…æ—¶(å·²ç»ä¸serviceè¿›ç¨‹äº¤æ¢è¿‡æ•°æ®)
+    close_reason_channel_error         = (uint16_t)0x29,    //å†™å†…å­˜ç®¡é“é”™è¯¯
+    close_reason_app_error             = (uint16_t)0x2a,    //è¿›ç¨‹é”™è¯¯
+    close_reason_system_error          = (uint16_t)0x2b,    //ç³»ç»Ÿé”™è¯¯
+    close_reason_invalid_connect       = (uint16_t)0x2c,    //è¿æ¥æ— æ•ˆï¼ˆæ²¡æœ‰ä¸åç«¯serveræœ‰è¿‡æ•°æ®äº¤æ¢ï¼Œä¸éœ€è¦é€šçŸ¥serviceè¿›ç¨‹è¿›è¡Œæ¸…ç†åŠ¨ä½œï¼‰
 
-    close_reason_invalid_signature     = (uint16_t)0x2d,    //ÎŞĞ§µÄÊı×ÖÇ©Ãû 
+    close_reason_invalid_signature     = (uint16_t)0x2d,    //æ— æ•ˆçš„æ•°å­—ç­¾å 
 };
 
 
@@ -133,12 +133,12 @@ struct net_hdr_t
     uint32_t m_packet_len_;
     uint16_t m_message_id_;
     uint16_t m_message_type_;   // message_t
-    uint32_t m_reserved_;
+    uint32_t m_reserved_;       // åç¨‹sequenceæ ‡ç¤º/æœåŠ¡å™¨uinæ ‡ç¤º
 
-    uint32_t m_request_sequence_;
-    uint16_t m_control_type_;
-    uint32_t m_client_net_id_;
-    uint32_t m_client_uin_;
+    uint32_t m_request_sequence_;// clientåŒ…çš„è¯·æ±‚åºåˆ—
+    uint16_t m_control_type_;   // æ“ä½œå’Œå¤„ç†æ–¹å¼
+    uint32_t m_client_net_id_;  // net é€šé“id
+    uint32_t m_client_uin_;     // client uin
     uint32_t m_from_uin_;
     uint32_t m_to_uin_;
 };
@@ -148,7 +148,7 @@ struct conn_hdr_t
 {
     uint32_t m_packet_len_;
     uint32_t m_client_uin_;
-    uint16_t m_option_len_;
+    uint16_t m_option_len_;     // 0 <= option_ <= 256 
     char m_option_[max_signature_length];
 
     uint16_t m_message_id_;
@@ -166,7 +166,7 @@ struct socket_statistics_t
 
 typedef enum client_protocol_type
 {
-    // client Óë connector Ö®¼äµÄĞ­Òé  1000Æğ
+    // client ä¸ connector ä¹‹é—´çš„åè®®  1000èµ·
     C_KEEPALIVE                   = (uint16_t)1000,
 
     C_LOGIN                       = (uint16_t)1001,
@@ -210,7 +210,7 @@ typedef enum client_protocol_type
 
 typedef enum server_protocol_type
 {
-    // server Óë server Ö®¼äµÄĞ­Òé  6000Æğ
+    // server ä¸ server ä¹‹é—´çš„åè®®  6000èµ·
     S_KEEPALIVE                   = (uint16_t)6000,
 
     S_LOGIN                       = (uint16_t)6001,
@@ -274,7 +274,7 @@ typedef enum server_protocol_type
 } s_proto_t;
 
 
-// ¼ÓÃÜ½âÃÜ³öÍæ¼ÒµÄsignature
+// åŠ å¯†è§£å¯†å‡ºç©å®¶çš„signature
 int encrypt_signature(const signature_t& signature, char* out, int16_t& out_length);
 int decrypt_signature(char* in, int16_t in_length, signature_t& signature);
 
