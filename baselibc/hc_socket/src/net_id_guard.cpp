@@ -1,9 +1,12 @@
 #include "net_id_guard.h"
+#include "hc_stack_trace.h"
 
 
 // class net_id_guard
 net_id_guard::net_id_guard()
 {
+    STACK_TRACE_LOG();
+
     m_tcp_connector_id_queue_ = new net_id_queue( TCP_CONNECTOR_END - TCP_CONNECTOR_BEGIN + 1 );
     for (uint32_t id = TCP_CONNECTOR_BEGIN; id <= TCP_CONNECTOR_END; id++) {
         m_tcp_connector_id_queue_->push(id);
@@ -22,6 +25,8 @@ net_id_guard::net_id_guard()
 
 net_id_guard::~net_id_guard()
 {
+    STACK_TRACE_LOG();
+
     if (NULL != m_tcp_connector_id_queue_)
     {
         delete m_tcp_connector_id_queue_;
@@ -43,6 +48,8 @@ net_id_guard::~net_id_guard()
 
 uint32_t net_id_guard::acquire(net_id_guard::net_id_t type)
 {
+    STACK_TRACE_LOG();
+
     int rc = 0;
     uint32_t id = 0;
 
@@ -71,6 +78,8 @@ uint32_t net_id_guard::acquire(net_id_guard::net_id_t type)
 
 void net_id_guard::release(uint32_t id)
 {
+    STACK_TRACE_LOG();
+
     if ((id >= TCP_CONNECTOR_BEGIN) && (id <= TCP_CONNECTOR_END)) {
         m_tcp_connector_id_queue_->push(id);
     }

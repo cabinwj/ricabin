@@ -1,4 +1,4 @@
-ï»¿#include "frame_base.h"
+#include "frame_base.h"
 
 #include "hc_list.h"
 #include "hc_log.h"
@@ -67,7 +67,7 @@ void run_environment_once()
     timer_min_heap::scan_timer();
     keep_alive::on_check_alive((uint32_t)time(NULL));
 
-    // å¤„ç†ç½‘ç»œäº‹ä»¶
+    // ´¦ÀíÍøÂçÊÂ¼ş
     net_event* netev = net_manager::Instance()->pop_event();
     if (NULL == netev)
     {
@@ -113,16 +113,16 @@ void run_environment_once()
             inpkg.offset_head(sizeof(net_hdr_t));
             inpkg.get_head(phdr);
 
-            // å¿ƒè·³åŒ…ï¼ˆæ³¨ï¼šæœåŠ¡å™¨ä¹‹é—´çš„å¿ƒè·³ï¼ŒåŒ…åˆ†ä¸ºè¯·æ±‚å’Œå›åº” message_async_syn/ message_async_ackï¼‰
+            // ĞÄÌø°ü£¨×¢£º·şÎñÆ÷Ö®¼äµÄĞÄÌø£¬°ü·ÖÎªÇëÇóºÍ»ØÓ¦ message_async_syn/ message_async_ack£©
             if ( 0 == phdr.m_message_id_ )
             {
                 LOG(INFO)("run_environment_once() receive keep alive heart beat. net<%u:%u:%u>", netev->m_listen_net_id_, netev->m_net_id_, netev->m_net_ev_t_);
-                // æ­£å¥½åªæœ‰ä¸€ä¸ªåŒ…å¤´çš„é•¿åº¦
+                // ÕıºÃÖ»ÓĞÒ»¸ö°üÍ·µÄ³¤¶È
                 if ( (!inpkg.good()) || (!inpkg.eof())) return;
 
                 keep_alive::on_recv_alive(netev->m_net_id_);
 
-                // æ­¤å¤„çš„å¿ƒè·³åŒ…ï¼Œå¦‚æœæ˜¯è¯·æ±‚ï¼Œåˆ™è¦å›åº”ã€‚ä»¥é¿å…ä¸é—´æ–­çš„æ¥å›å‘ã€‚
+                // ´Ë´¦µÄĞÄÌø°ü£¬Èç¹ûÊÇÇëÇó£¬ÔòÒª»ØÓ¦¡£ÒÔ±ÜÃâ²»¼ä¶ÏµÄÀ´»Ø·¢¡£
                 if ( message_syn == phdr.m_message_type_ )
                 {
                     // send alive response here
@@ -138,14 +138,14 @@ void run_environment_once()
                     if ((message_alive == phdr.m_control_type_) && (netev->m_net_id_ == phdr.m_client_net_id_) &&
                         (0 != phdr.m_reserved_ ) && (phdr.m_reserved_ == phdr.m_client_uin_) && (phdr.m_reserved_ == phdr.m_from_uin_))
                     {
-                        // ä»å…¶å®ƒ server è¿‡æ¥çš„å¿ƒè·³åŒ…ï¼ˆåŒºåˆ†clientï¼‰ï¼Œæ›´æ–° remote_uin å¹¶åŠ å…¥åˆ—è¡¨ã€‚
+                        // ´ÓÆäËü server ¹ıÀ´µÄĞÄÌø°ü£¨Çø·Öclient£©£¬¸üĞÂ remote_uin ²¢¼ÓÈëÁĞ±í¡£
                         client->m_remote_uin_ = phdr.m_reserved_;
                         client->m_is_trans_.set(is_trans_accept_server);
                         session_list::append_uin_to_list(client);
                     }
                 }
             }
-            // å¿ƒè·³ä»¥å¤–çš„å¼‚æ­¥å›åº”åŒ…
+            // ĞÄÌøÒÔÍâµÄÒì²½»ØÓ¦°ü
             else if ( message_async_ack == phdr.m_message_type_ )
             {
                 LOG(INFO)("run_environment_once() dispatch net event have async ack sequence:%u, net<%u:%u:%u>", phdr.m_reserved_, netev->m_listen_net_id_, netev->m_net_id_, netev->m_net_ev_t_);
@@ -176,7 +176,7 @@ void run_environment_once()
     case net_event::NE_CLOSE:
     case net_event::NE_EXCEPTION: {
 
-        // å”¤é†’æŒ‚èµ·çš„æ‰€æœ‰åç¨‹
+        // »½ĞÑ¹ÒÆğµÄËùÓĞĞ­³Ì
         coro_hash::on_awaken_coro((uint32_t)time(NULL));
 
         if (cp->m_keep_alive_interval_ || cp->m_keep_alive_timeout_)
@@ -191,7 +191,7 @@ void run_environment_once()
     } break;
 
     case net_event::NE_TIMEOUT:
-        // åº”ç”¨å±‚ä¸»åŠ¨å…³é—­
+        // Ó¦ÓÃ²ãÖ÷¶¯¹Ø±Õ
     case net_event::NE_NOTIFY_CLOSE: {
 
         cp->m_net_event_handler_cb_(*netev);
@@ -299,10 +299,10 @@ void release_tunnel(uint32_t net_id)
     LOG(INFO)("release_tunnel() notify close. net_id:%u", net_id);
     net_manager::Instance()->notify_close(net_id);
 
-    // å”¤é†’æŒ‚èµ·çš„æ‰€æœ‰åç¨‹
+    // »½ĞÑ¹ÒÆğµÄËùÓĞĞ­³Ì
     coro_hash::on_awaken_coro((uint32_t)time(NULL));
 
-    // åˆ é™¤å¿ƒè·³ä¿¡æ¯
+    // É¾³ıĞÄÌøĞÅÏ¢
     keep_alive::on_disconnect(net_id);
 }
 
@@ -311,7 +311,7 @@ int send_async_package(uint32_t net_id, net_package*& np, int timeout, net_event
     uint32_t async_sequence = unique_sequence32::Instance()->sequence();
     LOG(TRACE)("send_async_package() net id:%u, sequence id:%u", net_id, async_sequence);
 
-    // ç»„å¼‚æ­¥è¯·æ±‚åŒ…ï¼Œè·³è½¬åˆ°åŒ…å¤´ä¸­çš„typeä½ç½®å¼€å§‹å†™
+    // ×éÒì²½ÇëÇó°ü£¬Ìø×ªµ½°üÍ·ÖĞµÄtypeÎ»ÖÃ¿ªÊ¼Ğ´
     binary_output_packet<true> outpkg(np->get_data(), np->size());
 
     outpkg.offset(sizeof(uint32_t) + sizeof(uint16_t));
@@ -320,35 +320,35 @@ int send_async_package(uint32_t net_id, net_package*& np, int timeout, net_event
     int rc = net_manager::Instance()->send_package(net_id, np);
     if (0 != rc)
     {
-        // å‘é€å¤±è´¥
+        // ·¢ËÍÊ§°Ü
         return -1;
     }
 
-    // åŒ…å‘å‡ºå»åï¼Œç­‰å¾…å›åº”(ç›¸å½“äºé˜»å¡æ“ä½œ)
+    // °ü·¢³öÈ¥ºó£¬µÈ´ı»ØÓ¦(Ïàµ±ÓÚ×èÈû²Ù×÷)
     coroutine* coro = coro_scheduler::current_coro();
-    // å½“å‰åç¨‹æ”¾å…¥å¼‚æ­¥è¯·æ±‚é˜»å¡åç¨‹çš„ä»»åŠ¡é˜Ÿåˆ—ã€‚
+    // µ±Ç°Ğ­³Ì·ÅÈëÒì²½ÇëÇó×èÈûĞ­³ÌµÄÈÎÎñ¶ÓÁĞ¡£
     coro_hash::push_coro(net_id, async_sequence, coro);
 
-    // è®¾ç½®å®šæ—¶å™¨(ä¸åç¨‹å…³è”)
+    // ÉèÖÃ¶¨Ê±Æ÷(ÓëĞ­³Ì¹ØÁª)
     coro_timer* ctimer = new coro_timer(timeout, coro);
     timer_min_heap::enable_timer(ctimer);
 
-    // åˆ‡å›ä¸»åç¨‹
+    // ÇĞ»ØÖ÷Ğ­³Ì
     coro_scheduler::yield();
 
-    // å¼‚æ­¥å›åº”è¶…æ—¶
+    // Òì²½»ØÓ¦³¬Ê±
     if (-1 == ctimer->min_heap_idx())
     {
-        // è¶…æ—¶ï¼Œç§»å‡ºé˜»å¡åç¨‹çš„ä»»åŠ¡é˜Ÿåˆ—
+        // ³¬Ê±£¬ÒÆ³ö×èÈûĞ­³ÌµÄÈÎÎñ¶ÓÁĞ
         coro_hash::remove_coro(coro);
         return -2;
     }
 
-    // ä»io resultä¸­æ‹¿eventï¼Œif (NULL == event)è¡¨ç¤º socket close or exception
+    // ´Óio resultÖĞÄÃevent£¬if (NULL == event)±íÊ¾ socket close or exception
     ne = (net_event*)coro_scheduler::current_coro()->get_io_result();
     timer_min_heap::disable_timer(ctimer);
 
-    // ç§»å‡ºé˜»å¡åç¨‹çš„ä»»åŠ¡é˜Ÿåˆ—
+    // ÒÆ³ö×èÈûĞ­³ÌµÄÈÎÎñ¶ÓÁĞ
     coro_hash::remove_coro(coro);
 
     return 0;
@@ -357,7 +357,7 @@ int send_async_package(uint32_t net_id, net_package*& np, int timeout, net_event
 void coro_sleep(int32_t timeout)
 {
     coroutine* coro = coro_scheduler::current_coro();
-    // ç”¨å †å†…å­˜ï¼Œé”€æ¯ç”±coro timer heapè´Ÿè´£
+    // ÓÃ¶ÑÄÚ´æ£¬Ïú»ÙÓÉcoro timer heap¸ºÔğ
     coro_timer* corotimer = new coro_timer(timeout, coro);
 
     timer_min_heap::enable_timer(corotimer);

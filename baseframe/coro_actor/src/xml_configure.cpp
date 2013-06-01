@@ -1,4 +1,5 @@
 #include "xml_configure.h"
+#include "hc_stack_trace.h"
 
 #include <stdlib.h>
 #include <string>
@@ -8,6 +9,8 @@
 xml_configure::xml_configure()
     : m_use_index_(master), m_root_elem_(NULL)
 {
+    STACK_TRACE_LOG();
+
     bzero(m_net_xml_, sizeof(m_net_xml_));
 }
 
@@ -338,7 +341,7 @@ uint32_t xml_configure::get_entity_id_by_addr(const Address& laddr)
             Address raddr(m_net_xml_[m_use_index_].m_ent_set_.m_ent_array_[x].m_array_[y].m_ip_,
                           m_net_xml_[m_use_index_].m_ent_set_.m_ent_array_[x].m_array_[y].m_port_);
 
-            if (raddr.get_net_ip() == laddr.get_net_ip())
+            if (raddr.net_ip() == laddr.net_ip())
             {
                 return m_net_xml_[m_use_index_].m_ent_set_.m_ent_array_[x].m_ent_type_ + ((y+1) & pf_entity_id_mark);
             }

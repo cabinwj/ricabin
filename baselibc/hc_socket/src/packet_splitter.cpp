@@ -1,11 +1,14 @@
 #include "packet_splitter.h"
 #include "hc_os.h"
 #include "hc_log.h"
+#include "hc_stack_trace.h"
 #include "config.h"
 
 // class string_splitter
 int string_splitter::split(const char* buf, int len, int& real_pkglen)
 {
+    STACK_TRACE_LOG();
+
     if (len < 6) 
     {
         return 0;
@@ -75,6 +78,8 @@ int string_splitter::split(const char* buf, int len, int& real_pkglen)
 
 string_splitter* string_splitter::Instance()
 {
+    //STACK_TRACE_LOG();
+
     static string_splitter __split;
     return &__split;
 }
@@ -83,6 +88,8 @@ string_splitter* string_splitter::Instance()
 // class binary2_splitter
 int binary2_splitter::split(const char* buf, int len, int& real_pkglen)
 {
+    STACK_TRACE_LOG();
+
     uint8_t min_len = sizeof(uint16_t);
     if (len < min_len)
     {
@@ -114,6 +121,8 @@ int binary2_splitter::split(const char* buf, int len, int& real_pkglen)
 
 binary2_splitter* binary2_splitter::Instance()
 {
+    //STACK_TRACE_LOG();
+
     static binary2_splitter __split;
     return &__split;
 }
@@ -121,6 +130,8 @@ binary2_splitter* binary2_splitter::Instance()
 // class binary4_splitter
 int binary4_splitter::split(const char* buf, int len, int& real_pkglen)
 {
+    STACK_TRACE_LOG();
+
     uint8_t min_len = sizeof(uint32_t);
     if (len < min_len)
     {
@@ -152,6 +163,8 @@ int binary4_splitter::split(const char* buf, int len, int& real_pkglen)
 
 binary4_splitter* binary4_splitter::Instance()
 {
+    //STACK_TRACE_LOG();
+
     static binary4_splitter __split;
     return &__split;
 }
@@ -160,6 +173,8 @@ binary4_splitter* binary4_splitter::Instance()
 // class line_splitter
 int line_splitter::split(const char* buf, int len, int& real_pkglen)
 {
+    STACK_TRACE_LOG();
+
     int p1 = -1;
     int p2 = -1;
 
@@ -218,11 +233,15 @@ int line_splitter::split(const char* buf, int len, int& real_pkglen)
 
 line_splitter* line_splitter::Instance()
 {
+    //STACK_TRACE_LOG();
+
     static line_splitter __split;
     return &__split;
 }
 
 packet_splitter* packet_splitter::Instance()
 {
+    //STACK_TRACE_LOG();
+
     return binary4_splitter::Instance();
 }

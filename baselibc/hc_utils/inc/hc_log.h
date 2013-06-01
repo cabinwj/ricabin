@@ -235,8 +235,8 @@ private:
 #define LOG_TRACE logc::global_log.log_trace
 #define LOG_DEBUG logc::global_log.log_debug
 
-#define LOG_HEX(m_data_, len, level) logc::global_log.log_hex((unsigned char *)(m_data_), (len), (level))
-#define LOG_HEX_PREFIX(prefix, m_data_, len, level) logc::global_log.log_hex_prefix((unsigned char *)(prefix), (unsigned char *)(m_data_), (len), (level))
+#define LOG_HEX(m_data_, len, level) logc::global_log.log_hex((unsigned char*)(m_data_), (len), (level))
+#define LOG_HEX_PREFIX(prefix, m_data_, len, level) logc::global_log.log_hex_prefix((unsigned char*)(prefix), (unsigned char*)(m_data_), (len), (level))
 
 
 #define LOG_INIT(name, size, level) \

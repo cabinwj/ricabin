@@ -3,6 +3,7 @@
 #ifndef WIN32
 #include "event_handler.h"
 #include "hc_log.h"
+#include "hc_stack_trace.h"
 #include "hc_list.h"
 
 // class epoll_reactor
@@ -10,17 +11,23 @@ time_t epoll_reactor::m_last_scan_time_ = time(NULL);
 
 epoll_reactor::epoll_reactor()
 {
+    STACK_TRACE_LOG();
+
     m_epfd = -1;
     m_events = new epoll_event[MAX_HANDLER * 2];
 }
 
 epoll_reactor::~epoll_reactor()
 {
+    STACK_TRACE_LOG();
+
     delete [] m_events;
 }
 
 int epoll_reactor::open_reactor()
 {
+    STACK_TRACE_LOG();
+
     m_epfd = epoll_create(MAX_HANDLER);
     if (-1 == m_epfd)
     {
@@ -33,6 +40,8 @@ int epoll_reactor::open_reactor()
 
 int epoll_reactor::close_reactor()
 {
+    STACK_TRACE_LOG();
+
     if (-1 != m_epfd)
     {
         close(m_epfd);
@@ -44,6 +53,8 @@ int epoll_reactor::close_reactor()
 
 int epoll_reactor::run_reactor_event_loop()
 {
+    STACK_TRACE_LOG();
+
     if (-1 == m_epfd)
     {
         return -1;
@@ -137,12 +148,16 @@ int epoll_reactor::run_reactor_event_loop()
 
 int epoll_reactor::end_reactor_event_loop()
 {
+    STACK_TRACE_LOG();
+
     event_handler::clear_hash_table();
     return close_reactor();
 }
 
 int epoll_reactor::enable_handler(event_handler* eh, uint32_t masks)
 {
+    STACK_TRACE_LOG();
+
     if (-1 == m_epfd)
     {
         return -1;
@@ -205,6 +220,8 @@ int epoll_reactor::enable_handler(event_handler* eh, uint32_t masks)
 
 int epoll_reactor::disable_handler(event_handler* eh, uint32_t masks)
 {
+    STACK_TRACE_LOG();
+
     if (-1 == m_epfd)
     {
         return -1;

@@ -2,6 +2,7 @@
 #include "net_id_guard.h"
 
 #include "hc_log.h"
+#include "hc_stack_trace.h"
 
 
 // class sock_stream
@@ -15,6 +16,8 @@ object_guard<sock_stream>* sock_stream::m_pool_ = new \
 
 sock_stream::sock_stream() : m_net_manager_(NULL), m_packet_splitter_(NULL)
 {
+    STACK_TRACE_LOG();
+
     m_listen_net_id_ = 0;
     m_net_id_ = 0;
     m_user_data_ = NULL;
@@ -32,6 +35,8 @@ int sock_stream::init(uint32_t listen_net_id, uint32_t net_id,
                       net_manager* nm, packet_splitter* ps, const Address& remote_addr,
                       Descriptor socket, void* user_data)
 {
+    STACK_TRACE_LOG();
+
     m_net_manager_ = (NULL == nm) ? net_manager::Instance() : nm;
     m_packet_splitter_ = (NULL == ps) ? packet_splitter::Instance() : ps;
 
@@ -60,6 +65,8 @@ int sock_stream::init(uint32_t listen_net_id, uint32_t net_id,
 
 sock_stream::~sock_stream()
 {
+    STACK_TRACE_LOG();
+
     if (0 != m_net_id_)
     {
         m_net_manager_->release_net_id(m_net_id_);
@@ -80,12 +87,16 @@ sock_stream::~sock_stream()
 
 void sock_stream::close_stream()
 {
+    STACK_TRACE_LOG();
+
     m_socket_.close();
 }
 
 int sock_stream::handle_input()
 {
-    LOG(INFO)("sock_stream::handle_input, net<%u:%u>, remote_addr<0x%08X:%d>", m_listen_net_id_, m_net_id_, m_remote_addr_.get_net_ip(), m_remote_addr_.get_net_port());
+    STACK_TRACE_LOG();
+
+    LOG(INFO)("sock_stream::handle_input, net<%u:%u>, remote_addr<0x%08X:%d>", m_listen_net_id_, m_net_id_, m_remote_addr_.net_ip(), m_remote_addr_.net_port());
     // TODO: 检查此处的处理逻辑，是否会造成由于单个连接而拖累整个服务
     while (true)
     {
@@ -244,7 +255,9 @@ int sock_stream::handle_input()
 
 int sock_stream::handle_output()
 {
-    LOG(INFO)("sock_stream::handle_output, net<%u:%u>, remote_addr<0x%08X:%d>", m_listen_net_id_, m_net_id_, m_remote_addr_.get_net_ip(), m_remote_addr_.get_net_port());
+    STACK_TRACE_LOG();
+
+    LOG(INFO)("sock_stream::handle_output, net<%u:%u>, remote_addr<0x%08X:%d>", m_listen_net_id_, m_net_id_, m_remote_addr_.net_ip(), m_remote_addr_.net_port());
 #ifdef WIN32
     if (NULL == m_send_netpkg_ && 0 == m_socket_send_packet_queue_->size())
     {
@@ -330,6 +343,8 @@ int sock_stream::handle_output()
 
 int sock_stream::handle_close(net_event::net_ev_t evt)
 {
+    STACK_TRACE_LOG();
+
     switch (evt)
     {
     case net_event::NE_CLOSE:
@@ -370,7 +385,9 @@ int sock_stream::handle_close(net_event::net_ev_t evt)
 
 int sock_stream::post_package(net_package* netpkg)
 {
-    LOG(INFO)("sock_stream::post_package, net<%u:%u>, remote_addr<0x%08X:%d>", m_listen_net_id_, m_net_id_, m_remote_addr_.get_net_ip(), m_remote_addr_.get_net_port());
+    STACK_TRACE_LOG();
+
+    LOG(INFO)("sock_stream::post_package, net<%u:%u>, remote_addr<0x%08X:%d>", m_listen_net_id_, m_net_id_, m_remote_addr_.net_ip(), m_remote_addr_.net_port());
     if ((NULL == netpkg) || (0 == netpkg->length()))
     {
         LOG(TRACE)("sock_stream::post_package netpkg is NULL or netpkg length is 0");
@@ -429,7 +446,9 @@ int sock_stream::post_package(net_package* netpkg)
 
 int sock_stream::send_package()
 {
-    LOG(INFO)("sock_stream::send_package, net<%u:%u>, remote_addr<0x%08X:%d>", m_listen_net_id_, m_net_id_, m_remote_addr_.get_net_ip(), m_remote_addr_.get_net_port());
+    STACK_TRACE_LOG();
+
+    LOG(INFO)("sock_stream::send_package, net<%u:%u>, remote_addr<0x%08X:%d>", m_listen_net_id_, m_net_id_, m_remote_addr_.net_ip(), m_remote_addr_.net_port());
     if ((NULL == m_send_netpkg_) || (0 == m_send_netpkg_->length()))
     {
         LOG(TRACE)("sock_stream::send_package m_send_netpkg_ is NULL or m_send_netpkg_ length is 0");

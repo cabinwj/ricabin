@@ -1,14 +1,18 @@
 #include "net_package.h"
 #include "hc_log.h"
+#include "hc_stack_trace.h"
 
 
 net_package::net_package()
     : m_allocator_(NULL), m_data_block_(NULL), m_handler_id_(0)
 {
+    STACK_TRACE_LOG();
 }
 
 net_package::~net_package()
 {
+    STACK_TRACE_LOG();
+
     if (NULL != m_data_block_)
     {
         m_data_block_->~data_block();
@@ -19,6 +23,8 @@ net_package::~net_package()
 
 int net_package::allocator_data_block(allocatorc* alloc, uint32_t buffer_length)
 {
+    STACK_TRACE_LOG();
+
     if (NULL == alloc)
     {
         LOG(ERROR)("assert: data_package::allocator_data_block() m_allocator_ is NULL.");
@@ -59,6 +65,8 @@ int net_package::allocator_data_block(allocatorc* alloc, uint32_t buffer_length)
 
 void net_package::set_data(char* data, uint32_t data_len)
 {
+    STACK_TRACE_LOG();
+
     // data_block剩下的数据空间
     uint32_t available_len = m_data_block_->available();
     if ((data_len > available_len) || (data_len <= 0))

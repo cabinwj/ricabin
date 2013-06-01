@@ -1,20 +1,27 @@
 #include "socket.h"
+#include "hc_stack_trace.h"
 
 Socket::Socket() : descriptor_(INVALID_SOCKET)
 {
+    STACK_TRACE_LOG();
 }
 
 Socket::Socket(Descriptor sfd) : descriptor_(sfd)
 {
+    STACK_TRACE_LOG();
 }
 
 Socket::Socket(Family family, Type type, Protocol protocol)
 {
+    STACK_TRACE_LOG();
+
     open(family, type, protocol);
 }
 
 Socket::~Socket()
 {
+    STACK_TRACE_LOG();
+
     if (is_opened())
     {
         ::close(descriptor_);
@@ -24,6 +31,8 @@ Socket::~Socket()
 
 int Socket::open(Family family, Type type, Protocol protocol)
 {
+    STACK_TRACE_LOG();
+
     if (is_opened())
     {
         LOG(ERROR)("Socket::open() socket error, socket already opened");
@@ -43,6 +52,8 @@ int Socket::open(Family family, Type type, Protocol protocol)
 
 void Socket::close()
 {
+    STACK_TRACE_LOG();
+
     if (!is_opened())
     {
         LOG(ERROR)("Socket::close() socket error, socket not opened");
@@ -56,6 +67,8 @@ void Socket::close()
 
 int Socket::bind(const sockaddr_in& addr)
 {
+    STACK_TRACE_LOG();
+
     if (!is_opened())
     {
         LOG(ERROR)("Socket::bind() socket error, socket not opened");
@@ -77,11 +90,15 @@ int Socket::bind(const sockaddr_in& addr)
 
 int Socket::bind(const Address& addr)
 {
+    STACK_TRACE_LOG();
+
     return bind(static_cast<const sockaddr_in>(addr));
 }
 
 int Socket::connect(const sockaddr_in& addr)
 {
+    STACK_TRACE_LOG();
+
     if (!is_opened())
     {
         LOG(ERROR)("Socket::connect() socket error, socket not opened");
@@ -103,11 +120,15 @@ int Socket::connect(const sockaddr_in& addr)
 
 int Socket::connect(const Address& addr)
 {
+    STACK_TRACE_LOG();
+
     return connect(static_cast<const sockaddr_in>(addr));
 }
 
 int Socket::send(const char* data, size_t size, int flags)
 {
+    STACK_TRACE_LOG();
+
     if (!is_opened())
     {
         LOG(ERROR)("Socket::send() socket error, socket not opened");
@@ -131,6 +152,8 @@ int Socket::send(const char* data, size_t size, int flags)
 
 int Socket::sendto(const sockaddr_in& addr, const char* data, size_t size, int flags)
 {
+    STACK_TRACE_LOG();
+
     if (!is_opened())
     {
         LOG(ERROR)("Socket::sendto() socket error, socket not opened");
@@ -156,11 +179,15 @@ int Socket::sendto(const sockaddr_in& addr, const char* data, size_t size, int f
 
 int Socket::sendto(const Address& addr, const char* data, size_t size, int flags)
 {
+    STACK_TRACE_LOG();
+
     return sendto(sockaddr_in(addr),data,size,flags);
 }
 
 int Socket::recv(char* data, size_t size, int flags)
 {
+    STACK_TRACE_LOG();
+
     if (!is_opened())
     {
         LOG(ERROR)("Socket::recv() socket error, socket not opened");
@@ -184,6 +211,8 @@ int Socket::recv(char* data, size_t size, int flags)
 
 int Socket::recvfrom(sockaddr_in& addr, char* data, size_t size, int flags)
 {
+    STACK_TRACE_LOG();
+
     if (!is_opened())
     {
         LOG(ERROR)("Socket::recvfrom() socket error, socket not opened");
@@ -210,6 +239,8 @@ int Socket::recvfrom(sockaddr_in& addr, char* data, size_t size, int flags)
 
 int Socket::recvfrom(Address& addr, char* data, size_t size, int flags)
 {
+    STACK_TRACE_LOG();
+
     sockaddr_in saddr;
     int bytes = recvfrom(saddr,data,size,flags);
     addr = saddr;
@@ -218,6 +249,8 @@ int Socket::recvfrom(Address& addr, char* data, size_t size, int flags)
 
 int Socket::listen(int queuelen)
 {
+    STACK_TRACE_LOG();
+
     if (!is_opened())
     {
         LOG(ERROR)("Socket::listen() socket error, socket not opened");
@@ -237,6 +270,8 @@ int Socket::listen(int queuelen)
 
 Descriptor Socket::accept(sockaddr_in& addr)
 {
+    STACK_TRACE_LOG();
+
     Descriptor socketfd = INVALID_SOCKET;
 
     if (!is_opened())
@@ -264,6 +299,8 @@ Descriptor Socket::accept(sockaddr_in& addr)
 
 Descriptor Socket::accept(Address& addr)
 {
+    STACK_TRACE_LOG();
+
     sockaddr_in address = addr;
     Descriptor socket = accept(address);
     addr = address;
@@ -272,6 +309,8 @@ Descriptor Socket::accept(Address& addr)
 
 int Socket::getsockname(sockaddr_in& addr)
 {
+    STACK_TRACE_LOG();
+
     if (!is_opened())
     {
         LOG(ERROR)("Socket::getsockname() socket error, socket not opened");
@@ -294,6 +333,8 @@ int Socket::getsockname(sockaddr_in& addr)
 
 int Socket::getsockname(Address& addr)
 {
+    STACK_TRACE_LOG();
+
     sockaddr_in address = addr;
     int rc = getsockname(address);
     addr = address;
@@ -302,6 +343,8 @@ int Socket::getsockname(Address& addr)
 
 int Socket::getpeername(sockaddr_in& addr)
 {
+    STACK_TRACE_LOG();
+
     if (!is_opened())
     {
         LOG(ERROR)("Socket::getpeername() socket error, socket not opened");
@@ -324,6 +367,8 @@ int Socket::getpeername(sockaddr_in& addr)
 
 int Socket::getpeername(Address& addr)
 {
+    STACK_TRACE_LOG();
+
     sockaddr_in address = addr;
     int rc = getpeername(address);
     addr = address;
@@ -332,6 +377,8 @@ int Socket::getpeername(Address& addr)
 
 int Socket::getsockopt(Descriptor descriptor, int level, int optname, void* optval, socklen_t* optlen)
 {
+    STACK_TRACE_LOG();
+
     if ((INVALID_SOCKET == descriptor) || (0 > descriptor) )
     {
         LOG(ERROR)("Socket::getsockopt() socket error, socket not opened");
@@ -351,6 +398,8 @@ int Socket::getsockopt(Descriptor descriptor, int level, int optname, void* optv
 
 void Socket::setsockopt(Descriptor descriptor, int level, int optname, const void* optval, socklen_t optlen)
 {
+    STACK_TRACE_LOG();
+
     if ((INVALID_SOCKET == descriptor) || (0 > descriptor) )
     {
         LOG(ERROR)("Socket::setsockopt() socket error, socket not opened");
@@ -368,6 +417,8 @@ void Socket::setsockopt(Descriptor descriptor, int level, int optname, const voi
 //! 设置为非阻塞模式
 void Socket::setnonblock(Descriptor socket)
 {
+    STACK_TRACE_LOG();
+
     int error = 0;
 #ifndef WIN32
     int val = ::fcntl(socket, F_GETFL, NULL);
@@ -392,27 +443,39 @@ void Socket::setnonblock(Descriptor socket)
 #endif
 }
 
-#ifndef WIN32
-void Socket::fcntl(Descriptor descriptor,int flag)
+//! 设置为阻塞模式
+void Socket::setblock(Descriptor socket)
 {
-    if ((INVALID_SOCKET == descriptor) || (0 > descriptor) )
+    STACK_TRACE_LOG();
+
+    int error = 0;
+#ifndef WIN32
+    int val = ::fcntl(socket, F_GETFL, NULL);
+    if (val < 0)
     {
-        LOG(ERROR)("Socket::fcntl() socket error, socket not opened");
+        LOG(ERROR)("Socket::setblock() socket error, getsocket flags error, errno:%d", error_no());
         return;
     }
-
-    int val = ::fcntl(descriptor, F_GETFL, 0);
-    int error = ::fcntl(descriptor, F_SETFL, val | flag);
-
-    if (SOCKET_ERROR == error)
+    error = ::fcntl(socket, F_SETFL, val & ~O_NONBLOCK);
+    if (-1 == error)
     {
-        LOG(ERROR)("Socket::fcntl() socket error, fcntl error, errno:%d", error_no());
+        LOG(ERROR)("Socket::setblock() socket error, setblock error, errno:%d", error_no());
     }
-}
+    //return error > -1 ? 0 : error;
+#else
+    int mode = 0;
+    error = ioctlsocket(socket, FIONBIO, (u_long FAR*)&mode);
+    if (0 != error)
+    {
+        LOG(ERROR)("Socket::setblock() socket error, setblock error, errno:%d", error_no());
+    }
 #endif
+}
 
 int Socket::shutdown(shutdown_t how)
 {
+    STACK_TRACE_LOG();
+
     if (!is_opened())
     {
         LOG(ERROR)("Socket::shutdown() socket error, socket not opened");
@@ -432,6 +495,8 @@ int Socket::shutdown(shutdown_t how)
 
 bool Socket::wait(bool& read, bool& write, bool& exception, int seconds, int useconds)
 {
+    STACK_TRACE_LOG();
+
     if (!is_opened())
     {
         LOG(ERROR)("Socket::wait() socket error, socket not opened");
@@ -494,6 +559,8 @@ bool Socket::wait(bool& read, bool& write, bool& exception, int seconds, int use
 
 bool Socket::can_read()
 {
+    STACK_TRACE_LOG();
+
     bool r = true;
     bool w = false;
     bool e = true;
@@ -502,6 +569,8 @@ bool Socket::can_read()
 
 bool Socket::can_write()
 {
+    STACK_TRACE_LOG();
+
     bool r = false;
     bool w = true;
     bool e = true;

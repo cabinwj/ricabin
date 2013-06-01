@@ -1,4 +1,3 @@
-//! @file net_event.h
 #ifndef _NET_EVENT_H_
 #define _NET_EVENT_H_
 
@@ -6,6 +5,7 @@
 #include "hc_non_copyable.h"
 #include "hc_destroyable.h"
 #include "hc_object_guard.h"
+#include "hc_stack_trace.h"
 
 #include "net_package.h"
 #include "address.h"
@@ -40,10 +40,13 @@ public:
                   m_listen_net_id_(0), m_net_id_(0),
                   m_net_package_(NULL), m_user_data_(NULL)
     {
+        STACK_TRACE_LOG();
     }
 
     virtual ~net_event()
     {
+        STACK_TRACE_LOG();
+
         if ( NULL != m_net_package_ )
         {
             m_net_package_->Destroy();

@@ -39,7 +39,7 @@ connect_session::~connect_session()
 
 void connect_session::on_ne_data(net_event& ne)
 {
-    LOG(INFO)("connect_session::on_net_data() recv data from net<%u:%u:%u>, remote_addr<0x%08X:%d>", ne.m_listen_net_id_, ne.m_net_id_, ne.m_net_ev_t_, ne.m_remote_addr_.get_net_ip(), ne.m_remote_addr_.get_net_port());
+    LOG(INFO)("connect_session::on_net_data() recv data from net<%u:%u:%u>, remote_addr<0x%08X:%d>", ne.m_listen_net_id_, ne.m_net_id_, ne.m_net_ev_t_, ne.m_remote_addr_.net_ip(), ne.m_remote_addr_.net_port());
 
     struct timeval process_begin;
     gettimeofday(&process_begin, NULL);

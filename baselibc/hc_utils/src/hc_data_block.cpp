@@ -1,4 +1,5 @@
 #include "hc_data_block.h"
+#include "hc_stack_trace.h"
 
 #include <algorithm>
 #include <string.h>
@@ -7,6 +8,8 @@
 data_block::data_block(size_t block_size, allocatorc* alloc)
     : m_allocatorc_(alloc), m_begin_(0), m_end_(0), m_end_of_block_(0)
 {
+    STACK_TRACE_LOG();
+
     if (NULL == m_allocatorc_)
     {
         m_allocatorc_ = allocatorc::Instance();
@@ -24,6 +27,8 @@ data_block::data_block(size_t block_size, allocatorc* alloc)
 
 data_block::data_block(const data_block& odb)
 {
+    STACK_TRACE_LOG();
+
     m_allocatorc_ = odb.m_allocatorc_;
     size_t capacity = odb.capacity();
     m_begin_ = (iterator)m_allocatorc_->Allocate(capacity);
@@ -39,6 +44,8 @@ data_block::data_block(const data_block& odb)
 
 data_block::~data_block()
 {
+    STACK_TRACE_LOG();
+
     if ( NULL != m_begin_ )
     {
         m_allocatorc_->Deallocate(m_begin_);
@@ -47,6 +54,8 @@ data_block::~data_block()
 
 data_block& data_block::operator=(const data_block& odb)
 {
+    STACK_TRACE_LOG();
+
     data_block odb_swap(odb);
     this->swap(odb_swap);
     return *this;
@@ -54,6 +63,8 @@ data_block& data_block::operator=(const data_block& odb)
 
 void data_block::swap(data_block& odb)
 {
+    STACK_TRACE_LOG();
+
     ::std::swap(m_allocatorc_, odb.m_allocatorc_);
     ::std::swap(m_begin_, odb.m_begin_);
     ::std::swap(m_end_, odb.m_end_);
@@ -62,6 +73,8 @@ void data_block::swap(data_block& odb)
 
 int data_block::resize(size_t sz)
 {
+    STACK_TRACE_LOG();
+
     // maybe it doesn't need to realloc
     if ( sz <= capacity() )
     {
@@ -88,6 +101,8 @@ int data_block::resize(size_t sz)
 
 int data_block::copy(iterator dest_buffer, const_iterator src_buffer, size_t sz)
 {
+    STACK_TRACE_LOG();
+
     // dest_buffer must be in [m_begin_, m_end_)
     ssize_t dest_offset = dest_buffer - begin();
     if ( dest_buffer < begin() ||  dest_buffer > end() )
@@ -124,6 +139,8 @@ int data_block::copy(iterator dest_buffer, const_iterator src_buffer, size_t sz)
 
 int data_block::erase(iterator b, iterator e)
 {
+    STACK_TRACE_LOG();
+
     if ( b == e )
     {
         return 0;
@@ -154,6 +171,8 @@ int data_block::erase(iterator b, iterator e)
 
 int data_block::increase_end(size_t sz)
 {
+    STACK_TRACE_LOG();
+
     if ( sz > available() )
     {
         return -1;
@@ -164,6 +183,8 @@ int data_block::increase_end(size_t sz)
 
 int data_block::decrease_end(size_t sz)
 {
+    STACK_TRACE_LOG();
+
     if ( sz > size() )
     {
         return -1;

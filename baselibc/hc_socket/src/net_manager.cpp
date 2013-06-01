@@ -1,6 +1,7 @@
 #include "net_manager.h"
 
 #include "hc_log.h"
+#include "hc_stack_trace.h"
 
 #include "sock_connector.h"
 #include "sock_acceptor.h"
@@ -10,6 +11,8 @@
 // class net_manager
 net_manager::net_manager()
 {
+    STACK_TRACE_LOG();
+
     m_status_ = 0;
     m_net_thread_ = NULL;
     //! 队列容量为100万
@@ -20,6 +23,8 @@ net_manager::net_manager()
 
 net_manager::~net_manager()
 {
+    STACK_TRACE_LOG();
+
     if ( NULL != m_net_thread_ )
     {
         delete m_net_thread_;
@@ -41,12 +46,16 @@ net_manager::~net_manager()
 
 net_manager* net_manager::Instance()
 {
+    STACK_TRACE_LOG();
+
     static net_manager __net_manager;
     return &__net_manager;
 }
 
 int net_manager::start()
 {
+    STACK_TRACE_LOG();
+
 #ifdef _WIN32
     WORD wVersionRequested;
     WSADATA wsaData;
@@ -99,6 +108,8 @@ int net_manager::start()
 
 int net_manager::stop()
 {
+    STACK_TRACE_LOG();
+
     if (0 == m_status_)
     {
         LOG(ERROR)("net_manager::stop error, not started");
@@ -141,6 +152,8 @@ int net_manager::stop()
 uint32_t net_manager::create_tcp_client(const Address& remote_addr, packet_splitter* ps,
                                         void* user_data, int timeout, int netbufsize)
 {
+    STACK_TRACE_LOG();
+
     if (1 != m_status_)
     {
         LOG(WARN)("net_manager::create_tcp_client error, not started");
@@ -182,6 +195,8 @@ uint32_t net_manager::create_tcp_client(const Address& remote_addr, packet_split
 uint32_t net_manager::create_tcp_client(const char* remote_ip, int remote_port, packet_splitter* ps, 
                                         void* user_data, int timeout, int netbufsize)
 {
+    STACK_TRACE_LOG();
+
     Address remote_addr(remote_ip, remote_port);
     return create_tcp_client(remote_addr, ps, user_data, timeout, netbufsize);
 }
@@ -189,6 +204,8 @@ uint32_t net_manager::create_tcp_client(const char* remote_ip, int remote_port, 
 uint32_t net_manager::create_tcp_server(const Address& local_addr, packet_splitter* ps, 
                                         void* user_data, int netbufsize)
 {
+    STACK_TRACE_LOG();
+
     if (1 != m_status_)
     {
         LOG(WARN)("net_manager::create_tcp_server error, not started");
@@ -229,12 +246,16 @@ uint32_t net_manager::create_tcp_server(const Address& local_addr, packet_splitt
 uint32_t net_manager::create_tcp_server(const char* local_ip, int local_port, packet_splitter* ps, 
                                         void* user_data, int netbufsize)
 {
+    STACK_TRACE_LOG();
+
     Address local_addr(local_ip, local_port);
     return create_tcp_server(local_addr, ps, user_data, netbufsize);
 }
 
 int net_manager::notify_close(uint32_t net_id)
 {
+    STACK_TRACE_LOG();
+
     event_handler* eh = event_handler::hunt_handler(net_id);
     if ( NULL != eh )
     {
@@ -247,6 +268,8 @@ int net_manager::notify_close(uint32_t net_id)
 
 int net_manager::send_package(uint32_t net_id, net_package* netpkg)
 {
+    STACK_TRACE_LOG();
+
     if (1 != m_status_)
     {
         LOG(WARN)("net_manager::send_packet error, not started");
@@ -282,6 +305,8 @@ int net_manager::send_package(uint32_t net_id, net_package* netpkg)
 
 net_event* net_manager::pop_event()
 {
+    STACK_TRACE_LOG();
+
     net_event* netev = NULL;
     int rc = m_net_event_queue_->pop(netev, false);
     if (0 != rc)
@@ -294,11 +319,15 @@ net_event* net_manager::pop_event()
 
 net_reactor* net_manager::reactor_pointer()
 {
+    STACK_TRACE_LOG();
+
     return &m_reactor_;
 }
 
 int net_manager::push_event(net_event* netev)
 {
+    STACK_TRACE_LOG();
+
     int rc = m_net_event_queue_->push(netev);
     // 队列用尽
     if (0 != rc)
@@ -312,26 +341,36 @@ int net_manager::push_event(net_event* netev)
 
 int net_manager::net_event_count()
 {
+    STACK_TRACE_LOG();
+
     return m_net_event_queue_->size();
 }
 
 uint32_t net_manager::acquire_net_id(net_id_guard::net_id_t type)
 {
+    STACK_TRACE_LOG();
+
     return m_net_id_guard_.acquire(type);
 }
 
 void net_manager::release_net_id(uint32_t id)
 {
+    STACK_TRACE_LOG();
+
     m_net_id_guard_.release(id);
 }
 
 int net_manager::net_send_package_count()
 {
+    STACK_TRACE_LOG();
+
     return m_net_send_packet_queue_->size();
 }
 
 net_package* net_manager::pop_net_send_package()
 {
+    STACK_TRACE_LOG();
+
     net_package* netpkg = NULL;
     int rc = m_net_send_packet_queue_->pop(netpkg, false);
     if (0 != rc)
@@ -344,6 +383,8 @@ net_package* net_manager::pop_net_send_package()
 
 void net_manager::reactor_exception()
 {
+    STACK_TRACE_LOG();
+
     m_status_ = 2;
     LOG(FATAL)("net_manager::reactor_exception(), epoll error, thread exist");
 }

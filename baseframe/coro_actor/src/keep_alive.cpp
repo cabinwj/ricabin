@@ -2,6 +2,7 @@
 
 #include "hc_allocator.h"
 #include "hc_binpacket.h"
+#include "hc_stack_trace.h"
 
 #include "coroutine.h"
 #include "scheduler.h"
@@ -23,6 +24,8 @@ uint32_t keep_alive::m_local_uin_ = 0;
 
 void keep_alive::init(uint32_t uin)
 {
+    STACK_TRACE_LOG();
+
     INIT_LIST_HEAD(&m_connect_list_);
     INIT_LIST_HEAD(&m_listen_list_);
 
@@ -36,6 +39,8 @@ void keep_alive::init(uint32_t uin)
 
 void keep_alive::on_connected(uint32_t connect_net_id, uint16_t keep_alive_interval, uint16_t keep_alive_timeout)
 {
+    STACK_TRACE_LOG();
+
     alive_t* alive = new alive_t;
     alive->m_net_id_ = connect_net_id;
     alive->m_listen_net_id_ = 0;
@@ -53,6 +58,8 @@ void keep_alive::on_connected(uint32_t connect_net_id, uint16_t keep_alive_inter
 
 void keep_alive::on_accepted(uint32_t listen_net_id, uint32_t accepted_net_id, uint16_t keep_alive_timeout)
 {
+    STACK_TRACE_LOG();
+
     alive_t* alive = new alive_t;
     alive->m_net_id_ = accepted_net_id;
     alive->m_listen_net_id_ = listen_net_id;
@@ -91,6 +98,8 @@ void keep_alive::on_accepted(uint32_t listen_net_id, uint32_t accepted_net_id, u
 
 void keep_alive::on_recv_alive(uint32_t net_id)
 {
+    STACK_TRACE_LOG();
+
     list_head* pos;
     alive_t* alive = NULL;
     int32_t npos = keep_alive::hash_func(net_id);
@@ -134,6 +143,8 @@ void keep_alive::on_recv_alive(uint32_t net_id)
 
 void keep_alive::on_disconnect(uint32_t net_id)
 {
+    STACK_TRACE_LOG();
+
     list_head* pos;
     alive_t* alive = NULL;
     int32_t npos = keep_alive::hash_func(net_id);
@@ -181,6 +192,8 @@ void keep_alive::on_disconnect(uint32_t net_id)
 
 void keep_alive::on_check_alive(uint32_t now)
 {
+    STACK_TRACE_LOG();
+
     list_head* pos;
     list_head* next;
     list_for_each_safe(pos, next, &m_connect_list_)
@@ -250,6 +263,8 @@ void keep_alive::on_check_alive(uint32_t now)
 
 void keep_alive::on_send_alive(uint32_t net_id, message_t msg_t)
 {
+    STACK_TRACE_LOG();
+
     LOG(INFO)("keep_alive::on_send_alive() net<%d:%d:%d>", net_id, m_local_uin_, msg_t);
     net_package* np = event_handler::m_net_pkg_pool_->Create();
     if ( NULL == np )

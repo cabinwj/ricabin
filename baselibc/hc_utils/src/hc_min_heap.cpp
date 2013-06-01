@@ -1,9 +1,12 @@
 #include "hc_min_heap.h"
 #include "hc_log.h"
+#include "hc_stack_trace.h"
 
 
 int min_heap::push(min_helem* helem)
 {
+    STACK_TRACE_LOG();
+
     if (0 != reserve())
     {
         return -1;
@@ -15,6 +18,8 @@ int min_heap::push(min_helem* helem)
 
 min_helem* min_heap::pop()
 {
+    STACK_TRACE_LOG();
+
     if (0 != m_count_)
     {
         min_helem* helem = *m_array_;
@@ -28,6 +33,8 @@ min_helem* min_heap::pop()
 
 int min_heap::erase(min_helem* helem)
 {
+    STACK_TRACE_LOG();
+
     if (-1 != helem->min_heap_idx())
     {
         min_helem* last = m_array_[--m_count_];
@@ -56,6 +63,8 @@ int min_heap::erase(min_helem* helem)
 
 int min_heap::reserve()
 {
+    STACK_TRACE_LOG();
+
     int32_t count = m_count_ + 1;
     if (count < m_capacity_)
     {
@@ -85,6 +94,8 @@ int min_heap::reserve()
 
 void min_heap::shift_up(int32_t hole_idx, min_helem* helem)
 {
+    STACK_TRACE_LOG();
+
     int32_t parent_idx = (hole_idx - 1) / 2;
     while (hole_idx && (m_array_[parent_idx]->weight() > helem->weight()))
     {
@@ -99,6 +110,8 @@ void min_heap::shift_up(int32_t hole_idx, min_helem* helem)
 
 void min_heap::shift_down(int32_t hole_idx, min_helem* helem)
 {
+    STACK_TRACE_LOG();
+
     int32_t min_child_idx = 2 * (hole_idx + 1);
     while (min_child_idx <= m_count_)
     {

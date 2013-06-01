@@ -2,9 +2,12 @@
 #include "scheduler.h"
 
 #include "hc_log.h"
+#include "hc_stack_trace.h"
 
 coro_context* coro_pool::allocate(size_t size)
 {
+    STACK_TRACE_LOG();
+
     std::map<size_t, std::list<coro_context*> >::iterator it = m_coro_pool_.find(size);
     if (it == m_coro_pool_.end() || it->second.empty())
     {
@@ -19,6 +22,8 @@ coro_context* coro_pool::allocate(size_t size)
 
 void coro_pool::deallocate(coro_context* coro, size_t size)
 {
+    STACK_TRACE_LOG();
+
     if (0 == size)
     {
         delete[] (char*)coro;
@@ -39,6 +44,8 @@ coroutine::coroutine(size_t stack_size) : m_reference_count_(1),
                                           m_is_zombie_(false), m_is_scheduling_(false), m_stack_size_(stack_size),
                                           m_sequence_id_(0),/* m_net_id_(0),*/ m_io_result_(NULL)
 {
+    STACK_TRACE_LOG();
+
     INIT_LIST_HEAD(&m_tasks_item_);
     INIT_LIST_HEAD(&m_net_item_);
     INIT_LIST_HEAD(&m_sequence_item_);
@@ -61,6 +68,8 @@ coroutine::coroutine(size_t stack_size) : m_reference_count_(1),
 
 coroutine::~coroutine()
 {
+    STACK_TRACE_LOG();
+
 #ifdef WIN32
     LOG(TRACE)("free coroutine: %p, coro: %p", this, m_fiber_);
 #else
@@ -86,6 +95,8 @@ VOID WINAPI coroutine::proc(PVOID ctx)
 void coroutine::proc(void* ctx)
 #endif
 {
+    STACK_TRACE_LOG();
+
     coroutine* coro = (coroutine*)ctx;
 
 #ifdef WIN32

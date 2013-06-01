@@ -218,15 +218,19 @@ typedef int Descriptor;
 
 #endif
 
-//! ´íÎóÂë
-inline int error_no()
-{
-#ifndef WIN32
-    return errno;
+// libevent socket error no
+#ifdef WIN32
+#define error_no() WSAGetLastError()
+#define set_socket_error_no(errcode) do { WSASetLastError(errcode); } while (0)
+int socket_get_error_no(Descriptor sock);
+const char *socket_error_string(int errcode);
 #else
-    return WSAGetLastError();
+#define error_no() (errno)
+#define set_socket_error_no(errcode) do { errno = (errcode); } while (0)
+#define socket_get_error_no(sock) (errno)
+#define socket_error_string(errcode) (strerror(errcode))
 #endif
-}
+
 
 typedef int Family;
 typedef int Type;

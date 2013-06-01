@@ -2,6 +2,7 @@
 #ifndef _HC_THREAD_MUTEX_H_
 #define _HC_THREAD_MUTEX_H_
 
+#include "hc_stack_trace.h"
 
 #ifdef WIN32
 #define NOMINMAX
@@ -39,6 +40,8 @@ class threadc_mutex
 public:
     threadc_mutex()
     {
+        STACK_TRACE_LOG();
+
 #ifdef WIN32
         InitializeCriticalSection(&m_section_);
 #else
@@ -48,6 +51,8 @@ public:
 
     ~threadc_mutex()
     {
+        STACK_TRACE_LOG();
+
 #ifdef WIN32
         DeleteCriticalSection(&m_section_);
 #else
@@ -59,6 +64,8 @@ public:
     //! @return 0:成功, <0:失败
     int acquire()
     {
+        STACK_TRACE_LOG();
+
 #ifdef WIN32
         EnterCriticalSection(&m_section_);
 #else
@@ -74,6 +81,8 @@ public:
     //! @return 0:成功, <0:失败
     int release()
     {
+        STACK_TRACE_LOG();
+
 #ifdef WIN32
         LeaveCriticalSection(&m_section_);
 #else
@@ -105,12 +114,14 @@ public:
     //! @param mutex 用到的线程锁
     threadc_mutex_guard(threadc_mutex* mutex) : m_mutex_(mutex)
     {
+        STACK_TRACE_LOG();
         m_mutex_->acquire();
     }
 
     //! 析构函数
     ~threadc_mutex_guard()
     {
+        STACK_TRACE_LOG();
         m_mutex_->release();
     }
 

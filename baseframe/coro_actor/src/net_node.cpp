@@ -1,4 +1,5 @@
 #include "net_node.h"
+#include "hc_stack_trace.h"
 
 #include "protocol.h"
 
@@ -10,6 +11,8 @@
 
 net_node::net_node()
 {
+    STACK_TRACE_LOG();
+
     INIT_LIST_HEAD(&m_list_item_);
     INIT_LIST_HEAD(&m_net_hash_item_);
     INIT_LIST_HEAD(&m_uin_hash_item_);

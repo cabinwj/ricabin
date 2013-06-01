@@ -2,6 +2,7 @@
 
 #include "event_handler.h"
 #include "hc_log.h"
+#include "hc_stack_trace.h"
 #include "hc_list.h"
 
 // class select_reactor
@@ -10,6 +11,8 @@ time_t select_reactor::m_last_scan_time_ = time(NULL);
 
 select_reactor::select_reactor()
 {
+    STACK_TRACE_LOG();
+
     FD_ZERO(&m_read_set_);
     FD_ZERO(&m_write_set_);
     FD_ZERO(&m_exception_set_);
@@ -17,10 +20,14 @@ select_reactor::select_reactor()
 
 select_reactor::~select_reactor()
 {
+    STACK_TRACE_LOG();
+
 }
 
 int select_reactor::open_reactor()
 {
+    STACK_TRACE_LOG();
+
     FD_ZERO(&m_read_set_);
     FD_ZERO(&m_write_set_);
     FD_ZERO(&m_exception_set_);
@@ -29,11 +36,15 @@ int select_reactor::open_reactor()
 
 int select_reactor::close_reactor()
 {
+    STACK_TRACE_LOG();
+
     return 0;
 }
 
 int select_reactor::run_reactor_event_loop()
 {
+    STACK_TRACE_LOG();
+
     Descriptor max_fd = 0;
 
     FD_ZERO(&m_read_set_);
@@ -172,12 +183,16 @@ int select_reactor::run_reactor_event_loop()
 
 int select_reactor::end_reactor_event_loop()
 {
+    STACK_TRACE_LOG();
+
     event_handler::clear_hash_table();
     return close_reactor();
 }
 
 int select_reactor::enable_handler(event_handler* eh, uint32_t masks)
 {
+    STACK_TRACE_LOG();
+
     eh->m_reactor_ = this;
     eh->m_ev_mask_ |= masks;
 
@@ -210,6 +225,8 @@ int select_reactor::enable_handler(event_handler* eh, uint32_t masks)
 
 int select_reactor::disable_handler(event_handler* eh, uint32_t masks)
 {
+    STACK_TRACE_LOG();
+
     eh->m_reactor_ = this;
     eh->m_ev_mask_ &= ~masks;
 

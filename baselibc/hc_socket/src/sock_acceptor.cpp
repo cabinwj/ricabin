@@ -3,6 +3,7 @@
 #include "net_id_guard.h"
 
 #include "hc_log.h"
+#include "hc_stack_trace.h"
 
 
 // class sock_acceptor
@@ -12,6 +13,8 @@ object_guard<sock_acceptor>* sock_acceptor::m_pool_ = new \
 
 sock_acceptor::sock_acceptor() : m_net_manager_(NULL), m_packet_splitter_(NULL)
 {
+    STACK_TRACE_LOG();
+
     m_listen_net_id_ = 0;
     m_net_id_ = 0;
     m_user_data_ = NULL;
@@ -20,6 +23,8 @@ sock_acceptor::sock_acceptor() : m_net_manager_(NULL), m_packet_splitter_(NULL)
 int sock_acceptor::init(net_manager* nm, packet_splitter* ps, void* user_data,
                          uint32_t listen_net_id, uint32_t net_id)
 {
+    STACK_TRACE_LOG();
+
     m_net_manager_ = nm;
     m_packet_splitter_ = ps;
 
@@ -33,6 +38,8 @@ int sock_acceptor::init(net_manager* nm, packet_splitter* ps, void* user_data,
 
 sock_acceptor::~sock_acceptor()
 {
+    STACK_TRACE_LOG();
+
     if ( 0 != m_listen_net_id_ )
     {
         m_net_manager_->release_net_id(m_listen_net_id_);
@@ -41,6 +48,8 @@ sock_acceptor::~sock_acceptor()
 
 int sock_acceptor::create_tcp_server(const Address& local_addr, int netbufsize)
 {
+    STACK_TRACE_LOG();
+
     int rc = m_socket_.open(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (0 != rc)
     {
@@ -92,11 +101,15 @@ int sock_acceptor::create_tcp_server(const Address& local_addr, int netbufsize)
 
 void sock_acceptor::close_tcp_server()
 {
+    STACK_TRACE_LOG();
+
     m_socket_.close();
 }
 
 int sock_acceptor::handle_input()
 {
+    STACK_TRACE_LOG();
+
     uint32_t count = 0;
     while (true)
     {
@@ -169,12 +182,16 @@ int sock_acceptor::handle_input()
 
 int sock_acceptor::handle_output()
 {
+    STACK_TRACE_LOG();
+
     LOG(ERROR)("sock_acceptor::handle_output, errno:%d", error_no());
     return -1;
 }
 
 int sock_acceptor::handle_close(net_event::net_ev_t evt)
 {
+    STACK_TRACE_LOG();
+
     switch (evt)
     {
     case net_event::NE_CLOSE:
@@ -217,6 +234,8 @@ int sock_acceptor::handle_close(net_event::net_ev_t evt)
 
 int sock_acceptor::post_package(net_package* netpkg)
 {
+    STACK_TRACE_LOG();
+
     LOG(ERROR)("sock_acceptor::post_package error, can't send at this socket");
     netpkg->Destroy();
     return 0;

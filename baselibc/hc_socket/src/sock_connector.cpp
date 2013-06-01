@@ -3,6 +3,7 @@
 #include "net_id_guard.h"
 
 #include "hc_log.h"
+#include "hc_stack_trace.h"
 
 
 // class sock_connector
@@ -12,6 +13,8 @@ object_guard<sock_connector>* sock_connector::m_pool_ = new \
 
 sock_connector::sock_connector() : m_net_manager_(NULL), m_packet_splitter_(NULL)
 {
+    STACK_TRACE_LOG();
+
     m_listen_net_id_ = 0;
     m_net_id_ = 0;
     m_user_data_ = NULL;
@@ -20,6 +23,8 @@ sock_connector::sock_connector() : m_net_manager_(NULL), m_packet_splitter_(NULL
 int sock_connector::init(net_manager* nm, packet_splitter* ps, void* user_data,
                           uint32_t listen_net_id, uint32_t net_id)
 {
+    STACK_TRACE_LOG();
+
     m_net_manager_ =  nm;
     m_packet_splitter_ = ps;
 
@@ -33,6 +38,8 @@ int sock_connector::init(net_manager* nm, packet_splitter* ps, void* user_data,
 
 sock_connector::~sock_connector()
 {
+    STACK_TRACE_LOG();
+
     if ( 0 != m_net_id_ )
     {
         m_net_manager_->release_net_id(m_net_id_);
@@ -41,6 +48,8 @@ sock_connector::~sock_connector()
 
 int sock_connector::create_tcp_client(const Address& remote_addr, int timeout, int netbufsize)
 {
+    STACK_TRACE_LOG();
+
     int rc = m_socket_.open(AF_INET, SOCK_STREAM, IPPROTO_TCP);
     if (0 != rc)
     {
@@ -56,7 +65,7 @@ int sock_connector::create_tcp_client(const Address& remote_addr, int timeout, i
     // NM_EINPROGRESS == error_no() 非阻塞connect,表示已经进入连接过程
     if ((0 != rc) && (error_no() != SYS_EINPROGRESS) && (error_no() != SYS_EALREADY) && (error_no() != SYS_EWOULDBLOCK))
     {
-        LOG(ERROR)("sock_connector::create_tcp_client error, connect error, remote_addr<0x%08X:%d>, errno:%d", remote_addr.get_net_ip(), remote_addr.get_net_port(), error_no());
+        LOG(ERROR)("sock_connector::create_tcp_client error, connect error, remote_addr<0x%08X:%d>, errno:%d", remote_addr.net_ip(), remote_addr.net_port(), error_no());
         m_socket_.close();
         return -1;
     }
@@ -70,17 +79,23 @@ int sock_connector::create_tcp_client(const Address& remote_addr, int timeout, i
 
 void sock_connector::close_tcp_client()
 {
+    STACK_TRACE_LOG();
+
     m_socket_.close();
 }
 
 int sock_connector::handle_input()
 {
+    STACK_TRACE_LOG();
+
     LOG(ERROR)("sock_connector::handle_input, errno:%d", error_no());
     return -1;
 }
 
 int sock_connector::handle_output()
 {
+    STACK_TRACE_LOG();
+
     int error = -1;
     socklen_t len = sizeof(error);
 
@@ -166,6 +181,8 @@ int sock_connector::handle_output()
 
 int sock_connector::handle_close(net_event::net_ev_t evt)
 {
+    STACK_TRACE_LOG();
+
     switch (evt)
     {
     case net_event::NE_CLOSE:
@@ -201,13 +218,13 @@ int sock_connector::handle_close(net_event::net_ev_t evt)
         return -1;
     }
 
-    
-
     return 0;
 }
 
 int sock_connector::post_package(net_package* netpkg)
 {
+    STACK_TRACE_LOG();
+
     LOG(ERROR)("sock_connector::post_package error, can't send on this socket");
     netpkg->Destroy();
     return 0;

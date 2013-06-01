@@ -220,10 +220,8 @@ public:
      */
     static void setsockopt(Descriptor descriptor, int level, int optname, const void* optval, socklen_t optlen);
 
-    static void setnonblock(Descriptor socket); 
-#ifndef WIN32
-    static void fcntl(Descriptor descriptor,int flag);
-#endif
+    static void setnonblock(Descriptor socket);
+    static void setblock(Descriptor socket);
 
 private:
     /// filedescriptor; if >= 0 it is valid; else not opened

@@ -1,4 +1,5 @@
 #include "session_list.h"
+#include "hc_stack_trace.h"
 
 
 #ifdef WIN32
@@ -17,6 +18,8 @@ list_head session_list::m_reconnect_list_;
 
 void session_list::init()
 {
+    STACK_TRACE_LOG();
+
     INIT_LIST_HEAD(&m_listen_list_);
     INIT_LIST_HEAD(&m_connect_list_);
     INIT_LIST_HEAD(&m_accepts_list_);
@@ -31,6 +34,8 @@ void session_list::init()
 
 void session_list::on_connected(net_node* conn)
 {
+    STACK_TRACE_LOG();
+
     // add 2 connect list
     list_add_tail(&conn->m_list_item_, &m_connect_list_);
     // add 2 hash list
@@ -40,6 +45,8 @@ void session_list::on_connected(net_node* conn)
 
 void session_list::on_accepted(net_node* client)
 {
+    STACK_TRACE_LOG();
+
     // add 2 hash list
     int32_t npos = session_list::hash_func(client->m_net_id_);
     list_add_tail(&client->m_net_hash_item_, &m_net_hash_bucket_[npos]);
@@ -47,6 +54,8 @@ void session_list::on_accepted(net_node* client)
 
 void session_list::on_disconnect(net_node* client)
 {
+    STACK_TRACE_LOG();
+
     if (NULL == client)
     {
         return;
@@ -89,6 +98,8 @@ void session_list::on_disconnect(net_node* client)
 
 void session_list::append_uin_to_list(net_node* client)
 {
+    STACK_TRACE_LOG();
+
     if (NULL == client)
     {
         return;
@@ -134,6 +145,8 @@ void session_list::append_uin_to_list(net_node* client)
 
 void session_list::on_disconnect_by_net_id(uint32_t net_id)
 {
+    STACK_TRACE_LOG();
+
     list_head* pos = NULL;
     net_node* alive = NULL;
     int32_t npos = session_list::hash_func(net_id);
@@ -156,6 +169,8 @@ void session_list::on_disconnect_by_net_id(uint32_t net_id)
 
 net_node* session_list::get_net_node_by_net_id(uint32_t net_id)
 {
+    STACK_TRACE_LOG();
+
     int32_t npos = session_list::hash_func(net_id);
 
     list_head* head = &m_net_hash_bucket_[npos];
@@ -180,7 +195,9 @@ net_node* session_list::get_net_node_by_net_id(uint32_t net_id)
 }
 
 net_node* session_list::get_net_node_by_uin(uint32_t uin, is_trans_t is_trans)
-{  
+{
+    STACK_TRACE_LOG();
+
     switch (is_trans)
     {
     case is_trans_accept_client: {
@@ -258,6 +275,8 @@ net_node* session_list::get_net_node_by_uin(uint32_t uin, is_trans_t is_trans)
 
 void session_list::append_reconnect_list(uint32_t uin, uint16_t reconnect_interval)
 {
+    STACK_TRACE_LOG();
+
     reconn_node* reconn = new reconn_node;
     reconn->m_next_reconnect_time_ = (uint32_t)time(NULL) + reconnect_interval;
     reconn->m_uin_ = uin;

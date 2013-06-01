@@ -9,8 +9,8 @@
 
 
 #define BS_MAKE64(lo, hi) ((uint64_t)((uint64_t)(lo) | (((uint64_t)(hi)) << 32)))
-#define BS_LO32(x)  ((uint32_t)((x) & 0x00000000ffffffffULL))
 #define BS_HI32(x)  ((uint32_t)(((x) & 0xffffffff00000000ULL) >> 32))
+#define BS_LO32(x)  ((uint32_t)((x) & 0x00000000ffffffffULL))
 
 
 //! 写入流时 将data_所指内存中的字符串写入流中, 同时会写入结束0。
@@ -319,42 +319,48 @@ friend binary_input_packet& operator>>(binary_input_packet& in, T& value)
             }
         }
 
-        switch(sizeof(T))
+        switch (type_trait<T>::TT())
         {
-        case 1:
+        case type_trait<T>::TT_SHORT:
+        case type_trait<T>::TT_UNSIGNED_SHORT:
             {
-                if (D) value = *reinterpret_cast<T*>(in.m_current_++);
-                else  value = *reinterpret_cast<T*>(--in.m_current_);
-            }break;
-        case 2:
-            {
-                if ( type_test<T>::IS_SHORT || type_test<T>::IS_UNSIGNED_SHORT )
-                {
-                    if (D) value = ntohs(*reinterpret_cast<T*>(in.m_current_));
-                    else  value = ntohs(*reinterpret_cast<T*>((in.m_current_-2)));
-                }
-                else
-                {
-                    if (D) value = *reinterpret_cast<T*>(in.m_current_);
-                    else  value = *reinterpret_cast<T*>((in.m_current_-2));
-                }
+                if (D) value = static_cast<T>(ntohs(*reinterpret_cast<T*>(in.m_current_)));
+                else  value = static_cast<T>(ntohs(*reinterpret_cast<T*>((in.m_current_-2))));
+
                 if (D) in.m_current_ += 2;
                 else   in.m_current_ -= 2;
             }break;
-        case 4:
+        case type_trait<T>::TT_INT:
+        case type_trait<T>::TT_UNSIGNED_INT:
+        case type_trait<T>::TT_LONG:
+        case type_trait<T>::TT_UNSIGNED_LONG:
             {
-                if ( type_test<T>::IS_INT || type_test<T>::IS_UNSIGNED_INT )
+                if (D) value = static_cast<T>(ntohl(*reinterpret_cast<T*>(in.m_current_)));
+                else   value = static_cast<T>(ntohl(*reinterpret_cast<T*>((in.m_current_-4))));
+
+                if (D) in.m_current_ += 4;
+                else  in.m_current_ -= 4;
+            }break;
+        case type_trait<T>::TT_LONG_LONG:
+        case type_trait<T>::TT_UNSIGNED_LONG_LONG:
+            {
+                uint32_t hi32 = 0;
+                uint32_t lo32 = 0;
+                if (D)
                 {
-                    if (D) value = ntohl(*reinterpret_cast<T*>(in.m_current_));
-                    else   value = ntohl(*reinterpret_cast<T*>((in.m_current_-4)));
+                    hi32 = static_cast<uint32_t>(ntohl(*reinterpret_cast<uint32_t*>(in.m_current_)));
+                    lo32 = static_cast<uint32_t>(ntohl(*reinterpret_cast<uint32_t*>(in.m_current_+4)));
+                    value = static_cast<T>(BS_MAKE64(lo32, hi32));
                 }
                 else
                 {
-                    if (D) value = *reinterpret_cast<T*>(in.m_current_);
-                    else  value = *reinterpret_cast<T*>((in.m_current_-4));
+                    hi32 = static_cast<uint32_t>(ntohl(*reinterpret_cast<uint32_t*>(in.m_current_-8)));
+                    lo32 = static_cast<uint32_t>(ntohl(*reinterpret_cast<uint32_t*>(in.m_current_-4)));
+                    value = static_cast<T>(BS_MAKE64(lo32, hi32));
                 }
-                if (D) in.m_current_ += 4;
-                else  in.m_current_ -= 4;
+
+                if (D) in.m_current_ += 8;
+                else  in.m_current_ -= 8;
             }break;
         default:
             {
@@ -566,42 +572,47 @@ friend binary_output_packet& operator<<(binary_output_packet& out, T value)
                 return out;
             }
         }
-        switch(sizeof(T))
+
+        switch (type_trait<T>::TT())
         {
-        case 1:
+        case type_trait<T>::TT_SHORT:
+        case type_trait<T>::TT_UNSIGNED_SHORT:
             {
-                if (D) *reinterpret_cast<T*>(out.m_current_++) = value;
-                else  *reinterpret_cast<T*>(--out.m_current_) = value;
-            }break;
-        case 2:
-            {
-                if ( type_test<T>::IS_SHORT || type_test<T>::IS_UNSIGNED_SHORT )
-                {
-                    if (D) *reinterpret_cast<T*>(out.m_current_) = htons(value);
-                    else  *reinterpret_cast<T*>((out.m_current_-2)) = htons(value);
-                }
-                else
-                {
-                    if (D) *reinterpret_cast<T*>(out.m_current_) = value;
-                    else  *reinterpret_cast<T*>((out.m_current_-2)) = value;
-                }
+                if (D) *reinterpret_cast<T*>(out.m_current_) = static_cast<T>(htons(value));
+                else  *reinterpret_cast<T*>((out.m_current_-2)) = static_cast<T>(htons(value));
+
                 if (D) out.m_current_ += 2;
                 else  out.m_current_ -= 2;
             }break;
-        case 4:
+        case type_trait<T>::TT_INT:
+        case type_trait<T>::TT_UNSIGNED_INT:
+        case type_trait<T>::TT_LONG:
+        case type_trait<T>::TT_UNSIGNED_LONG:
             {
-                if ( type_test<T>::IS_INT || type_test<T>::IS_UNSIGNED_INT )
+                if (D) *reinterpret_cast<T*>(out.m_current_) = static_cast<T>(htonl(value));
+                else  *reinterpret_cast<T*>((out.m_current_-4)) = static_cast<T>(htonl(value));
+
+                if (D) out.m_current_ += 4;
+                else  out.m_current_ -= 4;
+            }break;
+        case type_trait<T>::TT_LONG_LONG:
+        case type_trait<T>::TT_UNSIGNED_LONG_LONG:
+            {
+                uint32_t hi32 = BS_HI32(value);
+                uint32_t lo32 = BS_LO32(value);
+                if (D)
                 {
-                    if (D) *reinterpret_cast<T*>(out.m_current_) = htonl(value);
-                    else  *reinterpret_cast<T*>((out.m_current_-4)) = htonl(value);
+                    *reinterpret_cast<uint32_t*>(out.m_current_) = static_cast<T>(htonl(hi32));
+                    *reinterpret_cast<uint32_t*>(out.m_current_+4) = static_cast<T>(htonl(lo32));
                 }
                 else
                 {
-                    if (D) *reinterpret_cast<T*>(out.m_current_) = value;
-                    else  *reinterpret_cast<T*>((out.m_current_-4)) = value;
+                    *reinterpret_cast<uint32_t*>(out.m_current_-8) = static_cast<T>(htonl(hi32));
+                    *reinterpret_cast<uint32_t*>(out.m_current_-4) = static_cast<T>(htonl(lo32));
                 }
-                if (D) out.m_current_ += 4;
-                else  out.m_current_ -= 4;
+
+                if (D) out.m_current_ += 8;
+                else  out.m_current_ -= 8;
             }break;
         default:
             {

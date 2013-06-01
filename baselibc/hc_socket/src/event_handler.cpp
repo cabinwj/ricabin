@@ -1,6 +1,8 @@
 #include "event_handler.h"
 #include "config.h"
 
+#include "hc_stack_trace.h"
+
 // class event_handler
 int event_handler::m_current_count_ = 0;
 list_head event_handler::m_hash_bucket_[HANDLER_TABLE_SIZE];
@@ -24,22 +26,29 @@ net_package_pool* event_handler::m_net_pkg_pool_ = new \
 // hash list
 static inline uint32_t hash_func(uint32_t key)
 {
+    STACK_TRACE_LOG();
+
     return key % event_handler::HANDLER_TABLE_SIZE;
 }
 
 event_handler::event_handler() : m_ev_mask_(0), m_net_id_(0), m_timeout_(0),
                                  m_reactor_(NULL), m_user_data_(NULL)
 {
+    STACK_TRACE_LOG();
+
     INIT_LIST_HEAD(&m_hash_item_);
     INIT_LIST_HEAD(&m_timeout_item_);
 }
 
 event_handler::~event_handler()
 {
+    STACK_TRACE_LOG();
 }
 
 void event_handler::init_hash_table()
 {
+    STACK_TRACE_LOG();
+
     //threadc_mutex_guard lock(m_mutex_);
     for (int index = 0; index < HANDLER_TABLE_SIZE; index++)
     {
@@ -53,6 +62,8 @@ void event_handler::init_hash_table()
 
 void event_handler::clear_hash_table()
 {
+    STACK_TRACE_LOG();
+
     list_head* pos;
     list_head* n;
     list_head* head;
@@ -83,6 +94,8 @@ void event_handler::clear_hash_table()
 
 event_handler* event_handler::hunt_handler(uint32_t tunnel_id)
 {
+    STACK_TRACE_LOG();
+
     int npos = hash_func(tunnel_id);
     if (npos >= HANDLER_TABLE_SIZE || npos < 0)
     {
@@ -112,6 +125,8 @@ event_handler* event_handler::hunt_handler(uint32_t tunnel_id)
 
 void event_handler::push_handler(event_handler* eh, uint32_t tunnel_id)
 {
+    STACK_TRACE_LOG();
+
     if (NULL == eh)
     {
         return;
@@ -129,6 +144,8 @@ void event_handler::push_handler(event_handler* eh, uint32_t tunnel_id)
 
 void event_handler::remove_handler(event_handler* eh)
 {
+    STACK_TRACE_LOG();
+
     // delete timeout from list
     list_del(&eh->m_timeout_item_);
     // delete hash from list
@@ -139,6 +156,8 @@ void event_handler::remove_handler(event_handler* eh)
 
 void event_handler::remove_handler(uint32_t tunnel_id)
 {
+    STACK_TRACE_LOG();
+
     int npos = hash_func(tunnel_id);
     if ( npos >= HANDLER_TABLE_SIZE || npos < 0 )
     {
@@ -172,6 +191,8 @@ void event_handler::remove_handler(uint32_t tunnel_id)
 // set / cancel time out and notify close
 void event_handler::sync_timeout(event_handler* eh, time_t timeout)
 {
+    STACK_TRACE_LOG();
+
     if ( NULL == eh )
     {
         return;
@@ -192,6 +213,8 @@ void event_handler::sync_timeout(event_handler* eh, time_t timeout)
 
 void event_handler::scan_timer(time_t now)
 {
+    STACK_TRACE_LOG();
+
     list_head* head = &m_timeout_list_head_;
     if ( list_empty(head) )
     {

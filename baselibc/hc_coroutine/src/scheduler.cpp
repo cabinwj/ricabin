@@ -2,6 +2,7 @@
 #include "coroutine.h"
 
 #include "hc_log.h"
+#include "hc_stack_trace.h"
 
 list_head coro_scheduler::m_tasks_list_;
 int32_t coro_scheduler::m_coro_count_ = 0;
@@ -16,6 +17,8 @@ coro_context* coro_scheduler::m_main_coro_context_;
 
 void coro_scheduler::init()
 {
+    STACK_TRACE_LOG();
+
     INIT_LIST_HEAD(&m_tasks_list_);
     m_coro_count_ = 0;
     m_current_coro_ = NULL;
@@ -29,6 +32,8 @@ void coro_scheduler::init()
 
 void coro_scheduler::schedule()
 {
+    STACK_TRACE_LOG();
+
     list_head* pos;
     list_head* next;
     coroutine* coro = NULL;
@@ -65,6 +70,8 @@ void coro_scheduler::schedule()
 
 void coro_scheduler::switch_to(coroutine* next)
 {
+    STACK_TRACE_LOG();
+
     m_current_coro_ = next;
 
 #ifdef WIN32
@@ -82,6 +89,8 @@ void coro_scheduler::switch_to(coroutine* next)
 
 void coro_scheduler::push_coro(coroutine* coro)
 {
+    STACK_TRACE_LOG();
+
     // 已在任务队列中，则不插入任务队列
     if ( coro->is_scheduling() )
     {
@@ -115,6 +124,8 @@ void coro_scheduler::push_coro(coroutine* coro)
 
 void coro_scheduler::yield()
 {
+    STACK_TRACE_LOG();
+
 #ifdef WIN32
     LOG(TRACE)("switch from coroutine: %p to main coroutine: %p", m_current_coro_->m_fiber_, m_main_fiber_);
 #else

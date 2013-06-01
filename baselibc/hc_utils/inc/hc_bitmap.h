@@ -65,7 +65,7 @@ public:
     int32_t allbits();
 
 private:
-    unsigned char array_[max_bitmap_size];
+    unsigned char m_array_[max_bitmap_size];
 };
 
 
@@ -77,14 +77,14 @@ ebitmap<bitmap_size>& ebitmap<bitmap_size>::operator =(const ebitmap<bitmap_size
         return (*this);
     }
 
-    memcpy((void *)array_, (const void *)rhs.array_, sizeof(array_));
+    memcpy((void *)m_array_, (const void *)rhs.m_array_, sizeof(m_array_));
     return (*this);
 }
 
 template<int bitmap_size>
 int32_t ebitmap<bitmap_size>::clear()
 {
-    memset((void *)array_, 0, sizeof(array_));
+    memset((void *)m_array_, 0, sizeof(m_array_));
     return 0;
 }
 
@@ -100,7 +100,7 @@ int32_t ebitmap<bitmap_size>::is_setted(int32_t idx)
     int32_t setcion_idx = idx / bytesize;
     int32_t bit_idx = idx % bytesize;
 
-    if ( array_[setcion_idx] & (magic >> bit_idx) )
+    if ( m_array_[setcion_idx] & (magic >> bit_idx) )
     {
         return 1;
     }
@@ -120,7 +120,7 @@ int32_t ebitmap<bitmap_size>::set(int32_t idx)
     int setcion_idx = idx / bytesize;
     int bit_idx = idx % bytesize;
 
-    array_[setcion_idx] |= (magic >> bit_idx);
+    m_array_[setcion_idx] |= (magic >> bit_idx);
 
     return 0;
 }
@@ -137,7 +137,7 @@ int32_t ebitmap<bitmap_size>::unset(int32_t idx)
     int setcion_idx = idx / bytesize;
     int bit_idx = idx % bytesize;
 
-    array_[setcion_idx] &= (0xff ^ (magic >> bit_idx));
+    m_array_[setcion_idx] &= (0xff ^ (magic >> bit_idx));
 
     return 0;
 }
@@ -145,7 +145,7 @@ int32_t ebitmap<bitmap_size>::unset(int32_t idx)
 template<int bitmap_size>
 int32_t ebitmap<bitmap_size>::allbits()
 {
-    memset(array_, 0xff, sizeof(array_));
+    memset(m_array_, 0xff, sizeof(m_array_));
     return 0;
 }
 

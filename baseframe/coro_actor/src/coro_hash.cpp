@@ -1,4 +1,5 @@
 #include "coro_hash.h"
+#include "hc_stack_trace.h"
 
 #include "scheduler.h"
 
@@ -12,6 +13,8 @@ coro_hash::coro_hash_head coro_hash::m_hash_bucket_[HASH_BUCKET_COUNT];
 
 void coro_hash::init()
 {
+    STACK_TRACE_LOG();
+
     for (int i = 0; i < HASH_BUCKET_COUNT; i++)
     {
         INIT_LIST_HEAD(&m_hash_bucket_[i].m_net_head_);
@@ -21,6 +24,8 @@ void coro_hash::init()
 
 void coro_hash::clear()
 {
+    STACK_TRACE_LOG();
+
     list_head* pos;
     list_head* n;
     list_head* corolist_head;
@@ -54,6 +59,8 @@ void coro_hash::clear()
 
 coro_list_t* coro_hash::get_coro_list(uint32_t net_id)
 {
+    STACK_TRACE_LOG();
+
     list_head* pos;
     coro_list_t* corolist = NULL;
     list_for_each(pos, &m_hash_bucket_[hashfn(net_id)].m_net_head_)
@@ -70,6 +77,8 @@ coro_list_t* coro_hash::get_coro_list(uint32_t net_id)
 
 coroutine* coro_hash::get_coro(uint32_t sequence_id)
 {
+    STACK_TRACE_LOG();
+
     list_head* pos;
     coroutine* coro = NULL;
     list_for_each(pos, &m_hash_bucket_[hashfn(sequence_id)].m_sequence_head_)
@@ -86,6 +95,8 @@ coroutine* coro_hash::get_coro(uint32_t sequence_id)
 
 void coro_hash::push_coro(uint32_t net_id, uint32_t sequence_id, coroutine* coro)
 {
+    STACK_TRACE_LOG();
+
     coro->set_sequence_id(sequence_id);
 
     list_add_tail(&coro->m_sequence_item_, &m_hash_bucket_[hashfn(sequence_id)].m_sequence_head_);
@@ -104,6 +115,8 @@ void coro_hash::push_coro(uint32_t net_id, uint32_t sequence_id, coroutine* coro
 
 void coro_hash::remove_coro(coroutine* coro)
 {
+    STACK_TRACE_LOG();
+
     list_del(&coro->m_sequence_item_);
     list_del(&coro->m_net_item_);
 }
@@ -111,6 +124,8 @@ void coro_hash::remove_coro(coroutine* coro)
 
 void coro_hash::on_awaken_coro(uint32_t net_id)
 {
+    STACK_TRACE_LOG();
+
     coro_list_t* corolist = coro_hash::get_coro_list(net_id);
     if (NULL != corolist)
     {

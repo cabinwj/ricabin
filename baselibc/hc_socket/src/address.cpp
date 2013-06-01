@@ -1,5 +1,6 @@
 #include "address.h"
 #include "hc_log.h"
+#include "hc_stack_trace.h"
 
 #include <string.h>
 
@@ -7,6 +8,8 @@
 
 Address::Address(const char* ip, Port port)
 {
+    STACK_TRACE_LOG();
+
     if (NULL == ip)
     {
         sin_address_.s_addr = htonl(0);
@@ -34,24 +37,32 @@ Address::Address(const char* ip, Port port)
 
 Address::Address(uint32_t ip, Port port)
 {
+    //STACK_TRACE_LOG();
+
     sin_address_.s_addr = htonl(ip);
     port_ = htons(port);
 }
 
 Address::Address(const sockaddr_in& address)
 {
+    //STACK_TRACE_LOG();
+
     sin_address_ = address.sin_addr;
     port_ = address.sin_port;
 }
 
 Address::Address(const Address& address)
 {
+    //STACK_TRACE_LOG();
+
     sin_address_ = address.sin_address_;
     port_ = address.port_;
 }
 
 Address::operator sockaddr_in() const
 {
+    //STACK_TRACE_LOG();
+
     sockaddr_in address;
     memset(&address, 0, sizeof(sockaddr_in));
     address.sin_family = PF_INET;
@@ -62,28 +73,38 @@ Address::operator sockaddr_in() const
 
 void Address::operator=(const sockaddr_in& address)
 {
+    //STACK_TRACE_LOG();
+
     sin_address_ = address.sin_addr;
     port_ = address.sin_port;
 }
 
 void Address::operator=(const Address& address)
 {
+    //STACK_TRACE_LOG();
+
     sin_address_ = address.sin_address_;
     port_ = address.port_;
 }
 
 bool Address::operator==(const Address& address)
 {
+    //STACK_TRACE_LOG();
+
     return ((sin_address_.s_addr == address.sin_address_.s_addr) && (port_ == address.port_));
 }
 
-Address::Port Address::get_host_port() const
+Address::Port Address::host_port() const
 {
+    //STACK_TRACE_LOG();
+
     return ntohs(port_);
 }
 
-std::string Address::get_string_ip() const
+std::string Address::dot_decimal_ip() const
 {
+    //STACK_TRACE_LOG();
+
 #ifndef WIN32
     char str_ip[16];
     std::string strings_ip = (NULL == inet_ntop(AF_INET, &sin_address_, str_ip, sizeof(str_ip)))? "0.0.0.0" : str_ip;
@@ -94,13 +115,17 @@ std::string Address::get_string_ip() const
 #endif
 }
 
-unsigned int Address::get_host_ip() const
+unsigned int Address::host_ip() const
 {
+    //STACK_TRACE_LOG();
+
     return ntohl(sin_address_.s_addr);
 }
 
 void Address::clear()
 {
+    //STACK_TRACE_LOG();
+
     sin_address_.s_addr = 0;
     port_ = 0;
 }

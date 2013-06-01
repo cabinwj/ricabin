@@ -1,8 +1,7 @@
-ï»¿#ifndef _PROTOCOL_H_
-#define _PROTOCOL_H_
+#ifndef _HC_PROTOCOL_H_
+#define _HC_PROTOCOL_H_
 
 #include "hc_types.h"
-
 #include "net_event.h"
 
 
@@ -10,21 +9,21 @@ enum message_t
 {
     message_invalid                      = (uint16_t)0,
 
-    // 0x01-0x10ä¸ºåº•å±‚ä¿ç•™ 
-    message_alive                        = (uint16_t)0x01,   // å¿ƒè·³åŒ…
-    message_async_syn                    = (uint16_t)0x02,   // åç¨‹å¼‚æ­¥è¯·æ±‚request ï¼ˆåç¨‹ä¸“ç”¨ï¼‰
-    message_async_ack                    = (uint16_t)0x03,   // åç¨‹å¼‚æ­¥å›åº”responseï¼ˆåç¨‹ä¸“ç”¨ï¼‰
-    message_common                       = (uint16_t)0x04,   // æ™®é€šåŒ…common
-    message_syn                          = (uint16_t)0x05,   // è¯·æ±‚request
-    message_ack                          = (uint16_t)0x06,   // å›åº”response
-    message_ntf                          = (uint16_t)0x07,   // é€šçŸ¥notify
+    // 0x01-0x10Îªµ×²ã±£Áô 
+    message_alive                        = (uint16_t)0x01,   // ĞÄÌø°ü
+    message_async_syn                    = (uint16_t)0x02,   // Ğ­³ÌÒì²½ÇëÇórequest £¨Ğ­³Ì×¨ÓÃ£©
+    message_async_ack                    = (uint16_t)0x03,   // Ğ­³ÌÒì²½»ØÓ¦response£¨Ğ­³Ì×¨ÓÃ£©
+    message_common                       = (uint16_t)0x04,   // ÆÕÍ¨°ücommon
+    message_syn                          = (uint16_t)0x05,   // ÇëÇórequest
+    message_ack                          = (uint16_t)0x06,   // »ØÓ¦response
+    message_ntf                          = (uint16_t)0x07,   // Í¨Öªnotify
 };
 
 
 enum proto_t
 {
-    PROTOCOL_IN = (int16_t)0,    //å¼‚æ­¥æ“ä½œåè®®(åŒ…æ‹¬è¯·æ±‚ã€åº”ç­”ã€æ™®é€šåŒ…) ï¼ˆä»…é™æœåŠ¡å™¨ä¹‹é—´é€šè®¯ï¼‰
-    PROTOCOL_EX = (int16_t)1,    //äºŒè¿›åˆ¶æµåè®®
+    PROTOCOL_IN = (int16_t)0,    //Òì²½²Ù×÷Ğ­Òé(°üÀ¨ÇëÇó¡¢Ó¦´ğ¡¢ÆÕÍ¨°ü) £¨½öÏŞ·şÎñÆ÷Ö®¼äÍ¨Ñ¶£©
+    PROTOCOL_EX = (int16_t)1,    //¶ş½øÖÆÁ÷Ğ­Òé
 } ;
 
 
@@ -46,59 +45,58 @@ enum run_status_t
 enum is_trans_t
 {
     is_trans_null             = 1 <<  0,
-    is_trans_sended_data      = 1 <<  1,  //æ ‡è¯†æ˜¯å¦æœ‰å‘å¯¹ç«¯å‘é€è¿‡æ•°æ®
-    is_trans_recved_data      = 1 <<  2,  //æ ‡è¯†æ˜¯å¦æ”¶åˆ°è¿‡å¯¹ç«¯çš„æ•°æ®
-    is_trans_reconnect        = 1 <<  3,  //æ ‡è¯†æ˜¯å¦éœ€è¦é‡è¿ï¼ˆæ–­çº¿ï¼‰
-    is_trans_connect_out      = 1 <<  4,  //æ ‡è¯†æ˜¯å¦ä¸ºè¿å‡ºå»çš„è¿æ¥
-    is_trans_accept_client    = 1 <<  5,  //æ ‡è¯†æ˜¯å¦ä¸ºaccept from client
-    is_trans_accept_server    = 1 <<  6,  //æ ‡è¯†æ˜¯å¦ä¸ºaccept from server
+    is_trans_sended_data      = 1 <<  1,  //±êÊ¶ÊÇ·ñÓĞÏò¶Ô¶Ë·¢ËÍ¹ıÊı¾İ
+    is_trans_recved_data      = 1 <<  2,  //±êÊ¶ÊÇ·ñÊÕµ½¹ı¶Ô¶ËµÄÊı¾İ
+    is_trans_reconnect        = 1 <<  3,  //±êÊ¶ÊÇ·ñĞèÒªÖØÁ¬£¨¶ÏÏß£©
+    is_trans_connect_out      = 1 <<  4,  //±êÊ¶ÊÇ·ñÎªÁ¬³öÈ¥µÄÁ¬½Ó
+    is_trans_accept_client    = 1 <<  5,  //±êÊ¶ÊÇ·ñÎªaccept from client
+    is_trans_accept_server    = 1 <<  6,  //±êÊ¶ÊÇ·ñÎªaccept from server
 };
 
 
 struct net_conf_t
 {
     int16_t m_proto_type_;           // tcp or udp
-    int16_t m_is_listen_;            // æ˜¯ç›‘å¬è¿˜æ˜¯è¿å‡ºå»çš„
-    int16_t m_app_proto_;            // åº”ç”¨åè®®ç±»å‹ï¼ˆ0 äºŒè¿›åˆ¶ï¼Œ1 4å­—èŠ‚æ–‡æœ¬ï¼Œ2 6å­—èŠ‚æ–‡æœ¬ï¼‰
+    int16_t m_is_listen_;            // ÊÇ¼àÌı»¹ÊÇÁ¬³öÈ¥µÄ
+    int16_t m_app_proto_;            // Ó¦ÓÃĞ­ÒéÀàĞÍ£¨0 ¶ş½øÖÆ£¬1 4×Ö½ÚÎÄ±¾£¬2 6×Ö½ÚÎÄ±¾£©
 
     ip_port_t m_ipport_;
-    uint32_t m_socket_buffer_size_; // socketå‘é€ã€æ¥æ”¶ç¼“å†²åŒºå¤§å°
-    int16_t m_keep_alive_timeout_;  // å¤šä¹…æ²¡æ”¶åˆ°å¿ƒè·³åŒ…ï¼ˆæˆ–ä»»ä½•åŒ…ï¼‰ï¼Œåšæ–­å¼€å¤„ç†
 
-    uint32_t m_connect_out_uin_;    // ä»…å¯¹è¿å‡ºå»çš„socketæœ‰æ•ˆ: è¿å‡ºå»çš„æœåŠ¡æ ‡è¯†ï¼Œå¯¹ç«¯çš„æœåŠ¡å™¨id
+    uint32_t m_socket_buffer_size_; // socket·¢ËÍ¡¢½ÓÊÕ»º³åÇø´óĞ¡
+    uint32_t m_connect_out_uin_;    // ½ö¶ÔÁ¬³öÈ¥µÄsocketÓĞĞ§: Á¬³öÈ¥µÄ·şÎñ±êÊ¶£¬¶Ô¶ËµÄ·şÎñÆ÷id
 
-    int16_t m_reconnect_interval_;  // ä»…å¯¹è¿å‡ºå»çš„socketæœ‰æ•ˆ: è‡ªåŠ¨é‡è¿çš„é—´éš”æ—¶é—´ï¼Œè®¾ç½®ä¸º0åˆ™ä¸è‡ªåŠ¨é‡è¿ (å•ä½ï¼šs)
-    int16_t m_keep_alive_interval_; // ä»…å¯¹è¿å‡ºå»çš„socketæœ‰æ•ˆ: å¿ƒè·³åŒ…ï¼Œè®¾ç½®ä¸º0æ— å¿ƒè·³åŒ…  (å•ä½ï¼šs)
-    int16_t m_connect_timeout_;     // ä»…å¯¹è¿å‡ºå»çš„socketæœ‰æ•ˆï¼šå»ºç«‹è¿ç»“çš„è¶…æ—¶æ—¶é—´
+    int16_t m_keep_alive_timeout_;  // ¶à¾ÃÃ»ÊÕµ½ĞÄÌø°ü£¨»òÈÎºÎ°ü£©£¬×ö¶Ï¿ª´¦Àí
+    int16_t m_reconnect_interval_;  // ½ö¶ÔÁ¬³öÈ¥µÄsocketÓĞĞ§: ×Ô¶¯ÖØÁ¬µÄ¼ä¸ôÊ±¼ä£¬ÉèÖÃÎª0Ôò²»×Ô¶¯ÖØÁ¬ (µ¥Î»£ºs)
+    int16_t m_keep_alive_interval_; // ½ö¶ÔÁ¬³öÈ¥µÄsocketÓĞĞ§: ĞÄÌø°ü£¬ÉèÖÃÎª0ÎŞĞÄÌø°ü  (µ¥Î»£ºs)
+    int16_t m_connect_timeout_;     // ½ö¶ÔÁ¬³öÈ¥µÄsocketÓĞĞ§£º½¨Á¢Á¬½áµÄ³¬Ê±Ê±¼ä
 
-    //// è¿˜æ²¡æœ‰ç”¨ä¸Š
-    //int32_t m_max_wait_for_first_package_time_;       //socketè¿æ¥ä¸Šç­‰å¾…ç¬¬ä¸€ä¸ªåŒ…çš„æœ€å¤§æ—¶é—´é—´éš”(ä¹Ÿå°±æ˜¯è¿æ¥å»ºç«‹å,ç­‰å¾…æ¥æ”¶ç¬¬ä¸€ä¸ªåŒ…çš„é—´éš”)(å•ä½ï¼šs)
-    //int32_t m_check_socket_interval_;                 //æ£€æŸ¥ç½‘ç»œè¿æ¥çš„æ—¶é—´é—´éš”(å•ä½ï¼šs)
-    //int32_t m_log_statistic_interval_;                //ç»Ÿè®¡é—´éš”
+    //// »¹Ã»ÓĞÓÃÉÏ
+    //int32_t m_max_wait_for_first_package_time_;       //socketÁ¬½ÓÉÏµÈ´ıµÚÒ»¸ö°üµÄ×î´óÊ±¼ä¼ä¸ô(Ò²¾ÍÊÇÁ¬½Ó½¨Á¢ºó,µÈ´ı½ÓÊÕµÚÒ»¸ö°üµÄ¼ä¸ô)(µ¥Î»£ºs)
+    //int32_t m_check_socket_interval_;                 //¼ì²éÍøÂçÁ¬½ÓµÄÊ±¼ä¼ä¸ô(µ¥Î»£ºs)
+    //int32_t m_log_statistic_interval_;                //Í³¼Æ¼ä¸ô
 
-    //int32_t m_signature_valid_period_;                //æ•°å­—ç­¾åæœ‰æ•ˆæ—¶é•¿
-
+    //int32_t m_signature_valid_period_;                //Êı×ÖÇ©ÃûÓĞĞ§Ê±³¤
 } ;
 
-
+//class conn_param_t
 struct conn_param_t
 {
+//public:
     conn_param_t() : m_reference_count_(1) {}
 
     void acquire() { ++m_reference_count_; }
     void release() { --m_reference_count_; if (0 == m_reference_count_) delete this; }
 
+//public:
     uint32_t m_reference_count_;
-
-    int16_t m_app_proto_;
-
-    uint32_t m_remote_uin_;         // ä»…å¯¹è¿å‡ºå»çš„socketæœ‰æ•ˆ: è¿å‡ºå»çš„æœåŠ¡æ ‡è¯†ï¼Œå¯¹ç«¯çš„æœåŠ¡å™¨id
+    uint32_t m_remote_uin_;         // ½ö¶ÔÁ¬³öÈ¥µÄsocketÓĞĞ§: Á¬³öÈ¥µÄ·şÎñ±êÊ¶£¬¶Ô¶ËµÄ·şÎñÆ÷id
 
     net_event_callback_t m_net_event_handler_cb_;
 
-    int16_t m_keep_alive_timeout_;  // å¤šä¹…æ²¡æ”¶åˆ°å¿ƒè·³åŒ…ï¼ˆæˆ–ä»»ä½•åŒ…ï¼‰ï¼Œåšæ–­å¼€å¤„ç†
-    int16_t m_reconnect_interval_;  // ä»…å¯¹è¿å‡ºå»çš„socketæœ‰æ•ˆ: è‡ªåŠ¨é‡è¿çš„é—´éš”æ—¶é—´ï¼Œè®¾ç½®ä¸º0åˆ™ä¸è‡ªåŠ¨é‡è¿
-    int16_t m_keep_alive_interval_; // ä»…å¯¹è¿å‡ºå»çš„socketæœ‰æ•ˆ: å¿ƒè·³åŒ…ï¼Œè®¾ç½®ä¸º0æ— å¿ƒè·³åŒ…         
+    int16_t m_app_proto_;
+    int16_t m_keep_alive_timeout_;  // ¶à¾ÃÃ»ÊÕµ½ĞÄÌø°ü£¨»òÈÎºÎ°ü£©£¬×ö¶Ï¿ª´¦Àí
+    int16_t m_reconnect_interval_;  // ½ö¶ÔÁ¬³öÈ¥µÄsocketÓĞĞ§: ×Ô¶¯ÖØÁ¬µÄ¼ä¸ôÊ±¼ä£¬ÉèÖÃÎª0Ôò²»×Ô¶¯ÖØÁ¬
+    int16_t m_keep_alive_interval_; // ½ö¶ÔÁ¬³öÈ¥µÄsocketÓĞĞ§: ĞÄÌø°ü£¬ÉèÖÃÎª0ÎŞĞÄÌø°ü         
 };
 
 #endif

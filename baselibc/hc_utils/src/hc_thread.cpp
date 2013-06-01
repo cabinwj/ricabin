@@ -1,17 +1,22 @@
 #include "hc_thread.h"
 #include "hc_types.h"
+#include "hc_stack_trace.h"
 
 // class threadc
 threadc::threadc()
 {
+    STACK_TRACE_LOG();
 }
 
 threadc::~threadc()
 {
+    STACK_TRACE_LOG();
 }
 
 int threadc::activate()
 {
+    STACK_TRACE_LOG();
+
 #ifdef WIN32
     m_thread_ = (HANDLE)_beginthreadex(NULL, 0, thread_proc, (void*)this, 0, NULL);
     if (0L == m_thread_) {
@@ -28,6 +33,8 @@ int threadc::activate()
 
 int threadc::wait()
 {
+    STACK_TRACE_LOG();
+
 #ifdef WIN32
     WaitForSingleObject(m_thread_, INFINITE);
     CloseHandle(m_thread_);
@@ -44,6 +51,8 @@ int threadc::wait()
 #ifdef WIN32
 unsigned __stdcall threadc::thread_proc(void* param)
 {
+    STACK_TRACE_LOG();
+
     threadc* pthis = (threadc*)param;
 
     int code = pthis->svc();
@@ -53,6 +62,8 @@ unsigned __stdcall threadc::thread_proc(void* param)
 #else
 void* threadc::thread_proc(void* param)
 {
+    STACK_TRACE_LOG();
+
     threadc* pthis = (threadc*)param;
 
     intptr_t code = pthis->svc();

@@ -53,21 +53,21 @@ public:
     bool operator==(const Address& address);
 
     // net-order
-    Port get_net_port() const { return port_; }
+    Port net_port() const { return port_; }
 
     // host-order
-    Port get_host_port() const;
+    Port host_port() const;
 
     //! ip 点分十进制表示法
     /// ASCII strings (what humans prefer to use)
     /// a dotted-decimal string (e.g., "202.96.209.133") 
-    std::string get_string_ip() const;
+    std::string dot_decimal_ip() const;
 
     // net-order
-    inline unsigned int get_net_ip() const { return sin_address_.s_addr; }  
+    inline unsigned int net_ip() const { return sin_address_.s_addr; }  
 
     // host-order
-    unsigned int get_host_ip() const;
+    unsigned int host_ip() const;
 
     void clear();
 
