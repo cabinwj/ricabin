@@ -7,10 +7,10 @@
 
 //! @class packet_splitter
 //! @brief tcp拆包接口
-class packet_splitter
+class ipacket_splitter
 {
 public:
-    virtual ~packet_splitter() { }
+    virtual ~ipacket_splitter() { }
 
     //! 拆包
     //! @param buf 数据缓存
@@ -20,14 +20,14 @@ public:
     virtual int split(const char* buf, int len, int& pkg_len) = 0;
 
 public:
-    static packet_splitter* Instance();
+    static ipacket_splitter* Instance();
 };
 
 //! @class string_splitter
 //! @brief 文本行协议拆包器
 //!
 //! 每行文本为一个包, CR LF 字符已经去掉
-class string_splitter : public packet_splitter
+class string_splitter : public ipacket_splitter
 {
 public:
     virtual ~string_splitter() { }
@@ -48,7 +48,7 @@ public:
 //! @brief 二进制协议tcp拆包器
 //!
 //! 包前两字节为网络字节序的包长
-class binary2_splitter : public packet_splitter
+class binary2_splitter : public ipacket_splitter
 {
 public:
     virtual ~binary2_splitter() { }
@@ -65,7 +65,7 @@ public:
     static binary2_splitter* Instance();
 };
 
-class binary4_splitter : public packet_splitter
+class binary4_splitter : public ipacket_splitter
 {
 public:
     virtual ~binary4_splitter() { }
@@ -87,7 +87,7 @@ public:
 //! @brief 文本行协议拆包器
 //!
 //! 每行文本为一个包, CR LF 字符已经去掉
-class line_splitter : public packet_splitter
+class line_splitter : public ipacket_splitter
 {
 public:
     virtual ~line_splitter() { }

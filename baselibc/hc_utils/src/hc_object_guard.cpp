@@ -1,1 +1,0 @@
-#include "hc_object_guard.h"

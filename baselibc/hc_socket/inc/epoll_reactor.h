@@ -5,15 +5,15 @@
 #ifndef WIN32
 
 #include "hc_os.h"
-#include "reactor.h"
-#include "event_handler.h"
+#include "ireactor.h"
+#include "ihandler.h"
 
 
-class event_handler;
+class ihandler;
 
 //! @class epoll_reactor
 //! @brief EPOLL版本的反应器
-class epoll_reactor : public reactor
+class epoll_reactor : public ireactor
 {
 public:
     epoll_reactor();
@@ -39,13 +39,13 @@ public:
     //! @param event_handler 事件处理器
     //! @param masks 要监听的事件
     //! @return 0:成功, <0:失败
-    virtual int enable_handler(event_handler* eh, uint32_t masks);
+    virtual int enable_handler(ihandler* eh, uint32_t masks);
 
     //! 删除一个事件监听
     //! @param event_handler 事件处理器
     //! @param masks 要删除的事件
     //! @return 0:成功, <0:失败
-    virtual int disable_handler(event_handler* eh, uint32_t masks);
+    virtual int disable_handler(ihandler* eh, uint32_t masks);
 
 private:
     //! 最大句柄数(20万)
@@ -54,10 +54,6 @@ private:
     int m_epfd;
     //! epoll返回的事件
     epoll_event* m_events;
-
-private:
-    //! 上一次扫描超时的时间
-    static time_t m_last_scan_time_;
 };
 #endif
 

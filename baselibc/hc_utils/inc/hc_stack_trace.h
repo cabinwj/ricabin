@@ -5,18 +5,18 @@
 class stack_trace
 {
 public:
-	stack_trace(const char* file, size_t line, const char* func);
-	~stack_trace();
+    stack_trace(const char* file, size_t line, const char* func);
+    ~stack_trace();
 
 public:
     static void stack_trace_cleanup(void* p);
 
 private:
-	void dump(size_t indent, const char* action, const char* file, size_t line, const char* func);
+    void dump(size_t indent, const char* action, const char* file, size_t line, const char* func);
 
 private:
     const char* m_file_;
-    size_t		m_line_;
+    size_t      m_line_;
     const char* m_func_;
 };
 

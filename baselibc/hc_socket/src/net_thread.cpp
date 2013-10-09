@@ -2,17 +2,20 @@
 
 #include "hc_log.h"
 #include "hc_stack_trace.h"
+
+#include "ireactor.h"
+#include "net_messenger.h"
 #include "net_package.h"
+#include "net_handler.h"
 
 
-// class net_thread
-net_thread::net_thread(net_manager* nm, reactor* nrc)
+net_thread::net_thread(net_messenger* nm, ireactor* nrc)
 {
     STACK_TRACE_LOG();
 
     m_is_run_ = false;
     m_notify_stop_ = false;
-    m_net_manager_ = nm;
+    m_net_messenger_ = nm;
     m_reactor_ = nrc;
 }
 
@@ -60,13 +63,13 @@ int net_thread::svc()
     {
         while (true)
         {
-            net_package* netpkg = m_net_manager_->pop_net_send_package();
+            net_package* netpkg = m_net_messenger_->pop_net_send_package();
             if (NULL == netpkg)
             {
                 break;
             }
 
-            event_handler* eh = event_handler::hunt_handler(netpkg->handler_id());
+            ihandler* eh = net_handler::select_handler(netpkg->handler_id());
             if (NULL == eh)
             {
                 netpkg->Destroy();
@@ -83,7 +86,7 @@ int net_thread::svc()
         {
             LOG(FATAL)("net_thread::svc, epoll error, thread exist.");
             m_is_run_ = false;
-            m_net_manager_->reactor_exception();
+            m_net_messenger_->reactor_exception();
             return -1;
         }
         // 睡眠通过epoll_wait 的 timeout 来实现

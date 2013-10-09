@@ -11,46 +11,16 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inc\hc_allocator.h" />
-    <ClInclude Include="inc\hc_block_buffer.h" />
-    <ClInclude Include="inc\hc_condition.h" />
-    <ClInclude Include="inc\hc_data_block.h" />
-    <ClInclude Include="inc\hc_destroyable.h" />
-    <ClInclude Include="inc\hc_log.h" />
-    <ClInclude Include="inc\hc_non_copyable.h" />
-    <ClInclude Include="inc\hc_object_allocator.h" />
-    <ClInclude Include="inc\hc_object_holder.h" />
-    <ClInclude Include="inc\hc_os.h" />
-    <ClInclude Include="inc\hc_sync_queue.h" />
-    <ClInclude Include="inc\hc_thread.h" />
-    <ClInclude Include="inc\hc_thread_mutex.h" />
-    <ClInclude Include="inc\hc_thread_storage.h" />
-    <ClInclude Include="inc\hc_types.h" />
-    <ClInclude Include="inc\hc_stack_trace.h" />
+    <ClInclude Include="inc\hc_py27embed.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\hc_allocator.cpp" />
-    <ClCompile Include="src\hc_block_buffer.cpp" />
-    <ClCompile Include="src\hc_condition.cpp" />
-    <ClCompile Include="src\hc_data_block.cpp" />
-    <ClCompile Include="src\hc_destroyable.cpp" />
-    <ClCompile Include="src\hc_log.cpp" />
-    <ClCompile Include="src\hc_non_copyable.cpp" />
-    <ClCompile Include="src\hc_object_allocator.cpp" />
-    <ClCompile Include="src\hc_object_holder.cpp" />
-    <ClCompile Include="src\hc_os.cpp" />
-    <ClCompile Include="src\hc_sync_queue.cpp" />
-    <ClCompile Include="src\hc_thread.cpp" />
-    <ClCompile Include="src\hc_thread_mutex.cpp" />
-    <ClCompile Include="src\hc_thread_storage.cpp" />
-    <ClCompile Include="src\hc_types.cpp" />
-    <ClCompile Include="src\hc_stack_trace.cpp" />
+    <ClCompile Include="src\hc_py27embed.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{D85E5552-5FE2-4F4C-812D-C2C41B3B2234}</ProjectGuid>
+    <ProjectGuid>{4E99A334-13D5-4164-92A6-CB16A77F09B2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>public</RootNamespace>
-    <ProjectName>hc_utils</ProjectName>
+    <ProjectName>hc_py27embed</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -76,9 +46,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>.\inc;C:\Install Files\MySQL\MySQL Server 5.1\include;$(IncludePath)</IncludePath>
+    <IncludePath>.\inc;C:\Python27\include;$(IncludePath)</IncludePath>
     <OutDir>..\..\staticlibc</OutDir>
     <IntDir>.\objs</IntDir>
+    <ExecutablePath>$(VCInstallDir)bin;$(WindowsSdkDir)bin\NETFX 4.0 Tools;$(WindowsSdkDir)bin;$(VSInstallDir)Common7\Tools\bin;$(VSInstallDir)Common7\tools;$(VSInstallDir)Common7\ide;$(ProgramFiles)\HTML Help Workshop;$(FrameworkSDKDir)\bin;$(MSBuildToolsPath32);$(VSInstallDir);$(SystemRoot)\SysWow64;$(FxCopDir);$(PATH);</ExecutablePath>
+    <ReferencePath>$(VCInstallDir)atlmfc\lib;$(VCInstallDir)lib</ReferencePath>
+    <LibraryPath>$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -89,14 +62,15 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>hc_utils.lib;hc_socket.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalLibraryDirectories>C:\Install Files\MySQL\MySQL Server 5.5\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Python27\libs</AdditionalLibraryDirectories>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

@@ -1,13 +1,11 @@
 #include "epoll_reactor.h"
 
 #ifndef WIN32
-#include "event_handler.h"
+#include "ihandler.h"
 #include "hc_log.h"
 #include "hc_stack_trace.h"
-#include "hc_list.h"
 
 // class epoll_reactor
-time_t epoll_reactor::m_last_scan_time_ = time(NULL);
 
 epoll_reactor::epoll_reactor()
 {
@@ -75,13 +73,13 @@ int epoll_reactor::run_reactor_event_loop()
 
     for (int i = 0; i < count; i++)
     {
-        event_handler* eh = (event_handler*)m_events[i].data.ptr;
-        uint32_t tunnel_id = eh->m_net_id_;
+        ihandler* eh = (ihandler*)m_events[i].data.ptr;
+        int32_t net_id = eh->m_net_id_;
 
         // 异常
         if (m_events[i].events & EPOLLERR)
         {
-            LOG(ERROR)("epoll_reactor::run_reactor_event_loop, got EPOLLERR for tunnel_id:%d", tunnel_id);
+            LOG(ERROR)("epoll_reactor::run_reactor_event_loop, got EPOLLERR for net_id:%d", net_id);
             eh->handle_close(net_event::NE_EXCEPTION);
             continue;
         }
@@ -89,7 +87,7 @@ int epoll_reactor::run_reactor_event_loop()
         // 关闭
         if (m_events[i].events & EPOLLHUP)
         {
-            LOG(ERROR)("epoll_reactor::run_reactor_event_loop, got EPOLLHUP for tunnel_id:%d", tunnel_id);
+            LOG(ERROR)("epoll_reactor::run_reactor_event_loop, got EPOLLHUP for net_id:%d", net_id);
             eh->handle_close(net_event::NE_CLOSE);
             continue;
         }
@@ -98,7 +96,7 @@ int epoll_reactor::run_reactor_event_loop()
         if (m_events[i].events & EPOLLIN)
         {
             int rc = eh->handle_input();
-            LOG(TRACE)("epoll_reactor::handle_input return:%d for tunnel_id:%u", rc, tunnel_id);
+            LOG(TRACE)("epoll_reactor::handle_input return:%d for net_id:%u", rc, net_id);
             // 连接关闭
             if (-1 == rc)
             {
@@ -117,7 +115,7 @@ int epoll_reactor::run_reactor_event_loop()
         if (m_events[i].events & EPOLLOUT)
         {
             int rc = eh->handle_output();
-            LOG(TRACE)("epoll_reactor::handle_output return:%d for tunnel_id:%u", rc, tunnel_id);
+            LOG(TRACE)("epoll_reactor::handle_output return:%d for net_id:%u", rc, net_id);
             // 连接关闭
             if (-1 == rc)
             {
@@ -133,16 +131,6 @@ int epoll_reactor::run_reactor_event_loop()
         }
     }
 
-    // 处理用户通知关闭的处理器和超时的处理器
-    time_t current_time = time(NULL);
-    // 定时处理，避免每次都跑，影响系统性能 1s
-    if (current_time - epoll_reactor::m_last_scan_time_ > 1)
-    {
-        epoll_reactor::m_last_scan_time_ = current_time;
-        // 定时器处理 检测超时
-        event_handler::scan_timer(current_time);
-    }
-
     return count;
 }
 
@@ -150,11 +138,11 @@ int epoll_reactor::end_reactor_event_loop()
 {
     STACK_TRACE_LOG();
 
-    event_handler::clear_hash_table();
+    net_handler::clear_all_handler();
     return close_reactor();
 }
 
-int epoll_reactor::enable_handler(event_handler* eh, uint32_t masks)
+int epoll_reactor::enable_handler(ihandler* eh, uint32_t masks)
 {
     STACK_TRACE_LOG();
 
@@ -172,19 +160,19 @@ int epoll_reactor::enable_handler(event_handler* eh, uint32_t masks)
 
     ep_ev.events |= EPOLLET;
 
-    if (eh->m_ev_mask_ & event_handler::EM_READ)
+    if (eh->m_ev_mask_ & ihandler::EM_READ)
     {
         ep_ev.events |= EPOLLIN;
     }
 
-    if (eh->m_ev_mask_ & event_handler::EM_WRITE)
+    if (eh->m_ev_mask_ & ihandler::EM_WRITE)
     {
         ep_ev.events |= EPOLLOUT;
     }
 
     int rc = 0;
-    uint32_t tunnel_id = eh->m_net_id_;
-    event_handler* ehdr = event_handler::hunt_handler(tunnel_id);
+    int32_t net_id = eh->m_net_id_;
+    ihandler* ehdr = net_handler::select_handler(net_id);
     // event_handler is not in. add?
     if (NULL == ehdr)
     {
@@ -202,7 +190,7 @@ int epoll_reactor::enable_handler(event_handler* eh, uint32_t masks)
             return -1;
         }
 
-        event_handler::push_handler(eh, eh->m_net_id_);
+        net_handler::insert_handler(eh, eh->m_net_id_);
 
         return 0;
     }
@@ -218,7 +206,7 @@ int epoll_reactor::enable_handler(event_handler* eh, uint32_t masks)
     return 0;
 }
 
-int epoll_reactor::disable_handler(event_handler* eh, uint32_t masks)
+int epoll_reactor::disable_handler(ihandler* eh, uint32_t masks)
 {
     STACK_TRACE_LOG();
 
@@ -236,19 +224,19 @@ int epoll_reactor::disable_handler(event_handler* eh, uint32_t masks)
 
     ep_ev.events |= EPOLLET;
 
-    if (eh->m_ev_mask_ & event_handler::EM_READ)
+    if (eh->m_ev_mask_ & ihandler::EM_READ)
     {
         ep_ev.events |= EPOLLIN;
     }
 
-    if (eh->m_ev_mask_ & event_handler::EM_WRITE)
+    if (eh->m_ev_mask_ & ihandler::EM_WRITE)
     {
         ep_ev.events |= EPOLLOUT;
     }
 
     int rc = 0;
-    uint32_t tunnel_id = eh->m_net_id_;
-    event_handler* ehdr = event_handler::hunt_handler(tunnel_id);
+    int32_t net_id = eh->m_net_id_;
+    ihandler* ehdr = net_handler::select_handler(net_id);
     // event_handler is not in. do nothing
     if (NULL == ehdr)
     {
@@ -266,7 +254,7 @@ int epoll_reactor::disable_handler(event_handler* eh, uint32_t masks)
             return -1;
         }
 
-        event_handler::remove_handler(eh);
+        net_handler::remove_handler(eh);
     }
     // event_mask change, modify
     else

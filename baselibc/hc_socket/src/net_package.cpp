@@ -1,6 +1,17 @@
 #include "net_package.h"
+#include "net_config.h"
+
 #include "hc_log.h"
 #include "hc_stack_trace.h"
+#include "hc_allocator.h"
+
+
+object_holder<net_package>* net_package::m_pool_ = new \
+    object_holder<net_package>( \
+    new object_pool_allocator<net_package>(NET_PACKET_POOL_COUNT, \
+    5 * NET_PACKET_POOL_COUNT, \
+    NET_PACKET_POOL_COUNT, \
+    new_allocator::Instance()));
 
 
 net_package::net_package()
@@ -21,7 +32,7 @@ net_package::~net_package()
     }
 }
 
-int net_package::allocator_data_block(allocatorc* alloc, uint32_t buffer_length)
+int net_package::allocate_data_block(allocatorc* alloc, uint32_t buffer_length)
 {
     STACK_TRACE_LOG();
 
@@ -63,7 +74,7 @@ int net_package::allocator_data_block(allocatorc* alloc, uint32_t buffer_length)
     return 0;
 }
 
-void net_package::set_data(char* data, uint32_t data_len)
+void net_package::data_o(char* data, uint32_t data_len)
 {
     STACK_TRACE_LOG();
 

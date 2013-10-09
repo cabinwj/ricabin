@@ -7,6 +7,9 @@
 #include <list>
 #include <vector>
 
+class allocatorc;
+class threadc_mutex;
+
 template <class T>
 class object_allocator
 {
@@ -27,6 +30,8 @@ public:
             m_allocator_ = allocatorc::Instance(); 
         }
     }
+
+    virtual ~object_single_allocator() {}
 
 public:
     virtual T* Create()

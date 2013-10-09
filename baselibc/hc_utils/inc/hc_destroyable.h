@@ -4,26 +4,25 @@
 #include "hc_types.h"
 
 class destroyable;
-class destroy_callback
+class idestroy_callback
 {
 public:
-    virtual ~destroy_callback() {}
+    virtual ~idestroy_callback() {}
     virtual void Call(destroyable*) = 0;
 };
 
 class destroyable
 {
 public:
+    destroyable() : m_destroy_cb_(NULL) {}
     virtual ~destroyable() {}
 
 public:
-    void Destroy() { if ( NULL != m_destroy_callback_ ) m_destroy_callback_->Call(this); }
-
-public:
-    inline void destroy_callback_o(destroy_callback* cb) { m_destroy_callback_ = cb; }
+    inline void Destroy() { if ( NULL != m_destroy_cb_ ) m_destroy_cb_->Call(this); }
+    inline void destroy_callback_o(idestroy_callback* cb) { m_destroy_cb_ = cb; }
 
 private:
-    destroy_callback* m_destroy_callback_;
+    idestroy_callback* m_destroy_cb_;
 };
 
 #endif // _HC_DESTROYABLE_H_

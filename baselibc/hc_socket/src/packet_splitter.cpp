@@ -2,7 +2,7 @@
 #include "hc_os.h"
 #include "hc_log.h"
 #include "hc_stack_trace.h"
-#include "config.h"
+#include "net_config.h"
 
 // class string_splitter
 int string_splitter::split(const char* buf, int len, int& real_pkglen)
@@ -239,7 +239,7 @@ line_splitter* line_splitter::Instance()
     return &__split;
 }
 
-packet_splitter* packet_splitter::Instance()
+ipacket_splitter* ipacket_splitter::Instance()
 {
     //STACK_TRACE_LOG();
 

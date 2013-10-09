@@ -79,16 +79,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="inc\address.h" />
-    <ClInclude Include="inc\config.h" />
+    <ClInclude Include="inc\net_handler.h" />
+    <ClInclude Include="inc\net_config.h" />
     <ClInclude Include="inc\epoll_reactor.h" />
-    <ClInclude Include="inc\event_handler.h" />
-    <ClInclude Include="inc\net_id_guard.h" />
+    <ClInclude Include="inc\ihandler.h" />
+    <ClInclude Include="inc\net_id_holder.h" />
     <ClInclude Include="inc\net_event.h" />
-    <ClInclude Include="inc\net_manager.h" />
+    <ClInclude Include="inc\net_messenger.h" />
     <ClInclude Include="inc\net_package.h" />
     <ClInclude Include="inc\net_thread.h" />
     <ClInclude Include="inc\packet_splitter.h" />
-    <ClInclude Include="inc\reactor.h" />
+    <ClInclude Include="inc\ireactor.h" />
     <ClInclude Include="inc\select_reactor.h" />
     <ClInclude Include="inc\socket.h" />
     <ClInclude Include="inc\sock_acceptor.h" />
@@ -98,10 +99,10 @@
   <ItemGroup>
     <ClCompile Include="src\address.cpp" />
     <ClCompile Include="src\epoll_reactor.cpp" />
-    <ClCompile Include="src\event_handler.cpp" />
-    <ClCompile Include="src\net_id_guard.cpp" />
+    <ClCompile Include="src\net_handler.cpp" />
     <ClCompile Include="src\net_event.cpp" />
-    <ClCompile Include="src\net_manager.cpp" />
+    <ClCompile Include="src\net_id_holder.cpp" />
+    <ClCompile Include="src\net_messenger.cpp" />
     <ClCompile Include="src\net_package.cpp" />
     <ClCompile Include="src\net_thread.cpp" />
     <ClCompile Include="src\select_reactor.cpp" />
