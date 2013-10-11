@@ -2,7 +2,7 @@
 #define _HC_BLOCK_BUFFER_H_
 
 #include <string.h>
-//#include <assert.h>
+#include <assert.h>
 
 //! @class block_buffer
 //! @brief Êý¾Ý¿é»º³å
@@ -74,7 +74,7 @@ char* block_buffer<BUFFER_LENGTH>::rd_ptr()
 template <int BUFFER_LENGTH>
 void block_buffer<BUFFER_LENGTH>::rd_ptr(int n)
 {
-    //assert((m_wr_ndx_ - m_rd_ndx_) >= n);
+    assert((m_wr_ndx_ - m_rd_ndx_) >= n);
     m_rd_ndx_ += n;
 }
 
@@ -87,7 +87,7 @@ char* block_buffer<BUFFER_LENGTH>::wr_ptr()
 template <int BUFFER_LENGTH>
 void block_buffer<BUFFER_LENGTH>::wr_ptr(int n)
 {
-    //assert((m_length_ - m_wr_ndx_) >= n);
+    assert((m_length_ - m_wr_ndx_) >= n);
     m_wr_ndx_ += n;
 }
 

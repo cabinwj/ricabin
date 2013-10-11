@@ -18,9 +18,6 @@ public:
     //! @param packet_len 返回参数 包长度
     //! @return -1:数据格式错误, 0:缓存中没有完整包, 1:得到一个包
     virtual int split(const char* buf, int len, int& pkg_len) = 0;
-
-public:
-    static ipacket_splitter* Instance();
 };
 
 //! @class string_splitter
@@ -38,9 +35,6 @@ public:
     //! @param packet_len 返回参数 包长度
     //! @return -1:数据格式错误, 0:缓存中没有完整包, 1:得到一个包
     virtual int split(const char *buf, int len, int& packet_len);
-
-public:
-    static string_splitter* Instance();
 };
 
 
@@ -60,9 +54,6 @@ public:
     //! @param packet_len 返回参数 包长度
     //! @return -1:数据格式错误, 0:缓存中没有完整包, 1:得到一个包
     virtual int split(const char *buf, int len, int& packet_len);
-
-public:
-    static binary2_splitter* Instance();
 };
 
 class binary4_splitter : public ipacket_splitter
@@ -77,9 +68,6 @@ public:
     //! @param packet_len 返回参数 包长度
     //! @return -1:数据格式错误, 0:缓存中没有完整包, 1:得到一个包
     virtual int split(const char *buf, int len, int& packet_len);
-
-public:
-    static binary4_splitter* Instance();
 };
 
 
@@ -99,9 +87,6 @@ public:
     //! @param packet_len 返回参数 包长度
     //! @return -1:数据格式错误, 0:缓存中没有完整包, 1:得到一个包
     virtual int split(const char *buf, int len, int& packet_len);
-
-public:
-    static line_splitter* Instance();
 };
 
 

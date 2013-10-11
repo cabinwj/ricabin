@@ -8,6 +8,8 @@
 #include "net_messenger.h"
 #include "net_handler.h"
 
+#include <assert.h>
+
 // class sock_stream
 //! streamÌ×½Ó×Ö³Ø70Íò
 object_holder<sock_stream>* sock_stream::m_pool_ = new \
@@ -29,8 +31,11 @@ int sock_stream::init(net_messenger* nm, ipacket_splitter* ps, void* user_data, 
 {
     STACK_TRACE_LOG();
 
-    m_net_messenger_ = (NULL == nm) ? net_messenger::Instance() : nm;
-    m_packet_splitter_ = (NULL == ps) ? ipacket_splitter::Instance() : ps;
+    assert( NULL != nm );
+    assert( NULL != ps );
+
+    m_net_messenger_ = nm;
+    m_packet_splitter_ = ps;
 
     m_remote_addr_ = remote_addr;
 

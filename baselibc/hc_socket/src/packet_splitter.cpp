@@ -76,15 +76,6 @@ int string_splitter::split(const char* buf, int len, int& real_pkglen)
 #endif
 }
 
-string_splitter* string_splitter::Instance()
-{
-    //STACK_TRACE_LOG();
-
-    static string_splitter __split;
-    return &__split;
-}
-
-
 // class binary2_splitter
 int binary2_splitter::split(const char* buf, int len, int& real_pkglen)
 {
@@ -117,14 +108,6 @@ int binary2_splitter::split(const char* buf, int len, int& real_pkglen)
     }
 
     return 0;
-}
-
-binary2_splitter* binary2_splitter::Instance()
-{
-    //STACK_TRACE_LOG();
-
-    static binary2_splitter __split;
-    return &__split;
 }
 
 // class binary4_splitter
@@ -160,15 +143,6 @@ int binary4_splitter::split(const char* buf, int len, int& real_pkglen)
 
     return 0;
 }
-
-binary4_splitter* binary4_splitter::Instance()
-{
-    //STACK_TRACE_LOG();
-
-    static binary4_splitter __split;
-    return &__split;
-}
-
 
 // class line_splitter
 int line_splitter::split(const char* buf, int len, int& real_pkglen)
@@ -231,17 +205,3 @@ int line_splitter::split(const char* buf, int len, int& real_pkglen)
     return 1;
 }
 
-line_splitter* line_splitter::Instance()
-{
-    //STACK_TRACE_LOG();
-
-    static line_splitter __split;
-    return &__split;
-}
-
-ipacket_splitter* ipacket_splitter::Instance()
-{
-    //STACK_TRACE_LOG();
-
-    return binary4_splitter::Instance();
-}
