@@ -90,8 +90,9 @@ void net_handler::clear_all_handler()
     for ( ; m_net2hdr_hashmap_.end() != iter; iter++ )
     {
         ihandler* ish = iter->second;
+        iter->second = NULL;
         //delete from hash list
-        m_net2hdr_hashmap_.erase(iter);
+        //iter = m_net2hdr_hashmap_.erase(iter);
 
         if ( NULL != ish )
         {
