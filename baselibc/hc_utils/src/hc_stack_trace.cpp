@@ -74,9 +74,9 @@ void stack_trace::dump(size_t indent, const char* action, const char* file, size
     }
 
 #ifdef WIN32
-    snprintf(current, remain_len, "[%zx] %s %s(%s:%zu)", (ssize_t)GetCurrentThreadId(), action, func, file, line);
+    snprintf(current, remain_len, "[0x%08x] %s %s(%s:%06u)", (ssize_t)GetCurrentThreadId(), action, func, file, line);
 #else
-    snprintf(current, remain_len, "[%zx] %s %s(%s:%zu)", (ssize_t)pthread_self(), action, func, file, line);
+    snprintf(current, remain_len, "[0x%08x] %s %s(%s:%06u)", (ssize_t)pthread_self(), action, func, file, line);
 #endif
     LOG(TRACE)("%s", buffer);
 }
