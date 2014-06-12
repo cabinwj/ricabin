@@ -235,15 +235,6 @@ private:
 #define LOG_TRACE logc::global_log.log_trace
 #define LOG_DEBUG logc::global_log.log_debug
 
-//#define LOG(format, ...)     fprintf(stdout, format, ##__VA_ARGS__)   // #C99
-//#define LOG(format, args...) fprintf(stdout, format, ##args)          // #GCC
-#define MYLOG(__level__, __format__, ...) \
-    do {                                         \
-        char __szlog_prefix__[4* 1024];          \
-        snprintf(__szlog_prefix__, sizeof(__szlog_prefix__), "%s %s:%06u %s", __FUNCTION__, (__format__), __FILE__, __LINE__);   \
-        LOG_##__level__(__szlog_prefix__, ##__VA_ARGS__);    \
-    } while(0)
-
 #define LOG_HEX(data, len, level) logc::global_log.log_hex((unsigned char*)(data), (len), (level))
 #define LOG_HEX_PREFIX(prefix, data, len, level) logc::global_log.log_hex_prefix((unsigned char*)(prefix), (unsigned char*)(data), (len), (level))
 
