@@ -18,12 +18,12 @@ object_holder<sock_acceptor>* sock_acceptor::m_pool_ = new \
 sock_acceptor::sock_acceptor() : m_ev_mask_(0), m_net_id_(0),
     m_reactor_(NULL), m_user_data_(NULL), m_net_messenger_(NULL), m_packet_splitter_(NULL)
 {
-    STACK_TRACE_LOG();
+    //STACK_TRACE_LOG();
 }
 
 int sock_acceptor::init(net_messenger* nm, ipacket_splitter* ps, void* user_data, int32_t net_id)
 {
-    STACK_TRACE_LOG();
+    //STACK_TRACE_LOG();
 
     m_net_messenger_ = nm;
     m_packet_splitter_ = ps;
@@ -234,7 +234,7 @@ int sock_acceptor::handle_close(int16_t evt)
     case net_event::NE_EXCEPTION:
     case net_event::NE_TIMEOUT: {
         
-        net_handler::remove_handler(this);
+        //net_handler::remove_handler(this);
 
         m_socket_.close();
 

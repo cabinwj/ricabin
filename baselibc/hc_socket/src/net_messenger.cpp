@@ -1,7 +1,6 @@
 #include "net_messenger.h"
 
 #include "hc_log.h"
-#include "hc_stack_trace.h"
 
 #include "ihandler.h"
 #include "sock_connector.h"
@@ -14,8 +13,6 @@
 // class net_messenger
 net_messenger::net_messenger()
 {
-    STACK_TRACE_LOG();
-
     m_status_ = 0;
     m_net_thread_ = NULL;
     //! 队列容量为100万
@@ -26,8 +23,6 @@ net_messenger::net_messenger()
 
 net_messenger::~net_messenger()
 {
-    STACK_TRACE_LOG();
-
     if ( NULL != m_net_thread_ )
     {
         delete m_net_thread_;
@@ -49,16 +44,12 @@ net_messenger::~net_messenger()
 
 net_messenger* net_messenger::Instance()
 {
-    STACK_TRACE_LOG();
-
     static net_messenger __net_messenger;
     return &__net_messenger;
 }
 
 int net_messenger::start()
 {
-    STACK_TRACE_LOG();
-
 #ifdef _WIN32
     WORD wVersionRequested;
     WSADATA wsaData;
@@ -109,8 +100,6 @@ int net_messenger::start()
 
 int net_messenger::stop()
 {
-    STACK_TRACE_LOG();
-
     if (0 == m_status_)
     {
         LOG(ERROR)("net_messenger::stop error, not started");
@@ -151,8 +140,6 @@ int net_messenger::stop()
 int32_t net_messenger::create_tcp_client(const Address& remote_addr, ipacket_splitter* ps, void* user_data,
                                          int recv_bufsize, int send_bufsize)
 {
-    STACK_TRACE_LOG();
-
     if (1 != m_status_)
     {
         LOG(WARN)("net_messenger::create_tcp_client error, not started");
@@ -194,8 +181,6 @@ int32_t net_messenger::create_tcp_client(const Address& remote_addr, ipacket_spl
 int32_t net_messenger::create_tcp_client(const char* remote_ip, int remote_port, ipacket_splitter* ps, void* user_data,
                                          int recv_bufsize, int send_bufsize)
 {
-    STACK_TRACE_LOG();
-
     Address remote_addr(remote_ip, remote_port);
     return create_tcp_client(remote_addr, ps, user_data, recv_bufsize, send_bufsize);
 }
@@ -203,8 +188,6 @@ int32_t net_messenger::create_tcp_client(const char* remote_ip, int remote_port,
 int32_t net_messenger::create_tcp_server(const Address& local_addr, ipacket_splitter* ps, void* user_data,
                                          int recv_bufsize, int send_bufsize)
 {
-    STACK_TRACE_LOG();
-
     if (1 != m_status_)
     {
         LOG(WARN)("net_messenger::create_tcp_server error, not started");
@@ -245,16 +228,12 @@ int32_t net_messenger::create_tcp_server(const Address& local_addr, ipacket_spli
 int32_t net_messenger::create_tcp_server(const char* local_ip, int local_port, ipacket_splitter* ps, void* user_data,
                                          int recv_bufsize, int send_bufsize)
 {
-    STACK_TRACE_LOG();
-
     Address local_addr(local_ip, local_port);
     return create_tcp_server(local_addr, ps, user_data, recv_bufsize, send_bufsize);
 }
 
 int net_messenger::notify_close(int32_t net_id, int16_t evt)
 {
-    STACK_TRACE_LOG();
-
     ihandler* eh = net_handler::select_handler(net_id);
     if ( NULL != eh )
     {
@@ -267,8 +246,6 @@ int net_messenger::notify_close(int32_t net_id, int16_t evt)
 
 int net_messenger::send_package(int32_t net_id, net_package* netpkg)
 {
-    STACK_TRACE_LOG();
-
     if (1 != m_status_)
     {
         LOG(WARN)("net_messenger::send_package error, not started");
@@ -304,8 +281,6 @@ int net_messenger::send_package(int32_t net_id, net_package* netpkg)
 
 net_event* net_messenger::pop_event()
 {
-    STACK_TRACE_LOG();
-
     net_event* netev = NULL;
     int rc = m_net_event_queue_->pop(netev, false);
     if (0 != rc)
@@ -318,15 +293,11 @@ net_event* net_messenger::pop_event()
 
 net_reactor* net_messenger::reactor_pointer()
 {
-    STACK_TRACE_LOG();
-
     return &m_reactor_;
 }
 
 int net_messenger::push_event(net_event* netev)
 {
-    STACK_TRACE_LOG();
-
     int rc = m_net_event_queue_->push(netev);
     // 队列用尽
     if (0 != rc)
@@ -340,36 +311,26 @@ int net_messenger::push_event(net_event* netev)
 
 int net_messenger::net_event_count()
 {
-    STACK_TRACE_LOG();
-
     return m_net_event_queue_->size();
 }
 
 int32_t net_messenger::acquire_net_id(net_id_holder::net_id_t type)
 {
-    STACK_TRACE_LOG();
-
     return m_net_id_holder_.acquire(type);
 }
 
 void net_messenger::release_net_id(int32_t id)
 {
-    STACK_TRACE_LOG();
-
     m_net_id_holder_.release(id);
 }
 
 int net_messenger::net_send_package_count()
 {
-    STACK_TRACE_LOG();
-
     return m_net_send_packet_queue_->size();
 }
 
 net_package* net_messenger::pop_net_send_package()
 {
-    STACK_TRACE_LOG();
-
     net_package* netpkg = NULL;
     int rc = m_net_send_packet_queue_->pop(netpkg, false);
     if (0 != rc)
@@ -382,8 +343,6 @@ net_package* net_messenger::pop_net_send_package()
 
 void net_messenger::reactor_exception()
 {
-    STACK_TRACE_LOG();
-
     m_status_ = 2;
     LOG(FATAL)("net_messenger::reactor_exception(), epoll error, thread exist");
 }

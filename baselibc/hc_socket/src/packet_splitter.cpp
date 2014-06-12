@@ -1,14 +1,12 @@
 #include "packet_splitter.h"
 #include "hc_os.h"
 #include "hc_log.h"
-#include "hc_stack_trace.h"
+
 #include "net_config.h"
 
 // class string_splitter
 int string_splitter::split(const char* buf, int len, int& real_pkglen)
 {
-    STACK_TRACE_LOG();
-
     if (len < 6) 
     {
         return 0;
@@ -79,8 +77,6 @@ int string_splitter::split(const char* buf, int len, int& real_pkglen)
 // class binary2_splitter
 int binary2_splitter::split(const char* buf, int len, int& real_pkglen)
 {
-    STACK_TRACE_LOG();
-
     uint8_t min_len = sizeof(uint16_t);
     if (len < min_len)
     {
@@ -113,8 +109,6 @@ int binary2_splitter::split(const char* buf, int len, int& real_pkglen)
 // class binary4_splitter
 int binary4_splitter::split(const char* buf, int len, int& real_pkglen)
 {
-    STACK_TRACE_LOG();
-
     uint8_t min_len = sizeof(uint32_t);
     if (len < min_len)
     {
@@ -147,8 +141,6 @@ int binary4_splitter::split(const char* buf, int len, int& real_pkglen)
 // class line_splitter
 int line_splitter::split(const char* buf, int len, int& real_pkglen)
 {
-    STACK_TRACE_LOG();
-
     int p1 = -1;
     int p2 = -1;
 

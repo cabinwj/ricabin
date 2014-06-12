@@ -2,6 +2,8 @@
 #define _NET_HANDLER_H_
 
 #include "hc_types.h"
+//#include "hc_rwlock.h"
+//#include "hc_thread_mutex.h"
 
 #if defined(_MSC_VER)
 #include <hash_map>
@@ -22,7 +24,12 @@ class net_handler
 {
 public:
     typedef hash_map<int32_t, ihandler*> net2handler_hashmap;
+
+public:
     static net2handler_hashmap m_net2hdr_hashmap_;
+    ////! 线程锁, 保护处理器 handler_list
+    //static rw_lockc m_rwlock_;
+    //static threadc_mutex m_mutex_;
 
 public:
     static ihandler* select_handler(int32_t net_id);

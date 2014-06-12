@@ -1,7 +1,6 @@
 #include "net_thread.h"
 
 #include "hc_log.h"
-#include "hc_stack_trace.h"
 
 #include "ireactor.h"
 #include "net_messenger.h"
@@ -11,8 +10,6 @@
 
 net_thread::net_thread(net_messenger* nm, ireactor* nrc)
 {
-    STACK_TRACE_LOG();
-
     m_is_run_ = false;
     m_notify_stop_ = false;
     m_net_messenger_ = nm;
@@ -21,13 +18,10 @@ net_thread::net_thread(net_messenger* nm, ireactor* nrc)
 
 net_thread::~net_thread()
 {
-    STACK_TRACE_LOG();
 }
 
 int net_thread::start()
 {
-    STACK_TRACE_LOG();
-
     if (false != m_is_run_)
     {
         return -1;
@@ -46,8 +40,6 @@ int net_thread::start()
 
 int net_thread::stop()
 {
-    STACK_TRACE_LOG();
-
     m_notify_stop_ = true;
     wait();
 
@@ -57,8 +49,6 @@ int net_thread::stop()
 
 int net_thread::svc()
 {
-    STACK_TRACE_LOG();
-
     while (m_notify_stop_ != true)
     {
         while (true)

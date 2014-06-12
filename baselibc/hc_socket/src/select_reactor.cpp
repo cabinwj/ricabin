@@ -1,17 +1,13 @@
 #include "select_reactor.h"
 
 #include "hc_log.h"
-#include "hc_stack_trace.h"
 
 #include "ihandler.h"
 #include "net_handler.h"
 #include "net_event.h"
 
-// class select_reactor
-
 select_reactor::select_reactor()
 {
-    STACK_TRACE_LOG();
     FD_ZERO(&m_read_set_);
     FD_ZERO(&m_write_set_);
     FD_ZERO(&m_exception_set_);
@@ -19,12 +15,10 @@ select_reactor::select_reactor()
 
 select_reactor::~select_reactor()
 {
-    STACK_TRACE_LOG();
 }
 
 int select_reactor::open_reactor()
 {
-    STACK_TRACE_LOG();
     FD_ZERO(&m_read_set_);
     FD_ZERO(&m_write_set_);
     FD_ZERO(&m_exception_set_);
@@ -33,14 +27,11 @@ int select_reactor::open_reactor()
 
 int select_reactor::close_reactor()
 {
-    STACK_TRACE_LOG();
     return 0;
 }
 
 int select_reactor::run_reactor_event_loop()
 {
-    STACK_TRACE_LOG();
-
     Descriptor max_fd = 0;
 
     FD_ZERO(&m_read_set_);
@@ -53,10 +44,10 @@ int select_reactor::run_reactor_event_loop()
         return 0;
     }
 
-    net_handler::net2handler_hashmap::iterator iter = net_handler::m_net2hdr_hashmap_.begin();
-    for ( ; net_handler::m_net2hdr_hashmap_.end() != iter; iter++ )
+    net_handler::net2handler_hashmap::iterator iter1 = net_handler::m_net2hdr_hashmap_.begin();
+    for ( ; net_handler::m_net2hdr_hashmap_.end() != iter1; iter1++ )
     {
-        ihandler* eh = iter->second;
+        ihandler* eh = iter1->second;
         //Descriptor fd = Descriptor(eh->m_socket_);
         Descriptor fd = eh->descriptor_o();
         //int32_t ev_mask = eh->m_ev_mask_;
@@ -98,10 +89,10 @@ int select_reactor::run_reactor_event_loop()
         return -1;
     }
 
-    iter = net_handler::m_net2hdr_hashmap_.begin();
-    for ( ; net_handler::m_net2hdr_hashmap_.end() != iter; iter++ )
+    net_handler::net2handler_hashmap::iterator iter2 = net_handler::m_net2hdr_hashmap_.begin();
+    while (net_handler::m_net2hdr_hashmap_.end() != iter2)
     {
-        ihandler* eh = iter->second;
+        ihandler* eh = iter2->second;
         //Descriptor fd = Descriptor(eh->m_socket_);
         Descriptor fd = eh->descriptor_o();
         //int32_t ev_mask = eh->m_ev_mask_;
@@ -115,6 +106,7 @@ int select_reactor::run_reactor_event_loop()
             {
                 LOG(ERROR)("select_reactor::run_reactor_event_loop, got NE_EXCEPTION for net_id:%u", net_id);
                 eh->handle_close(net_event::NE_EXCEPTION);
+                iter2 = net_handler::m_net2hdr_hashmap_.erase(iter2);
                 continue;
             }
         }
@@ -129,12 +121,14 @@ int select_reactor::run_reactor_event_loop()
                 if (-1 == rc)
                 {
                     eh->handle_close(net_event::NE_CLOSE);
+                    iter2 = net_handler::m_net2hdr_hashmap_.erase(iter2);
                     continue;
                 }
                 // 连接异常
                 if (-2 == rc)
                 {
                     eh->handle_close(net_event::NE_EXCEPTION);
+                    iter2 = net_handler::m_net2hdr_hashmap_.erase(iter2);
                     continue;
                 }
             }
@@ -150,16 +144,20 @@ int select_reactor::run_reactor_event_loop()
                 if (-1 == rc)
                 {
                     eh->handle_close(net_event::NE_CLOSE);
+                    iter2 = net_handler::m_net2hdr_hashmap_.erase(iter2);
                     continue;
                 }
                 // 连接异常
                 if (-2 == rc)
                 {
                     eh->handle_close(net_event::NE_EXCEPTION);
+                    iter2 = net_handler::m_net2hdr_hashmap_.erase(iter2);
                     continue;
                 }
             }
         }
+
+        iter2++;
     }
 
     return count;
@@ -167,16 +165,12 @@ int select_reactor::run_reactor_event_loop()
 
 int select_reactor::end_reactor_event_loop()
 {
-    STACK_TRACE_LOG();
-
     net_handler::clear_all_handler();
     return close_reactor();
 }
 
 int select_reactor::enable_handler(ihandler* eh, int16_t masks)
 {
-    STACK_TRACE_LOG();
-
     eh->reactor_o(this);
     eh->event_mask_o(eh->event_mask_o() | masks);
     //Descriptor fd = Descriptor(eh->m_socket_);
@@ -212,8 +206,6 @@ int select_reactor::enable_handler(ihandler* eh, int16_t masks)
 
 int select_reactor::disable_handler(ihandler* eh, int16_t masks)
 {
-    STACK_TRACE_LOG();
-
     eh->reactor_o(this);
     eh->event_mask_o(eh->event_mask_o() & ~masks);
     int32_t ev_mask = eh->event_mask_o();

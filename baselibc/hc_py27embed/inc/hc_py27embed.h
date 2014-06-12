@@ -10,11 +10,11 @@
 class ipy27init_module
 {
 public:
-	virtual ~ipy27init_module() { }
+    virtual ~ipy27init_module() { }
 
 public:
-	// 导出的模块名，前面结构数组的指针：Py_InitModule("bdh", bdh_methods); 
-	virtual void init_methods() = 0;
+    // 导出的模块名，前面结构数组的指针： Py_InitModule("bdh", bdh_methods); 
+    virtual void init_methods() = 0;
 };
 
 class py27embed

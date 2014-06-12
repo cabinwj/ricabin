@@ -24,12 +24,12 @@ sock_stream::sock_stream() : m_ev_mask_(0), m_net_id_(0),
     m_send_netpkg_(NULL), m_send_netpkglen_(0), m_net_event_(NULL), m_remain_len_(0),
     m_socket_send_packet_queue_(NULL)
 {
-    STACK_TRACE_LOG();
+    //STACK_TRACE_LOG();
 }
 
 int sock_stream::init(net_messenger* nm, ipacket_splitter* ps, void* user_data, int32_t net_id, const Address& remote_addr, Descriptor socket)
 {
-    STACK_TRACE_LOG();
+    //STACK_TRACE_LOG();
 
     assert( NULL != nm );
     assert( NULL != ps );
@@ -391,7 +391,7 @@ int sock_stream::handle_close(int16_t evt)
     case net_event::NE_EXCEPTION:
     case net_event::NE_TIMEOUT: {
 
-        net_handler::remove_handler(this);
+        //net_handler::remove_handler(this);
 
         m_socket_.close();
 
@@ -429,7 +429,7 @@ int sock_stream::post_package(net_package* netpkg)
     if ((NULL == netpkg) || (0 == netpkg->length()))
     {
         LOG(TRACE)("sock_stream::post_package netpkg is NULL or netpkg length is 0");
-        return 0;
+        return -4;
     }
 
     // 当前没有待发任务, 直接发送
@@ -446,7 +446,7 @@ int sock_stream::post_package(net_package* netpkg)
         {            
             LOG(ERROR)("sock_stream::post_package error, socket send packet queue is full, netpkg discard");
             netpkg->Destroy();
-            return 0;
+            return -5;
         }
     }
 

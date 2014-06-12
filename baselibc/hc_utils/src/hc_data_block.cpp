@@ -91,7 +91,8 @@ int data_block::resize(size_t sz)
         return -1;
     }
 
-    if ( odb.append( begin(), ::std::min(size(), sz) ) != 0 )
+    size_t min_size = sz > size() ? size() : sz;
+    if ( odb.append( begin(), min_size ) != 0 )
     {
         return -1;
     }

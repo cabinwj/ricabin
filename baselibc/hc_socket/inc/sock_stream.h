@@ -71,6 +71,7 @@ public:
     virtual int handle_close(int16_t evt);
 
     //! 提交发送任务
+    //! @return 处理结果 0:处理正常, -1: 连接被对方关闭, -2:连接异常, -4:参数异常, -5:队列满,入队列不成功
     virtual int post_package(net_package* netpkg);
 
 public:
@@ -78,6 +79,8 @@ public:
     friend class sock_connector;
 
 private:
+    //! 发送包
+    //! @return 处理结果 0:处理正常, -1: 连接被对方关闭, -2:连接异常, -3:EAGAIN
     int send_package();
 
 private:

@@ -31,6 +31,8 @@ public:
     int space_length();
 
     //! 实际长度
+    int size();
+    //! 实际长度
     int length();
     //! 回收空间
     void recycle();
@@ -104,9 +106,15 @@ int block_buffer<BUFFER_LENGTH>::space_length()
 }
 
 template <int BUFFER_LENGTH>
-int block_buffer<BUFFER_LENGTH>::length()
+int block_buffer<BUFFER_LENGTH>::size()
 {
     return m_length_;
+}
+
+template <int BUFFER_LENGTH>
+int block_buffer<BUFFER_LENGTH>::length()
+{
+    return size();
 }
 
 template <int BUFFER_LENGTH>

@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="py27extend.cpp" />
+    <ClCompile Include="py27extend_main.cpp" />
     <ClCompile Include="py27method.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -50,12 +50,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>.\inc;..\..\baselibc\hc_py27embed\inc;C:\Python27\include;$(IncludePath)</IncludePath>
+    <IncludePath>.\inc;..\..\baselibc\hc_py27embed\inc;..\..\openlib\python\include;$(IncludePath)</IncludePath>
     <OutDir>..\..\bin</OutDir>
     <IntDir>.\objs</IntDir>
     <ExecutablePath>..\..\bin;$(ExecutablePath)</ExecutablePath>
     <ReferencePath>.\objs;$(ReferencePath)</ReferencePath>
-    <LibraryPath>..\..\staticlibc;C:\Python27\libs;$(LibraryPath)</LibraryPath>
+    <LibraryPath>..\..\baselib;..\..\openlib\python\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

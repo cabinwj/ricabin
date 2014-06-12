@@ -224,7 +224,7 @@ int logc::log_debug(const char* fmt, ...)
     return ret;
 }
 
-int logc::get_level_str_index(log_level_t level)
+int logc::level_str_index_o(log_level_t level)
 {
     if (0 == (level & m_max_level_))
     {
@@ -271,7 +271,7 @@ int logc::vlog(log_level_t level, const char* fmt, va_list ap)
 #else
     localtime_r(&now, &tm_now);
 #endif
-    int lv = get_level_str_index(level);
+    int lv = level_str_index_o(level);
 
     // strftime消耗大，改为直接格式化
     // write level

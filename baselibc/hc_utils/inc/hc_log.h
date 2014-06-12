@@ -197,7 +197,7 @@ private:
         @param level 日志等级
         @return 日志级别在关键字描述中的索引
     */
-    int get_level_str_index(log_level_t level);
+    int level_str_index_o(log_level_t level);
 
 private:
     /// 不同日志级别的颜色以及关键字描述
@@ -235,8 +235,17 @@ private:
 #define LOG_TRACE logc::global_log.log_trace
 #define LOG_DEBUG logc::global_log.log_debug
 
-#define LOG_HEX(m_data_, len, level) logc::global_log.log_hex((unsigned char*)(m_data_), (len), (level))
-#define LOG_HEX_PREFIX(prefix, m_data_, len, level) logc::global_log.log_hex_prefix((unsigned char*)(prefix), (unsigned char*)(m_data_), (len), (level))
+//#define LOG(format, ...)     fprintf(stdout, format, ##__VA_ARGS__)   // #C99
+//#define LOG(format, args...) fprintf(stdout, format, ##args)          // #GCC
+#define MYLOG(__level__, __format__, ...) \
+    do {                                         \
+        char __szlog_prefix__[4* 1024];          \
+        snprintf(__szlog_prefix__, sizeof(__szlog_prefix__), "%s %s:%06u %s", __FUNCTION__, (__format__), __FILE__, __LINE__);   \
+        LOG_##__level__(__szlog_prefix__, ##__VA_ARGS__);    \
+    } while(0)
+
+#define LOG_HEX(data, len, level) logc::global_log.log_hex((unsigned char*)(data), (len), (level))
+#define LOG_HEX_PREFIX(prefix, data, len, level) logc::global_log.log_hex_prefix((unsigned char*)(prefix), (unsigned char*)(data), (len), (level))
 
 
 #define LOG_INIT(name, size, level) \
@@ -252,7 +261,7 @@ private:
 
 #define LOG_GET_LEVEL() logc::global_log.get_max_level()
 
-#define LOG_SET_USEC(m_enable_usec_) logc::global_log.set_usec(m_enable_usec_)
+#define LOG_SET_USEC(enable_usec) logc::global_log.set_usec(enable_usec)
 
 
 #endif // _HC_LOG_H_

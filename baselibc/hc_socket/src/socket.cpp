@@ -3,12 +3,12 @@
 
 Socket::Socket() : descriptor_(INVALID_SOCKET)
 {
-    STACK_TRACE_LOG();
+    //STACK_TRACE_LOG();
 }
 
 Socket::Socket(Descriptor sfd) : descriptor_(sfd)
 {
-    STACK_TRACE_LOG();
+    //STACK_TRACE_LOG();
 }
 
 Socket::Socket(Family family, Type type, Protocol protocol)
@@ -90,7 +90,7 @@ int Socket::bind(const sockaddr_in& addr)
 
 int Socket::bind(const Address& addr)
 {
-    STACK_TRACE_LOG();
+    //STACK_TRACE_LOG();
 
     return bind(static_cast<const sockaddr_in>(addr));
 }
@@ -120,7 +120,7 @@ int Socket::connect(const sockaddr_in& addr)
 
 int Socket::connect(const Address& addr)
 {
-    STACK_TRACE_LOG();
+    //STACK_TRACE_LOG();
 
     return connect(static_cast<const sockaddr_in>(addr));
 }
@@ -179,7 +179,7 @@ int Socket::sendto(const sockaddr_in& addr, const char* data, size_t size, int f
 
 int Socket::sendto(const Address& addr, const char* data, size_t size, int flags)
 {
-    STACK_TRACE_LOG();
+    //STACK_TRACE_LOG();
 
     return sendto(sockaddr_in(addr),data,size,flags);
 }
@@ -239,7 +239,7 @@ int Socket::recvfrom(sockaddr_in& addr, char* data, size_t size, int flags)
 
 int Socket::recvfrom(Address& addr, char* data, size_t size, int flags)
 {
-    STACK_TRACE_LOG();
+    //STACK_TRACE_LOG();
 
     sockaddr_in saddr;
     int bytes = recvfrom(saddr,data,size,flags);
@@ -299,7 +299,7 @@ Descriptor Socket::accept(sockaddr_in& addr)
 
 Descriptor Socket::accept(Address& addr)
 {
-    STACK_TRACE_LOG();
+    //STACK_TRACE_LOG();
 
     sockaddr_in address = addr;
     Descriptor socket = accept(address);
@@ -333,7 +333,7 @@ int Socket::getsockname(sockaddr_in& addr)
 
 int Socket::getsockname(Address& addr)
 {
-    STACK_TRACE_LOG();
+    //STACK_TRACE_LOG();
 
     sockaddr_in address = addr;
     int rc = getsockname(address);
@@ -367,7 +367,7 @@ int Socket::getpeername(sockaddr_in& addr)
 
 int Socket::getpeername(Address& addr)
 {
-    STACK_TRACE_LOG();
+    //STACK_TRACE_LOG();
 
     sockaddr_in address = addr;
     int rc = getpeername(address);
